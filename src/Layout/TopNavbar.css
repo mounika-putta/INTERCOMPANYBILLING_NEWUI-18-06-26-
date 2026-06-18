@@ -1,0 +1,127 @@
+/* ============================================================
+   Top navigation bar — professional fixed header (60px)
+   ============================================================ */
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 100%;
+  background: linear-gradient(90deg, #2e6c3b 0%, #3D8C4F 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1100;
+  box-shadow: 0 2px 10px rgba(31, 41, 51, 0.12);
+  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar-brand .logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+
+.navbar-product {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #fff;
+}
+
+.navbar-icons {
+  display: flex;
+  align-items: center;
+}
+
+/* User dropdown */
+.user-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.user-dropdown:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.user-avatar {
+  color: #fff;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.user-name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-role {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 11px;
+}
+
+.user-caret {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e3e8ee;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(31, 41, 51, 0.18);
+  z-index: 1200;
+  min-width: 180px;
+  padding: 6px;
+}
+
+.dropdown-item {
+  padding: 10px 14px;
+  color: #1f2933;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #eef6f0;
+  color: #2e6c3b;
+}
+
+.dropdown-item--danger:hover {
+  background-color: #fdeaea;
+  color: #b3261e;
+}
+
+@media (max-width: 600px) {
+  .navbar-product {
+    display: none;
+  }
+}

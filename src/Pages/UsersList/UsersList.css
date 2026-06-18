@@ -1,0 +1,549 @@
+.Userlist-container {
+  margin-left: 300px; /* Match the width of your sidebar */
+  padding: 30px;
+  margin-top: 60px;
+  font-family: Arial, sans-serif;
+  position: relative;
+  min-height: 100vh
+}
+
+
+/* .Userlist-title {
+  margin-bottom: 1px;
+  margin-top: -80px;
+  color: #3D8C4F;
+} */
+
+.loading-container {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Userlisttitle {
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(61, 140, 79);
+    background-color: transparent;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-left: -1%;
+    margin-top: -20px;
+}
+
+.Userlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.Userlist-table th,
+.Userlist-table td {
+  padding: 12px 15px;
+  border: 1px solid black;
+  text-align: left;
+}
+
+.Userlist-table th {
+  background-color: gray;
+  color: #fff;
+}
+
+
+
+/* No data message */
+.no-data {
+  text-align: center;
+  color: #555;
+  padding: 15px;
+} 
+
+/* Pagination styles (optional, if added later) */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.pagination-controls select {
+  padding: 5px 6px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.pagination-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.page-btn {
+  background-color: #f2f2f2;
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.page-btn:hover {
+  background-color: #d9d9d9;
+}
+
+.page-btn.active {
+  background-color: gray;
+  color: #fff;
+  border-color: gray;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+
+.filter-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  
+  margin-bottom: 15px;
+}
+
+.filter-section input {
+  flex: 1;
+  min-width: 150px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* .filter-section .filter-btn {
+  padding: 8px 16px;
+  background-color: gray;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+} */
+
+.filter-section .filter-btn:hover {
+  background-color: #1E7D4E;
+}
+
+/* .Userlist-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.Userlist-table th, .Userlist-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+} */
+
+.no-data {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  padding: 20px;
+}
+
+.userloader-cell {
+  text-align: center;
+  padding: 40px;
+}
+
+.usersmall-loader {
+  width: 25px;
+  height: 25px;
+  border: 4px solid #ccc;
+  border-top: 4px solid #489be8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* 
+new */
+.user-view-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.user-view-modal {
+  background: #fff;
+  padding: 25px 40px;
+  border-radius: 10px;
+  width: 60%;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.user-view-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2e7d32; /* green like your screenshot */
+  margin-bottom: 15px;
+}
+
+.user-view-section {
+  margin-top: 10px;
+}
+
+.user-view-row {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.label {
+  font-weight: 600;
+  color: #000;
+  width: 180px; /* adjust alignment */
+}
+
+/* .value {
+  color: #333;
+} */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  border: none;
+  background: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: red;
+}
+
+.pagination {
+  margin-top: 15px;
+}
+.pagination button {
+  margin: 0 4px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  cursor: pointer;
+   padding: 10px 16px;     /* ⬅ increase button size */
+  font-size: 16px;        /* ⬅ increase text size */
+}
+.pagination button.active {
+  background: gray;
+  color: white;
+  font-weight: bold;
+}
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* EDIT */    
+.useredit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.useredit-modal {
+  background-color: #fff;
+  padding: 30px 70px;
+  border-radius: 8px;
+  width: 650px;      /* decreased width */
+  max-width: 90%;
+  max-height: 90%;   /* decreased max height */
+  overflow-y: auto;  /* scroll if content exceeds height */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+  
+}
+
+.useredit-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: red;
+}
+
+.useredit-title {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+   color: #3D8C4F;
+}
+
+.useredit-form .useredit-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.useredit-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.useredit-field input,
+.useredit-field select {
+  padding: 7px 10px;
+ border: 1px solid #4CAF50;
+  border-radius: 4px;
+
+}
+
+.useredit-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+/* margin-right:40px; */
+}
+
+.useredit-update-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.useredit-cancel-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.invalid-input {
+  border: 1px solid red;
+  
+}
+
+.useredit-field select {
+ border: 1px solid #4CAF50;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+/* Validation error messages */
+
+/* Default input and select style */
+.useredit-field input,
+.useredit-field select,
+.useredit-field textarea {
+  border: 1px solid #28a745; /* green border when valid */
+  border-radius: 5px;
+}
+/* Highlight invalid input boxes */
+.invalid-input {
+  border: 2px solid red;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+/* Red border for invalid inputs */
+.invalid-input {
+  border: 1px solid #dc3545 !important; /* red border for error */
+}
+
+/* Error message text */
+.error-text {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 3px;
+  display: block;
+}
+
+/* Required asterisk */
+.required {
+  color: #dc3545;
+}
+
+
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+
+/* update button */
+
+.button-loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #b02a37;
+}
+
+
+
+.table-loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
+}
+
+.table-loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+
+.actions-cell {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Common button style */
+.icon-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  background: transparent; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Icon size */
+.icon-btn i {
+  font-size: 18px;
+}
+
+/* Edit */
+.edit-btn i {
+  color: #0047ff; /* blue */
+}
+
+/* Delete */
+.delete-btn i {
+  color: #ff0000; /* red */
+}
+
+/* Hover effect (subtle) */
+.icon-btn:hover {
+   background: transparent; 
+}
+
+/* addresscss */
+.user-view-row {
+  display: flex;
+  align-items: flex-start; /* align label and value at top */
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.user-view-row .label {
+  min-width: 310px; /* fixed width for alignment */
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.user-view-row .colon {
+  margin: 0 5px; /* space between label and colon */
+  font-weight: 600;
+}
+
+.user-view-row .values {
+  flex: 1; /* take remaining space */
+  word-break: break-word; /* wrap long addresses */
+  line-height: 1.6;
+}

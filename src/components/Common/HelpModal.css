@@ -1,0 +1,110 @@
+.help-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.help-btn:hover {
+  background-color: #0056b3;
+}
+
+.help-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.help-modal {
+  background: #fff;
+  border-radius: 8px;
+  width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.help-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #444;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  cursor: pointer;
+}
+
+.help-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.help-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+
+.help-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.help-modal {
+  background: #fff;
+  padding: 24px;
+  width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.help-close-btn {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: red;
+}
+
+.help-close-btn:hover {
+  color: #000;
+}
+
+.help-title {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

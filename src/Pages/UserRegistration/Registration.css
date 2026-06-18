@@ -1,0 +1,328 @@
+/* ============================================================
+   Registration Page - Modern Compact Professional UI
+   Brand Color: #3D8C4F
+============================================================ */
+
+.registration-background {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: "Open Sans", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(61, 140, 79, 0.08), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(61, 140, 79, 0.06), transparent 45%),
+    linear-gradient(135deg, #f7faf8 0%, #eef5f0 100%);
+}
+
+.registration-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(61, 140, 79, 0.02) 0px,
+      rgba(61, 140, 79, 0.02) 2px,
+      transparent 2px,
+      transparent 22px
+    );
+}
+
+/* ============================================================
+   Card
+============================================================ */
+
+.registration-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 32px;
+  border: 1px solid #e4e9ef;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================================
+   Header
+============================================================ */
+
+.registration-head {
+  text-align: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.registration-head h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.registration-subtitle {
+  margin-top: 5px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* ============================================================
+   Top Buttons
+============================================================ */
+
+.back-button-container {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  display: flex;
+  gap: 10px;
+}
+
+.back-button,
+.help-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #d9e2ec;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all .25s ease;
+}
+
+.back-button {
+  color: #52606d;
+}
+
+.help-btn {
+  color: #3D8C4F;
+}
+
+.back-button:hover,
+.help-btn:hover {
+  border-color: #3D8C4F;
+  box-shadow: 0 6px 16px rgba(61, 140, 79, 0.15);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   Form Grid
+============================================================ */
+
+.reg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 18px;
+}
+
+.registration-form .regform-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.regform-group.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   Labels
+============================================================ */
+
+.registration-form label,
+.registrationlabel {
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #374151;
+}
+
+.req-star {
+  color: #dc2626;
+}
+
+/* ============================================================
+   Inputs
+============================================================ */
+
+.registration-form input,
+.registration-form select {
+  width: 100%;
+  height: 42px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #d9e2ec;
+  background: #fbfcfd;
+  font-size: 14px;
+  transition: all .2s ease;
+}
+
+.registration-form textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d9e2ec;
+  background: #fbfcfd;
+  resize: vertical;
+  font-size: 14px;
+}
+
+.registration-form input:focus,
+.registration-form select:focus,
+.registration-form textarea:focus {
+  outline: none;
+  border-color: #3D8C4F;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(61, 140, 79, 0.12);
+}
+
+.registration-form input::placeholder,
+.registration-form textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* ============================================================
+   Password Eye
+============================================================ */
+
+.reg-password-container {
+  position: relative;
+}
+
+.reg-password-container input {
+  padding-right: 42px;
+}
+
+.toggle-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.toggle-icon:hover {
+  color: #3D8C4F;
+}
+
+/* ============================================================
+   Error Styling
+============================================================ */
+
+.input-error {
+  border-color: #ef4444 !important;
+  background: #fff5f5 !important;
+}
+
+.error {
+  margin-top: 4px;
+  color: #ef4444;
+  font-size: 11.5px;
+}
+
+/* ============================================================
+   Submit Area
+============================================================ */
+
+.registrationform-buttons {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #eef2f6;
+  display: flex;
+  justify-content: center;
+}
+
+.registration-form button[type="submit"] {
+  padding: 12px 42px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(
+    180deg,
+    #3D8C4F 0%,
+    #2d6f3d 100%
+  );
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(61, 140, 79, 0.25);
+  transition: all .25s ease;
+}
+
+.registration-form button[type="submit"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(61, 140, 79, 0.35);
+}
+
+.registration-form button[type="submit"]:disabled {
+  opacity: .7;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   Loading Spinner
+============================================================ */
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   Responsive
+============================================================ */
+
+@media (max-width: 1024px) {
+  .reg-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .registration-wrapper {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .registration-wrapper {
+    padding: 20px;
+  }
+
+  .reg-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .back-button-container {
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .registration-head h2 {
+    font-size: 24px;
+  }
+}
