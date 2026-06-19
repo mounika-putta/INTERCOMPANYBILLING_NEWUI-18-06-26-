@@ -19,6 +19,7 @@ import {
   FaFilePdf,
   FaFileCsv,
   FaPrint,
+  FaLock,
 } from 'react-icons/fa';
 
 // Central icon registry — pages reference icons by name so we can swap the
@@ -36,6 +37,7 @@ const registry = {
   warning: FaExclamationTriangle,
   info: FaInfoCircle,
   back: FaArrowLeft,
+  lock: FaLock,
   forward: FaArrowRight,
   help: FaQuestionCircle,
   user: FaUserCircle,

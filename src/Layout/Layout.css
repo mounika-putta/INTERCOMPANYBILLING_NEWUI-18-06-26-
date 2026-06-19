@@ -46,10 +46,19 @@ body,
   margin-left: 250px;
   margin-top: 60px;
   min-height: calc(100vh - 60px);
-  padding: 16px 22px;
+  padding: 14px 20px;
   background-color: #f4f7f5;
   box-sizing: border-box;
   overflow-x: hidden;
+}
+
+/* Constrain very wide forms so single-column inputs don't stretch
+   edge-to-edge on large monitors (reduces perceived empty space). */
+.app-main .create-item-box,
+.app-main .create-item-section,
+.app-main .form-grid,
+.app-main .registration-form {
+  max-width: 1100px;
 }
 
 /* Neutralize each page's legacy offset/width hacks so the shell
@@ -310,7 +319,7 @@ body,
   background: #ffffff;
   border: 1px solid #e3e8ee;
   border-radius: 12px;
-  padding: 16px;
+  padding: 14px;
   box-shadow: 0 1px 4px rgba(31, 41, 51, 0.06);
 }
 

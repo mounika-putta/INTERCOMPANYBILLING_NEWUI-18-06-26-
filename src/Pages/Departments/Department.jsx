@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AxiosInstance } from "../../services/api";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import "alertifyjs/build/css/themes/default.css";
@@ -312,26 +313,21 @@ const Department = () => {
                         <td>{dept.isDeleted}</td>
                       <td>
                         <button
-                          className="icon-btn me-2"
+                          className="action-icon edit-icon"
+                          title="Edit"
                           onClick={() => {
                             setEditDepartment(dept);
                             setShowEditScreen(true);
                           }}
                         >
-                          <i
-                            className="fas fa-edit"
-                            style={{ color: "blue", cursor: "pointer"}}
-                          ></i>
+                          <FaEdit />
                         </button>
-                        &nbsp; &nbsp;
                         <button
-                           className="icon-btn"
+                          className="action-icon cancel-icon"
+                          title="Delete"
                           onClick={() => handleDelete(dept.id)}
                         >
-                          <i
-                            className="fas fa-trash"
-                            style={{ color: "red", cursor: "pointer" }}
-                          ></i>
+                          <FaTrash />
                         </button>
                       </td>
                     </tr>

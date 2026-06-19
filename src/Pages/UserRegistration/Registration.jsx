@@ -11,6 +11,7 @@ import { fetchCompaniesListwithoutRole } from '../../redux/CustomerSlice';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import { AuthLayout, Button, FormField, Icon } from '../../components/ui';
 
 function Registration() {
@@ -151,37 +152,49 @@ function Registration() {
 
   return (
     <AuthLayout
-      contentMaxWidth={680}
+      contentMaxWidth={620}
       topRight={
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Button
-            variant="outlined"
-            color="inherit"
-            size="small"
-            startIcon={<Icon name="back" size={13} />}
+        <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-end' }}>
+          <Link
+            component="button"
+            type="button"
+            underline="hover"
             onClick={handleBack}
-            sx={{ borderRadius: 999, color: 'text.secondary', borderColor: 'divider' }}
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.5,
+              fontWeight: 600,
+              fontSize: 14,
+              color: 'text.secondary',
+              '&:hover': { color: 'primary.main' },
+            }}
           >
-            Back to Login
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="small"
-            startIcon={<Icon name="help" size={13} />}
+            <Icon name="back" size={12} /> Back to Login
+          </Link>
+          <Link
+            component="button"
+            type="button"
+            underline="hover"
             onClick={() => setShowHelp(true)}
-            sx={{ borderRadius: 999 }}
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 0.5,
+              fontWeight: 600,
+              fontSize: 14,
+            }}
           >
-            Help
-          </Button>
+            <Icon name="help" size={13} /> Help
+          </Link>
         </Box>
       }
     >
       <Box component="form" onSubmit={formik.handleSubmit} noValidate>
-        <Typography variant="h4" sx={{ fontWeight: 800, mb: 0.5 }}>
+        <Typography variant="h4" sx={{ fontWeight: 800, mb: 1.5 }}>
           Create your account
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           Fill in the details below to register a new user
         </Typography>
 
@@ -239,6 +252,19 @@ function Registration() {
             Register
           </Button>
         </Box>
+
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 2, textAlign: 'center' }}>
+          Already have an account?{' '}
+          <Link
+            component="button"
+            type="button"
+            underline="hover"
+            onClick={() => navigate('/')}
+            sx={{ fontWeight: 600 }}
+          >
+            Login
+          </Link>
+        </Typography>
       </Box>
 
       <HelpModal
