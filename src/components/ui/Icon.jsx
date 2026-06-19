@@ -24,7 +24,6 @@ import {
   FaEnvelope,
   FaPhoneAlt,
   FaBuilding,
-  FaLock,
   FaMapMarkerAlt,
 } from 'react-icons/fa';
 
