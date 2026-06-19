@@ -1,5 +1,6 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
+import '../../theme/global.css'
 
 const QuotationTable = ({ data, loading, status,onSort, sortConfig ,onView }) => (
   <div className="quotation-dashboard-table-container">
@@ -40,7 +41,7 @@ const QuotationTable = ({ data, loading, status,onSort, sortConfig ,onView }) =>
         {loading ? (
           <tr>
             <td colSpan={5} style={{ textAlign: "center" }}>
-              <div className="spinner"></div>
+              <div className="loader"></div>
             </td>
           </tr>
         ) : !status ? (

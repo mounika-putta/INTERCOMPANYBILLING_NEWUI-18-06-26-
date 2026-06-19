@@ -315,9 +315,9 @@
 .cancel-icon {
   color: red;
 }
-.view-icon {
+/* .view-icon {
   color: #007bff; 
-}
+} */
 
 .credit-icon,
 .creditdownload-icon,
@@ -391,9 +391,9 @@
     cursor: pointer;
 }
 
-.view-icon {
+/* .view-icon {
     color: #2563eb;
-}
+} */
 
 .download-icon {
     color: #f97316;

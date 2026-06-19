@@ -349,7 +349,7 @@ const Quotationapproval = () => {
                         {loading ? (
                             <tr>
                                 <td colSpan="8" style={{ textAlign: "center", padding: "40px 0" }}>
-                                    <div className="spinner"></div>
+                                    <div className="loader"></div>
                                 </td>
                             </tr>
                         ) : filteredQuotations.length === 0 ? (
@@ -391,10 +391,9 @@ const Quotationapproval = () => {
 
                                     <td
                                         style={{
-                                            textAlign: "center",
+                                            
                                             display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
+                                            
                                             gap: "10px"
                                         }}
                                     >

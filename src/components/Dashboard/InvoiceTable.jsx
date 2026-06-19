@@ -52,7 +52,7 @@ const InvoiceTable = ({ data, loading, status, onSort, sortConfig, onView }) => 
         {loading ? (
           <tr>
             <td colSpan={7} style={{ textAlign: "center" }}>
-              <div className="spinner"></div>
+              <div className="loader"></div>
             </td>
           </tr>
         ) : !status ? (
