@@ -513,6 +513,7 @@ const CreateQuotationForm = ({
 
             <h4 className="quotationsub-title" style={{ color: "green" }}>Quotation Details</h4>
 
+            <div className="table-responsive">
             <table className="data-table">
               <thead>
                 <tr>
@@ -772,6 +773,7 @@ const CreateQuotationForm = ({
               </tbody>
 
             </table>
+            </div>
 
             <h4 className="quotationsub-title" style={{ color: "green" }}>Totals</h4>
             <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
@@ -937,7 +939,8 @@ const CreateQuotationForm = ({
 
             </div>
 
-            <div style={{ flex: 3 }}>
+            <h4 className="quotationsub-title" style={{ color: "green" }}>Payment Terms</h4>
+            <div style={{ width: "100%" }}>
               <label>
                 Payment Terms <span className="required">*</span>
               </label>

@@ -110,7 +110,7 @@
 }
 
 .Generate {
-  background-color: #007bff;
+  background-color: #1e7d4e;
   border: none;
   padding: 10px 18px;
   color: white;
@@ -361,9 +361,29 @@
   max-width: 100%;
   max-height: calc(100vh - 48px);
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Keep any horizontal scrolling inside the details table only,
+   so the whole popup no longer shows a bottom scrollbar */
+.quotation-form-modal .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Alertify dialogs/notifications must sit above the modal (z-index 9999) */
+.alertify,
+.alertify .ajs-dimmer,
+.alertify .ajs-modal,
+.ajs-modal {
+  z-index: 2147483600 !important;
+}
+
+.alertify-notifier {
+  z-index: 2147483647 !important;
 }
 
 
@@ -480,28 +500,34 @@
   box-shadow: 0 18px 48px rgba(15, 23, 32, 0.28);
 }
 
-/* Close button */
-.quotation-view-close-btn {
+/* Close button — red square with white X, pinned top-right.
+   Prefixed with .quotation-view-overlay so it wins over page-level overrides. */
+.quotation-view-overlay .quotation-view-close-btn {
   position: absolute;
-  top: 14px;
+  top: 13px;
   right: 16px;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.18);
+  background: #e23b3b;
   border: none;
   border-radius: 8px;
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 700;
   line-height: 1;
   color: #ffffff;
   cursor: pointer;
-  transition: background 0.15s ease;
+  box-shadow: 0 2px 6px rgba(226, 59, 59, 0.4);
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 5;
 }
 
-.quotation-view-close-btn:hover {
-  background: rgba(255, 255, 255, 0.32);
+.quotation-view-overlay .quotation-view-close-btn:hover {
+  background: #c0392b;
+  transform: scale(1.08);
 }
 
 /* Title becomes a sticky, full-bleed brand header bar */
@@ -514,48 +540,61 @@
   font-size: 18px;
   font-weight: 700;
   color: #ffffff;
-  background: linear-gradient(90deg, #2e6c3b 0%, #3D8C4F 100%);
+  /* background: linear-gradient(90deg, #2e6c3b 0%, #3D8C4F 100%); */
   border-radius: 14px 14px 0 0;
 }
 
 .quotation-view-section-title {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding-bottom: 7px;
+  margin-top: 22px;
+  margin-bottom: 12px;
+  padding: 8px 0 8px 12px;
   color: #2e6c3b;
-  border-bottom: 1px solid #e6ebe8;
+  background: #f1f7f2;
+  border-left: 4px solid #3D8C4F;
+  border-radius: 6px;
 }
 
 /* Info — compact two-column grid to cut vertical scrolling */
 .quotation-view-info {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 28px;
+  gap: 8px 24px;
   font-size: 13.5px;
   padding-left: 0;
 }
 
-.quotation-view-info > div,
-.quotation-view-info .info-row {
+.quotation-view-overlay .quotation-view-info > div,
+.quotation-view-overlay .quotation-view-info .info-row {
   display: flex;
   gap: 8px;
   align-items: baseline;
-  padding: 4px 0;
+  padding: 5px 0;
   border-bottom: 1px dashed #eef2f0;
   color: #1f2933;
+  margin-bottom: 0;
 }
 
-.quotation-view-info .label {
+/* Highlighted label pill — high specificity so it overrides page CSS */
+.quotation-view-overlay .quotation-view-info .label {
   width: auto;
-  min-width: 150px;
-  max-width: 170px;
+  min-width: 160px;
+  max-width: 200px;
   flex-shrink: 0;
   font-weight: 600;
-  color: #52606d;
+  color: #1f4d2b;
+  /* background: #eaf4ec; */
+  padding: 3px 9px;
+  border-radius: 5px;
+  white-space: normal;
+}
+
+.quotation-view-overlay .quotation-view-info span:not(.label) {
+  color: #1f2933;
+  font-weight: 500;
 }
 
 @media (max-width: 720px) {
