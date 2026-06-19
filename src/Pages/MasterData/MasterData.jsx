@@ -7,6 +7,7 @@ import "alertifyjs/build/css/alertify.css";
 import HelpModal from "../../components/Common/HelpModal";
 import useSort from "../../components/Common/useSort";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import Pagination from "../../components/Common/Pagination";
 
 const MasterData = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const MasterData = () => {
   const [showModal, setShowModal] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
+  const [modalMode, setModalMode] = useState(null); // 'create' | 'edit'
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(5);
   const [showHelp, setShowHelp] = useState(false);
@@ -62,6 +64,14 @@ const MasterData = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     // clear field error when user types
     setFieldError(name, value && value.toString().trim() ? "" : getError(name) ? "This field is required" : "");
+  };
+
+  const openCreateModal = () => {
+    setModalMode("create");
+    setEditingItem(null);
+    setFormData({});
+    setErrors({});
+    setShowModal(true);
   };
 
   // Date formatting
@@ -127,6 +137,18 @@ const MasterData = () => {
       }
     }
 
+    if (selectedType === "Category") {
+      if (!formData.categoryName?.trim()) {
+        newErrors[errorKey("categoryName")] = "Category Name is required.";
+      }
+      if (!formData.isActive) {
+        newErrors[errorKey("isActive")] = "Is Active is required.";
+      }
+      if (!formData.isDeleted) {
+        newErrors[errorKey("isDeleted")] = "Is Deleted is required.";
+      }
+    }
+
     setErrors((prev) => ({ ...prev, ...newErrors }));
     return Object.keys(newErrors).length === 0;
   };
@@ -156,6 +178,18 @@ const MasterData = () => {
       );
       if (exists) {
         alertify.alert("Duplicate Error", "Vat Percentage already exists!");
+        duplicateError = true;
+      }
+    }
+
+    if (selectedType === "Category") {
+      const exists = (tableData || []).some(
+        (item) =>
+          item.categoryName?.toLowerCase() === formData.categoryName?.toLowerCase() &&
+          (!editingItem || item.id !== editingItem.id)
+      );
+      if (exists) {
+        alertify.alert("Duplicate Error", "Category Name already exists!");
         duplicateError = true;
       }
     }
@@ -190,6 +224,14 @@ const MasterData = () => {
         IsDeleted: formData.isDeleted || "No",
         EntityType: "VAT",
       };
+    } else if (selectedType === "Category") {
+      payload = {
+        CategoryName: formData.categoryName,
+        Description: formData.description || "",
+        IsActive: formData.isActive || "Yes",
+        IsDeleted: formData.isDeleted || "No",
+        EntityType: "Category",
+      };
     }
 
     setCreateLoading(true);
@@ -216,22 +258,31 @@ const MasterData = () => {
     setEditingItem(item);
     setShowModal(true);
 
-    const mappedData =
-      selectedType === "Currency"
-        ? {
-          currencyName: item.currencyName || "",
-          description: item.description || "",
-          isActive: item.isActive,
-          isDeleted: item.isDeleted,
-        }
-        : {
-          taxPercentage: item.taxPercentage || "",
-          satrtDate: formatDateInput(item.satrtDate || item.startDate),
-          endDate: formatDateInput(item.endDate),
-          description: item.description || "",
-          isActive: item.isActive,
-          isDeleted: item.isDeleted,
-        };
+    let mappedData = {};
+    if (selectedType === "Currency") {
+      mappedData = {
+        currencyName: item.currencyName || "",
+        description: item.description || "",
+        isActive: item.isActive,
+        isDeleted: item.isDeleted,
+      };
+    } else if (selectedType === "VAT") {
+      mappedData = {
+        taxPercentage: item.taxPercentage || "",
+        satrtDate: formatDateInput(item.satrtDate || item.startDate),
+        endDate: formatDateInput(item.endDate),
+        description: item.description || "",
+        isActive: item.isActive,
+        isDeleted: item.isDeleted,
+      };
+    } else if (selectedType === "Category") {
+      mappedData = {
+        categoryName: item.name || "",
+        description: item.description || "",
+        isActive: item.isActive,
+        isDeleted: item.isDeleted,
+      };
+    }
 
     setFormData(mappedData);
 
@@ -270,6 +321,11 @@ const MasterData = () => {
       payload.TaxPercentage = parseFloat(formData.taxPercentage);
       payload.StartDate = formData.startDate || formData.satrtDate || null;
       payload.EndDate = formData.endDate || null;
+      payload.Description = formData.description;
+      payload.IsActive = formData.isActive;
+      payload.IsDeleted = formData.isDeleted;
+    } else if (selectedType === "Category") {
+      payload.CategoryName = formData.categoryName;
       payload.Description = formData.description;
       payload.IsActive = formData.isActive;
       payload.IsDeleted = formData.isDeleted;
@@ -343,7 +399,12 @@ const MasterData = () => {
     );
   };
 
-  const getColSpan = () => (selectedType === "Currency" || selectedType === "VAT" ? 7 : 1);
+  const getColSpan = () => {
+    if (selectedType === "Currency") return 5;
+    if (selectedType === "VAT") return 5;
+    if (selectedType === "Category") return 4;
+    return 1;
+  };
 
   return (
     <div className="master-container">
@@ -371,6 +432,7 @@ const MasterData = () => {
             <option value="">Make Selection</option>
             <option value="Currency">Currency</option>
             <option value="VAT">VAT</option>
+            <option value="Category">Category</option>
           </select>
         </div>
       </div>
@@ -385,201 +447,36 @@ const MasterData = () => {
         />
       )}
 
-      {/* CREATE FORM */}
-      {!editingItem && selectedType && (
-        <form className="master-form" onSubmit={handleSubmit}>
-          {selectedType === "Currency" && (
-            <div className="typeform-row">
-              {/* Currency Name */}
-              <div className="typeform-group">
-                <label>
-                  Currency  <span style={{ color: "red" }}>*</span>
-                </label>
-
-                <input
-                  type="text"
-                  name="currencyName"
-                  value={formData.currencyName || ""}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const regex = /^[A-Za-z\s]*$/;
-
-                    if (regex.test(value)) {
-                      setFormData({ ...formData, currencyName: value });
-
-                      setErrors((prev) => ({
-                        ...prev,
-                        [errorKey("currencyName")]: value.trim()
-                          ? ""
-                          : "Currency Name is required",
-                      }));
-                    }
-                  }}
-                  className={getError("currencyName") ? "error-input" : ""}
-                />
-
-                {getError("currencyName") && (
-                  <p className="error-text">{getError("currencyName")}</p>
-                )}
-              </div>
-
-              {/* Description */}
-              <div className="typeform-group">
-                <label>
-                  Description <span style={{ color: "red" }}>*</span>
-                </label>
-
-                <input
-                  type="text"
-                  name="description"
-                  value={formData.description || ""}
-                  onChange={(e) => {
-                    const value = e.target.value;
-
-                    setFormData({ ...formData, description: value });
-
-                    setErrors((prev) => ({
-                      ...prev,
-                      [errorKey("description")]: value.trim()
-                        ? ""
-                        : "Description is required",
-                    }));
-                  }}
-                  className={getError("description") ? "error-input" : ""}
-                />
-
-                {getError("description") && (
-                  <p className="error-text">{getError("description")}</p>
-                )}
-              </div>
-
-              {/* Buttons */}
-              <div className="master-buttons">
-                <button
-                  type="submit"
-                  className="btn btn-success btn-lg save-btn"
-                  disabled={createLoading}
-                >
-                  {createLoading && <span className="inline-spinner"></span>}
-                  <span className="save-text">Save</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="btn btn-danger btn-lg"
-                  onClick={() => {
-                    setFormData({});
-                    setErrors({});
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
-
-            </div>
-          )}
-
-
-          {/* {selectedType === "Tax" && (
-            <>
-              <div className="typeform-row">
-                <div className="typeform-group">
-                  <label>
-                    VAT Percentage (%) <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="taxPercentage"
-                    value={formData.taxPercentage || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      const regex = /^\d*\.?\d*$/;
-                      if (regex.test(value)) {
-                        setFormData({ ...formData, taxPercentage: value });
-                        setErrors((prev) => ({
-                          ...prev,
-                          [errorKey("taxPercentage")]: value.trim() ? "" : "Vat Percentage is required",
-                        }));
-                      }
-                    }}
-                    className={getError("taxPercentage") ? "error-input" : ""}
-                  />
-                  {getError("taxPercentage") && <p className="error-text">{getError("taxPercentage")}</p>}
-                </div>
-                 <div className="typeform-group">
-                  <label>
-                    Description <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="description"
-                    value={formData.description || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setFormData({ ...formData, description: value });
-                      setErrors((prev) => ({
-                        ...prev,
-                        [errorKey("description")]: value.trim() ? "" : "Description is required",
-                      }));
-                    }}
-                    className={getError("description") ? "error-input" : ""}
-                  />
-                  {getError("description") && <p className="error-text">{getError("description")}</p>}
-                </div>
-               
-              </div>
-
-              <div className="typeform-row">
-                 <div className="typeform-group">
-                  <label>
-                    Start Date <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="satrtDate"
-                    value={formData.satrtDate || ""}
-                    onChange={(e) => {
-                      handleInputChange(e);
-                      // clear start date error
-                      setErrors((prev) => ({ ...prev, [errorKey("satrtDate")]: "" }));
-                    }}
-                    className={getError("satrtDate") ? "error-input" : ""}
-                  />
-                  {getError("satrtDate") && <p className="error-text">{getError("satrtDate")}</p>}
-                </div>
-                <div className="typeform-group">
-                  <label>End Date</label>
-                  <input type="date" name="endDate" value={formData.endDate || ""} onChange={handleInputChange} />
-                </div>
-               
-              </div>
-            </>
-          )} */}
-
-
-        </form>
-      )}
+      {/* CREATE FORM removed - use Add New modal to create records */}
 
       {/* TABLE */}
       {selectedType && (
         <div className="master-table-container">
-          <div className="records-per-page">
-            <label>Records per page: </label>
-            <select
-              value={recordsPerPage}
-              onChange={(e) => {
-                setRecordsPerPage(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-            >
-              {[2, 5, 10, 25].map((num) => (
-                <option key={num} value={num}>
-                  {num}
-                </option>
-              ))}
-            </select>
+          <div className="table-toolbar">
+            <div className="records-per-page">
+              <label>Records per page:</label>
+              <select
+                value={recordsPerPage}
+                onChange={(e) => {
+                  setRecordsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+              >
+                {[2, 5, 10, 25].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              {selectedType && selectedType !== "VAT" && (
+                <button type="button" className="add-new-btn" onClick={openCreateModal}>
+                  + Add New
+                </button>
+              )}
+            </div>
           </div>
-          <br />
           <table className="data-table">
             <thead>
               <tr>
@@ -592,6 +489,14 @@ const MasterData = () => {
                     <th>DESCRIPTION</th>
                     {/* <th>CREATED DATE</th>
                     <th>MODIFIED DATE</th> */}
+                    <th>IS ACTIVE</th>
+                    <th>IS DELETED</th>
+                    <th>ACTION</th>
+                  </>
+                )}
+                {selectedType === "Category" && (
+                  <>
+                    <th onClick={() => requestSort("name")}>CATEGORY NAME {sortConfig.key === "name" ? (sortConfig.direction === "asc" ? "↑" : "↓") : "↑"}</th>
                     <th>IS ACTIVE</th>
                     <th>IS DELETED</th>
                     <th>ACTION</th>
@@ -647,22 +552,14 @@ const MasterData = () => {
                           </button>
                         </td> */}
 
-                        <td>
+                        <td className="actions-cell">
                           <div className="action-master">
-
                             <FaEdit
                               style={{ cursor: 'pointer' }}
                               className="action-icon edit-icon"
                               title="Edit"
-                               onClick={() => handleEdit(item)} />
-
-                            {/* <FaTrash style={{ cursor: 'pointer' }}                       
-                              className={`action-icon cancel-icon ${item.isDeleted === "Yes" ? "invisible" : ""}`}
-                              title="Delete"
-                              onClick={() => handleDelete(item)}
-                              disabled={item.isDeleted === "Yes"} /> */}
-                           
-
+                              onClick={() => handleEdit(item)}
+                            />
                             <button
                               className={`icon-btn delete ${item.isDeleted === "Yes" ? "invisible" : ""}`}
                               onClick={() => handleDelete(item)}
@@ -684,10 +581,10 @@ const MasterData = () => {
                         <td>{item.isActive}</td>
                         <td>{item.isDeleted}</td>
 
-                        <td>
+                        <td className="actions-cell">
                           <div className="action-master">
                             <button className="icon-btn me-2" onClick={() => handleEdit(item)}>
-                              <i className="fas fa-edit" ></i>
+                              <i className="fas fa-edit"></i>
                             </button>
                             {item.isDeleted === "No" && (
                               <button className="icon-btn" onClick={() => handleDelete(item)}>
@@ -697,6 +594,30 @@ const MasterData = () => {
                           </div>
                         </td>
 
+                      </>
+                    )}
+                    {selectedType === "Category" && (
+                      <>
+                        <td>{item.name}</td>
+                        <td>{item.isActive}</td>
+                        <td>{item.isDeleted}</td>
+                        <td className="actions-cell">
+                          <div className="action-master">
+                            <FaEdit
+                              style={{ cursor: 'pointer' }}
+                              className="action-icon edit-icon"
+                              title="Edit"
+                              onClick={() => handleEdit(item)}
+                            />
+                            <button
+                              className={`icon-btn delete ${item.isDeleted === "Yes" ? "invisible" : ""}`}
+                              onClick={() => handleDelete(item)}
+                              disabled={item.isDeleted === "Yes"}
+                            >
+                              <i className="fas fa-trash"></i>
+                            </button>
+                          </div>
+                        </td>
                       </>
                     )}
                   </tr>
@@ -719,7 +640,7 @@ const MasterData = () => {
             </button>
           </div> */}
 
-          <         div className="pagination">
+          <div className="pagination">
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(currentPage - 1)}
@@ -762,10 +683,9 @@ const MasterData = () => {
             >
               &times;
             </div>
-            {/* <h3>Edit {selectedType}</h3> */}
-            <h3>Edit {selectedType === "VAT" ? "VAT" : selectedType}</h3>
+            <h3>{modalMode === "create" ? `Add ${selectedType}` : `Edit ${selectedType === "VAT" ? "VAT" : selectedType}`}</h3>
 
-            <form onSubmit={handleUpdate}>
+            <form onSubmit={modalMode === "create" ? handleSubmit : handleUpdate}>
               {selectedType === "Currency" && (
                 <>
                   <div className="typeform-row">
@@ -1093,9 +1013,85 @@ const MasterData = () => {
                 </>
               )}
 
+              {selectedType === "Category" && (
+                <>
+                  <div className="typeform-row">
+                    <div className="typeform-group">
+                      <label>
+                        Category Name <span className="required">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="categoryName"
+                        value={formData.categoryName || ""}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFormData({ ...formData, categoryName: value });
+                          setErrors((prev) => ({
+                            ...prev,
+                            [errorKey("categoryName")]: value.trim() ? "" : "Category Name is required",
+                          }));
+                        }}
+                        className={getError("categoryName") ? "error-input" : ""}
+                      />
+                      {getError("categoryName") && <p className="error-message">{getError("categoryName")}</p>}
+                    </div>
+                  </div>
+
+                  <div className="typeform-row">
+                    <div className="typeform-group">
+                      <label>Is Active <span className="required">*</span></label>
+                      <select
+                        name="isActive"
+                        value={formData.isActive || ""}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFormData({ ...formData, isActive: value });
+                          setFieldError("isActive", value ? "" : "Is Active is required");
+                        }}
+                        className={getError("isActive") ? "input-error" : ""}
+                      >
+                        <option value="">Select Is Active</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                      {getError("isActive") && (
+                        <p className="error-message">{getError("isActive")}</p>
+                      )}
+                    </div>
+
+                    <div className="typeform-group">
+                      <label>Is Deleted <span className="required">*</span></label>
+                      <select
+                        name="isDeleted"
+                        value={formData.isDeleted || ""}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFormData({ ...formData, isDeleted: value });
+                          setFieldError("isDeleted", value ? "" : "Is Deleted is required");
+                        }}
+                        className={getError("isDeleted") ? "input-error" : ""}
+                      >
+                        <option value="">Select Is Deleted</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                      {getError("isDeleted") && (
+                        <p className="error-message">{getError("isDeleted")}</p>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+
               <div className="master-buttons">
-                <button type="submit" className="btn btn-success btn-lg" disabled={updateLoading}>
-                  {updateLoading && <span className="spinner"></span>} Update
+                <button
+                  type="submit"
+                  className="btn btn-success btn-lg"
+                  disabled={modalMode === "create" ? createLoading : updateLoading}
+                >
+                  {(modalMode === "create" ? createLoading : updateLoading) && <span className="spinner"></span>}
+                  {modalMode === "create" ? " Save" : " Update"}
                 </button>
                 <button
                   type="button"
