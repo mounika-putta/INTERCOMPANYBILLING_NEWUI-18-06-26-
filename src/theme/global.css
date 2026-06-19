@@ -270,19 +270,52 @@ a:hover {
 /* Semantic colours — green edit, red delete, blue view, etc. */
 .action-icon.edit-icon,
 .edit-icon.action-icon {
-  background: var(--ds-brand) !important;
+width: 28px !important;
+  height: 28px !important;
+  background: #1E7D4E !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
 }
 .action-icon.cancel-icon,
 .action-icon.delete-icon,
 .cancel-icon.action-icon,
 .delete-icon.action-icon {
-  background: var(--ds-danger) !important;
+background: var(--ds-danger) !important;
+   width: 28px !important;
+  height: 28px !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
 }
-.action-icon.view-icon,
 .action-icon.creditnoteview-icon,
 .action-icon.creditview-icon,
 .view-icon.action-icon {
   background: var(--ds-info) !important;
+}
+.action-icon.view-icon {
+  width: 28px !important;
+  height: 28px !important;
+  background: #1E7D4E !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
+.action-icon.view-icon svg {
+  color: #fff !important;
+  fill: #fff !important;
+  width: 16px;
+  height: 16px;
 }
 .action-icon.approve-icon,
 .action-icon.download-icon,

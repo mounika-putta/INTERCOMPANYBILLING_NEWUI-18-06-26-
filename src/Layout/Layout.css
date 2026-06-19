@@ -279,12 +279,12 @@ body,
 .clear-btn {
 
   padding: 8px 16px;
-  background-color: red;
-  color: #fff;
+  background-color: #F3F4F6;
+  color: #000000c9;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 450;
 }
 
 .filter-btn {
