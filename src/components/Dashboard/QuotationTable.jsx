@@ -1,6 +1,6 @@
 import React from "react";
 import { FaEye } from "react-icons/fa";
-import '../../theme/global.css'
+
 
 const QuotationTable = ({ data, loading, status,onSort, sortConfig ,onView }) => (
   <div className="quotation-dashboard-table-container">

@@ -24,6 +24,7 @@ const QuotationDashboard = () => {
   const [selectedCreditNote, setSelectedCreditNote] = useState(null);
 
   const [showCreditNotePopup, setShowCreditNotePopup] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const handleCreditNoteViewClick = async (invoice) => {
 
     // Try both possible field names for invoice reference
@@ -290,11 +291,14 @@ const QuotationDashboard = () => {
       )} */}
       {/* Normal Popup */}
       {selectedQuotation && (
-        <ViewPopup
-          data={selectedQuotation}
-          type={type}
-          onClose={() => setSelectedQuotation(null)}
-        />
+        // <ViewPopup
+        //   data={selectedQuotation}
+        //   type={type}
+        //   onClose={() => setSelectedQuotation(null)}
+        // />
+
+         <ViewPopup show={showModal} onClose={() => setShowModal(false)} selectedInvoice={selectedQuotation} />
+        
       )}
 
       {/* Credit Note Popup */}
