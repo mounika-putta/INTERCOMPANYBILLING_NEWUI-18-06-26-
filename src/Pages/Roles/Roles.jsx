@@ -14,6 +14,8 @@ const Roles = () => {
   const [showEditScreen, setShowEditScreen] = useState(false);
   const [items, setItems] = useState([]);
   const [showHelp, setShowHelp] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   // Loaders
   const [loading, setLoading] = useState(true);
@@ -222,7 +224,7 @@ const Roles = () => {
       const response = await AxiosInstance.post("/api/Roles/SaveRoles", newItem);
       if (response.data.success) {
         alertify.alert("Create", "Role created successfully!").show();
-        setShowCreateScreen(false);
+        setShowCreateModal(false);
         setCreateLoading(false);
         setNewItem({ RoleName: "", RoleDescription: "", IsActive: "" });
         setErrors({});
@@ -300,7 +302,7 @@ const Roles = () => {
         alertify.alert("Success", response.data.message || "Role updated successfully!").show();
 
         fetchItems();
-        setShowEditScreen(false);
+        setShowEditModal(false);
         setEditErrors({});
       } else {
         // API returned success = false
@@ -437,11 +439,11 @@ const Roles = () => {
               </div>
 
               {/* Add New Role Button - Right */}
-              
+
               <button
                 className="btn_add"
                 // style={{ backgroundColor: "#1E7D4E", color: "white", border: "none" }}
-                onClick={() => setShowCreateScreen(true)}
+                onClick={() => setShowCreateModal(true)}
               >
                 + Add New
               </button>
@@ -473,7 +475,7 @@ const Roles = () => {
                 {loading ? (
                   <tr>
                     <td colSpan="5" style={{ textAlign: "center" }}>
-                      <div className="spinner"></div>
+                      <div className="loader"></div>
                     </td>
                   </tr>
                 ) : currentRecords.length === 0 ? (
@@ -503,7 +505,7 @@ const Roles = () => {
                               IsDeleted: dept.isDeleted ?? dept.IsDeleted,
                             });
                             setEditErrors({});
-                            setShowEditScreen(true);
+                            setShowEditModal(true);
                           }}
                         />
 
@@ -535,93 +537,75 @@ const Roles = () => {
         )}
 
         {/* CREATE ITEM SCREEN */}
-        {showCreateScreen && (
-          <div className="create-item-section" >
-            <div className="create-item-box">
-              <h3 className="role-title">Create Role</h3>
-              <form onSubmit={handleCreateItem} className="create-item-form-row">
-                {/* Role Name */}
+        {showCreateModal && (
+          <div className="modal-overlay">
+            <div className="role-modal">
+              <div className="modal-header">
+                <h3>Create Role</h3>
+                <button onClick={() => setShowCreateModal(false)}>✕</button>
+              </div>
+
+              <form onSubmit={handleCreateItem}>
                 <div className="formlabel-group">
-                  <label>
-                    Role Name <span className="required">*</span>
-                  </label>
+                  <label>Role Name *</label>
                   <input
                     type="text"
                     value={newItem.RoleName}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^[a-zA-Z0-9\s]*$/.test(value)) {
-                        setNewItem((prev) => ({ ...prev, RoleName: value }));
-                        setErrors((prev) => ({ ...prev, RoleName: "" }));
-                      }
-                    }}
-                    className={errors.RoleName ? "input-error" : newItem.RoleName.trim() ? "input-valid" : ""}
+                    onChange={(e) =>
+                      setNewItem({ ...newItem, RoleName: e.target.value })
+                    }
                   />
-                  {errors.RoleName && <p className="error-message">{errors.RoleName}</p>}
+                  {errors.RoleName && (
+                    <p className="error-message">{errors.RoleName}</p>
+                  )}
                 </div>
 
-                {/* Role Description */}
                 <div className="formlabel-group">
-                  <label>
-                    Role Description <span className="required">*</span>
-                  </label>
+                  <label>Role Description *</label>
                   <input
                     type="text"
                     value={newItem.RoleDescription}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setNewItem((prev) => ({ ...prev, RoleDescription: value }));
-                      setErrors((prev) => ({ ...prev, RoleDescription: "" }));
-                    }}
-                    className={errors.RoleDescription ? "input-error" : newItem.RoleDescription.trim() ? "input-valid" : ""}
+                    onChange={(e) =>
+                      setNewItem({
+                        ...newItem,
+                        RoleDescription: e.target.value,
+                      })
+                    }
                   />
-                  {errors.RoleDescription && <p className="error-message">{errors.RoleDescription}</p>}
+                  {errors.RoleDescription && (
+                    <p className="error-message">{errors.RoleDescription}</p>
+                  )}
                 </div>
 
-                {errors.duplicate && <p className="error-message">{errors.duplicate}</p>}
-                <div className="Role-actions" style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                  <button
-                    type="submit"
-                    className="btn btn-success btn-lg"
-                    disabled={createLoading}
-                    style={{ minWidth: 120 }}
-                  >
-                    {createLoading ? (
-                      <>
-                        Save <span className="button-loader" />
-                      </>
-                    ) : (
-                      "Save"
-                    )}
+                <div className="Role-actions">
+                  <button type="submit" className="btn btn-success">
+                    Save
                   </button>
 
                   <button
                     type="button"
-                    className="btn btn-danger btn-lg"
-                    onClick={() => {
-                      // allow user to cancel UI at any time
-                      setCreateLoading(false);
-                      setNewItem({ RoleName: "", RoleDescription: "", IsActive: "", IsDeleted: "" });
-                      setErrors({});
-                      setShowCreateScreen(false);
-                    }}
+                    className="btn btn-danger"
+                    onClick={() => setShowCreateModal(false)}
                   >
                     Cancel
                   </button>
                 </div>
-
-
               </form>
             </div>
           </div>
         )}
 
         {/* EDIT ITEM SCREEN */}
-        {showEditScreen && editItem && (
-          <div className="create-item-section">
-            <div className="create-item-box">
-              <br />
-              <h3 className="role-title">Edit Role</h3>
+        
+
+        {showEditModal && (
+          <div className="modal-overlay">
+            <div className="role-modal">
+              <div className="modal-header">
+                <h3>Edit Role</h3>
+                <button onClick={() => setShowEditModal(false)}>✕</button>
+              </div>
+
               <form onSubmit={handleEditItem} className="create-item-form-row">
                 {/* Role Name */}
                 <div className="formlabel-group">
@@ -720,7 +704,7 @@ const Roles = () => {
                     type="button"
                     className="btn btn-danger btn-lg"
                     onClick={() => {
-                      setShowEditScreen(false);
+                      setShowEditModal(false);
                       setEditErrors({});
                       setEditRole({ Id: "", RoleName: "", RoleDescription: "", IsActive: "", IsDeleted: "" });
                     }}

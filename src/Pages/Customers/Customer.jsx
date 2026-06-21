@@ -498,7 +498,7 @@ const Customer = () => {
                                     //     </td>
 
                                     // </tr>
-                                    <tr><td colSpan={11} style={{ textAlign: "center" }}><div className="spinner"></div></td></tr>
+                                    <tr><td colSpan={11} style={{ textAlign: "center" }}><div className="loader"></div></td></tr>
                                 ) : paginatedCustomers.length === 0 ? (
                                     <tr>
                                         <td colSpan="11" style={{ textAlign: "center" }}>

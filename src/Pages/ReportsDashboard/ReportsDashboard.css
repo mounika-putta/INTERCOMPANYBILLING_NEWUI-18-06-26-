@@ -311,13 +311,13 @@
   overflow-y: auto;
 }
 
-.close-btn {
+/* .close-btn {
   border: none;
   background: transparent;
   color: white;
   font-size: 24px;
   cursor: pointer;
-}
+} */
 .reportdashboard-kpi-strip {
   display: flex;
   align-items: center;

@@ -24,6 +24,7 @@ const FormField = ({
   getOptionLabel = (o) => o.label,
   placeholder,
   fullWidth = true,
+  size = 'small',
   ...rest
 }) => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -61,15 +62,25 @@ const FormField = ({
       type={isPassword ? (showPassword ? 'text' : 'password') : isTextarea ? undefined : type}
       select={isSelect}
       multiline={isTextarea}
-      minRows={isTextarea ? 3 : undefined}
+      minRows={isTextarea ? 2 : undefined}
       placeholder={placeholder}
       value={formik?.values?.[name] ?? ''}
       onChange={formik?.handleChange}
       onBlur={formik?.handleBlur}
       error={showError}
-      helperText={showError ? error : ' '}
+      helperText={showError ? error : undefined}
       fullWidth={fullWidth}
+      size={size}
       InputProps={passwordAdornment}
+      sx={{
+        // Keep fields compact and prevent the empty-helper line from adding height.
+        '& .MuiFormHelperText-root': {
+          mt: 0.25,
+          mb: 0,
+          fontSize: '0.7rem',
+          lineHeight: 1.3,
+        },
+      }}
       {...rest}
     >
       {isSelect && [

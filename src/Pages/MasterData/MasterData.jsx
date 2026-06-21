@@ -561,11 +561,12 @@ const MasterData = () => {
                               onClick={() => handleEdit(item)}
                             />
                             <button
-                              className={`icon-btn delete ${item.isDeleted === "Yes" ? "invisible" : ""}`}
+                              className={`action-icon cancel-icon ${item.isDeleted === "Yes" ? "invisible" : ""}`}
+                              title="Delete"
                               onClick={() => handleDelete(item)}
                               disabled={item.isDeleted === "Yes"}
                             >
-                              <i className="fas fa-trash"></i>
+                              <FaTrash />
                             </button>
                           </div>
                         </td>
@@ -583,12 +584,17 @@ const MasterData = () => {
 
                         <td className="actions-cell">
                           <div className="action-master">
+
                             <button className="icon-btn me-2" onClick={() => handleEdit(item)}>
                               <i className="fas fa-edit"></i>
+                                </button>
+                            <button className="action-icon edit-icon me-2" title="Edit" onClick={() => handleEdit(item)}>
+                              <FaEdit />
+
                             </button>
                             {item.isDeleted === "No" && (
-                              <button className="icon-btn" onClick={() => handleDelete(item)}>
-                                <i className="fas fa-trash" style={{ color: "red", cursor: "pointer" }}></i>
+                              <button className="action-icon cancel-icon" title="Delete" onClick={() => handleDelete(item)}>
+                                <FaTrash />
                               </button>
                             )}
                           </div>

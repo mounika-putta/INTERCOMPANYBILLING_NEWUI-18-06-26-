@@ -209,3 +209,209 @@ a {
 a:hover {
   color: var(--ds-brand-dark);
 }
+
+/* ============================================================
+   TABLE ACTION ICONS — one unified style across every module.
+   Pages already mark icons with .action-icon + a semantic
+   modifier (.edit-icon / .cancel-icon / .view-icon / ...).
+   These rules win (global.css loads last) so the same icons
+   render as compact, filled, rounded icon-buttons everywhere,
+   matching the reference (green edit, red delete, blue view).
+   Works whether the element is an <svg> (react-icons) or a
+   <button> wrapping one.
+   ============================================================ */
+.action-icon {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 7px !important;
+  margin: 0 3px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  background: var(--ds-ink-soft);
+  cursor: pointer;
+  vertical-align: middle;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.14);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.action-icon > svg,
+.action-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.action-icon:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 4px 10px rgba(16, 24, 40, 0.2);
+}
+
+.action-icon:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.action-icon:disabled,
+.action-icon.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Semantic colours — green edit, red delete, blue view, etc. */
+.action-icon.edit-icon,
+.edit-icon.action-icon {
+width: 28px !important;
+  height: 28px !important;
+  background: #1E7D4E !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+.action-icon.cancel-icon,
+.action-icon.delete-icon,
+.cancel-icon.action-icon,
+.delete-icon.action-icon {
+background: var(--ds-danger) !important;
+   width: 28px !important;
+  height: 28px !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+.action-icon.creditnoteview-icon,
+.action-icon.creditview-icon,
+.view-icon.action-icon {
+  background: var(--ds-info) !important;
+}
+.action-icon.view-icon {
+  width: 28px !important;
+  height: 28px !important;
+  background: #1E7D4E !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
+.action-icon.view-icon svg {
+  color: #fff !important;
+  fill: #fff !important;
+  width: 16px;
+  height: 16px;
+}
+.action-icon.approve-icon,
+.action-icon.download-icon,
+.action-icon.creditdownload-icon {
+  background: var(--ds-brand-dark) !important;
+}
+.action-icon.credit-icon {
+  background: #8e24aa !important;
+}
+.action-icon.paid-icon {
+  background: var(--ds-success) !important;
+}
+
+/* ============================================================
+   ALERTS / NOTIFICATIONS — always above the modal layer.
+   View popups & dialogs sit at z-index ~1200; alertifyjs and
+   any toast must stack above them so success/warning/error
+   messages (e.g. when generating a quotation) stay visible.
+   ============================================================ */
+.alertify,
+.alertify .ajs-dialog,
+.alertify-notifier,
+.ajs-modal {
+  z-index: 100000 !important;
+}
+.alertify .ajs-dimmer {
+  z-index: 99999 !important;
+}
+
+/* ============================================================
+   PAGINATION — unify the legacy per-page .pagination blocks
+   with the shared <Pagination> component look. flex-wrap +
+   visible overflow guarantees text like "1 of 4" is never
+   clipped (the Invoice Approval issue).
+   ============================================================ */
+.pagination,
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 14px;
+  overflow: visible;
+  text-align: right;
+}
+
+.pagination button,
+.pagination-controls button {
+  min-width: 34px;
+  height: 34px;
+  margin: 0 !important;
+  padding: 0 11px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #374151;
+  background: #ffffff !important;
+  border: 1px solid var(--ds-line) !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.pagination button:hover:not(:disabled):not(.active),
+.pagination-controls button:hover:not(:disabled):not(.active) {
+  background: var(--ds-brand-light) !important;
+  border-color: #cfe3d6 !important;
+  color: var(--ds-brand-dark);
+}
+
+.pagination button.active,
+.pagination-controls button.active,
+.pagination button:disabled.active {
+  background: var(--ds-brand) !important;
+  border-color: var(--ds-brand) !important;
+  color: #ffffff !important;
+  cursor: default;
+}
+
+.pagination button:disabled,
+.pagination-controls button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Any page-count / status text inside a pager stays fully visible */
+.pagination span,
+.pagination-controls span,
+.pagination-info {
+  white-space: nowrap;
+  overflow: visible;
+  font-size: 13px;
+  color: var(--ds-ink-soft);
+}

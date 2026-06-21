@@ -15,10 +15,16 @@ import {
   FaArrowRight,
   FaQuestionCircle,
   FaUserCircle,
+  FaUserPlus,
   FaSignOutAlt,
   FaFilePdf,
   FaFileCsv,
   FaPrint,
+  FaLock,
+  FaEnvelope,
+  FaPhoneAlt,
+  FaBuilding,
+  FaMapMarkerAlt,
 } from 'react-icons/fa';
 
 // Central icon registry — pages reference icons by name so we can swap the
@@ -36,13 +42,20 @@ const registry = {
   warning: FaExclamationTriangle,
   info: FaInfoCircle,
   back: FaArrowLeft,
+  lock: FaLock,
   forward: FaArrowRight,
   help: FaQuestionCircle,
   user: FaUserCircle,
+  'user-plus': FaUserPlus,
   logout: FaSignOutAlt,
   pdf: FaFilePdf,
   csv: FaFileCsv,
   print: FaPrint,
+  mail: FaEnvelope,
+  phone: FaPhoneAlt,
+  building: FaBuilding,
+  lock: FaLock,
+  location: FaMapMarkerAlt,
 };
 
 /**

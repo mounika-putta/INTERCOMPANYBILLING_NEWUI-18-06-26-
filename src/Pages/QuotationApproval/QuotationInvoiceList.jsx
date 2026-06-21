@@ -8,6 +8,7 @@ import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import HelpModal from '../../components/Common/HelpModal';
 import useSort from "../../components/Common/useSort";
+import Pagination from "../../components/Common/Pagination";
 import { fetchCompanieswithfilter } from '../../redux/CustomerSlice';
 import CommonDatePicker from "../../components/Common/CommonDatePicker";
 import dayjs from 'dayjs';
@@ -744,32 +745,14 @@ const QuotationInvoiceList = () => {
                 </table>
             </div>
 
-            <div className="pagination">
-
-                <button
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                >
-                    Prev
-                </button>
-
-                {[...Array(totalPages)].map((_, idx) => (
-                    <button
-                        key={idx}
-                        className={currentPage === idx + 1 ? 'active' : ''}
-                        onClick={() => setCurrentPage(idx + 1)}
-                    >
-                        {idx + 1}
-                    </button>
-                ))}
-
-                <button
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
-            </div>
+            {sortedData.length > 0 && (
+                <Pagination
+                    currentPage={currentPage}
+                    totalItems={sortedData.length}
+                    itemsPerPage={itemsPerPage}
+                    onPageChange={setCurrentPage}
+                />
+            )}
 
             {showCancelPopup && (
                 <div className="cancel-popup-overlay">
