@@ -20,21 +20,40 @@ const MasterData = () => {
   const [createLoading, setCreateLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [modalMode, setModalMode] = useState(null); // 'create' | 'edit'
-  const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage, setRecordsPerPage] = useState(5);
   const [showHelp, setShowHelp] = useState(false);
 
   // errors are now stored as e.g. { "Currency_description": "msg", "Tax_taxPercentage": "msg" }
   const [errors, setErrors] = useState({});
-
   const { sortedData, requestSort, sortConfig } = useSort(tableData);
 
-  const totalPages = Math.max(1, Math.ceil((sortedData?.length || 0) / recordsPerPage));
-  const paginatedData = (sortedData || []).slice(
+  const [originalData, setOriginalData] = useState(null);
+
+
+
+  // Pagination
+
+
+  const totalRecords = sortedData.length;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage, setRecordsPerPage] = useState(5);
+
+  const totalPages = Math.ceil(
+    (sortedData?.length || 0) / recordsPerPage
+  );
+
+  const paginatedData = sortedData?.slice(
     (currentPage - 1) * recordsPerPage,
     currentPage * recordsPerPage
   );
 
+  // Pagination change handler
+  const handlePageChange = (page) => {
+    const p = Number(page) || 1;
+    if (p < 1) setCurrentPage(1);
+    else if (p > totalPages) setCurrentPage(totalPages);
+    else setCurrentPage(p);
+  };
 
   // Helpers for namespaced errors
   const errorKey = (field, type = selectedType) => `${type}_${field}`;
@@ -185,11 +204,13 @@ const MasterData = () => {
     if (selectedType === "Category") {
       const exists = (tableData || []).some(
         (item) =>
-          item.categoryName?.toLowerCase() === formData.categoryName?.toLowerCase() &&
+          item.name?.trim().toLowerCase() ===
+          formData.categoryName?.trim().toLowerCase() &&
           (!editingItem || item.id !== editingItem.id)
       );
+
       if (exists) {
-        alertify.alert("Duplicate Error", "Category Name already exists!");
+        alertify.alert("Duplicate Error", "Category already exists!");
         duplicateError = true;
       }
     }
@@ -255,6 +276,7 @@ const MasterData = () => {
 
   // EDIT
   const handleEdit = (item) => {
+    setModalMode("edit");
     setEditingItem(item);
     setShowModal(true);
 
@@ -285,6 +307,7 @@ const MasterData = () => {
     }
 
     setFormData(mappedData);
+    setOriginalData(mappedData);
 
     // Clear only fields for this type
     if (selectedType === "Currency") {
@@ -307,6 +330,11 @@ const MasterData = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
     if (!selectedType || !editingItem) return;
+
+    if (JSON.stringify(originalData) === JSON.stringify(formData)) {
+      alertify.alert("Warning", "No changes found.");
+      return;
+    }
     if (!validateForm()) return;
     if (!validateDuplicates()) return;
 
@@ -346,6 +374,7 @@ const MasterData = () => {
         setFormData({});
         setEditingItem(null);
         setShowModal(false);
+        setModalMode(null); // add this
         setErrors({});
       })
       .catch((err) => {
@@ -415,7 +444,7 @@ const MasterData = () => {
           className="help-btn"
           onClick={() => {
             if (!selectedType) {
-              alertify.alert("Help", "Please select a screen type (Currency or VAT) first.");
+              alertify.alert("Help", "Please select a screen type (Currency , Category or VAT) first.");
               return;
             }
             setShowHelp(true);
@@ -446,8 +475,6 @@ const MasterData = () => {
           onClose={() => setShowHelp(false)}
         />
       )}
-
-      {/* CREATE FORM removed - use Add New modal to create records */}
 
       {/* TABLE */}
       {selectedType && (
@@ -496,7 +523,9 @@ const MasterData = () => {
                 )}
                 {selectedType === "Category" && (
                   <>
-                    <th onClick={() => requestSort("name")}>CATEGORY NAME {sortConfig.key === "name" ? (sortConfig.direction === "asc" ? "↑" : "↓") : "↑"}</th>
+                    <th onClick={() => requestSort("name")}>
+                      CATEGORY NAME {sortConfig.key === "name" ? (sortConfig.direction === "asc" ? "↑" : "↓") : "↑"}
+                    </th>
                     <th>IS ACTIVE</th>
                     <th>IS DELETED</th>
                     <th>ACTION</th>
@@ -522,7 +551,7 @@ const MasterData = () => {
               {loading ? (
                 <tr>
                   <td colSpan={getColSpan()} style={{ textAlign: "center" }}>
-                    <span className="spinner"></span>
+                    <div className="loader"></div>
                   </td>
                 </tr>
               ) : paginatedData.length === 0 ? (
@@ -542,16 +571,6 @@ const MasterData = () => {
                         <td>{formatDateDisplay(item.modifiedDate)}</td> */}
                         <td>{item.isActive}</td>
                         <td>{item.isDeleted}</td>
-                        {/* <td>
-                          <button className="icon-btn me-2" onClick={() => handleEdit(item)}>
-                            <i className="fas fa-edit" style={{ color: "blue", cursor: "pointer" }}></i>
-                          </button>
-                         
-                          <button className="icon-btn2" onClick={() => handleDelete(item)}>
-                            <i className="fas fa-trash" style={{ color: "red", cursor: "pointer" }}></i>
-                          </button>
-                        </td> */}
-
                         <td className="actions-cell">
                           <div className="action-master">
                             <FaEdit
@@ -584,22 +603,16 @@ const MasterData = () => {
 
                         <td className="actions-cell">
                           <div className="action-master">
-
                             <button className="icon-btn me-2" onClick={() => handleEdit(item)}>
                               <i className="fas fa-edit"></i>
-                                </button>
-                            <button className="action-icon edit-icon me-2" title="Edit" onClick={() => handleEdit(item)}>
-                              <FaEdit />
-
                             </button>
                             {item.isDeleted === "No" && (
-                              <button className="action-icon cancel-icon" title="Delete" onClick={() => handleDelete(item)}>
-                                <FaTrash />
+                              <button className="icon-btn" onClick={() => handleDelete(item)}>
+                                <i className="fas fa-trash" style={{ color: "red", cursor: "pointer" }}></i>
                               </button>
                             )}
                           </div>
                         </td>
-
                       </>
                     )}
                     {selectedType === "Category" && (
@@ -632,45 +645,17 @@ const MasterData = () => {
             </tbody>
           </table>
 
-          {/* <div className="pagination">
-            <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
-              Prev
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i} onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? "active" : ""}>
-                {i + 1}
-              </button>
-            ))}
-            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
-              Next
-            </button>
-          </div> */}
+          {/* Pagination */}
+          {!loading && totalRecords > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalItems={totalRecords}
+              itemsPerPage={recordsPerPage}
+              onPageChange={handlePageChange}
+            />
+          )}
 
-          <div className="pagination">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              Prev
-            </button>
 
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={currentPage === i + 1 ? "active" : ""}
-              >
-                {i + 1}
-              </button>
-            ))}
-
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Next
-            </button>
-          </div>
         </div>
       )}
 
@@ -689,7 +674,9 @@ const MasterData = () => {
             >
               &times;
             </div>
-            <h3>{modalMode === "create" ? `Add ${selectedType}` : `Edit ${selectedType === "VAT" ? "VAT" : selectedType}`}</h3>
+            <h3>
+              {modalMode === "create" ? `Add ${selectedType}` : `Edit ${selectedType}`}
+            </h3>
 
             <form onSubmit={modalMode === "create" ? handleSubmit : handleUpdate}>
               {selectedType === "Currency" && (
@@ -740,107 +727,57 @@ const MasterData = () => {
                       {getError("description") && <p className="error-message">{getError("description")}</p>}
                     </div>
                   </div>
+                  {modalMode === "edit" && (
+                    <div className="typeform-row">
+                      <div className="typeform-group">
+                        <label>
+                          Is Active <span className="required">*</span>
+                        </label>
+                        <select
+                          name="isActive"
+                          value={formData.isActive || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData({ ...formData, isActive: value });
+                            setFieldError("isActive", value ? "" : "Is Active is required");
+                          }}
+                          className={getError("isActive") ? "input-error" : ""}
+                        >
+                          <option value="">Select Is Active</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        {getError("isActive") && (
+                          <p className="error-message">{getError("isActive")}</p>
+                        )}
+                      </div>
 
-                  {/* <div className="radio-group-row">
-                    <div className="radio-group">
-                      <label>Is Active</label>
-                      <div>
+                      <div className="typeform-group">
                         <label>
-                          <input
-                            type="radio"
-                            name="isActive"
-                            value="Yes"
-                            checked={formData.isActive === "Yes"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          Yes
+                          Is Deleted <span className="required">*</span>
                         </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="isActive"
-                            value="No"
-                            checked={formData.isActive === "No"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          No
-                        </label>
+                        <select
+                          name="isDeleted"
+                          value={formData.isDeleted || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData({ ...formData, isDeleted: value });
+                            setFieldError("isDeleted", value ? "" : "Is Deleted is required");
+                          }}
+                          className={getError("isDeleted") ? "input-error" : ""}
+                        >
+                          <option value="">Select Is Deleted</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        {getError("isDeleted") && (
+                          <p className="error-message">{getError("isDeleted")}</p>
+                        )}
                       </div>
                     </div>
+                  )}
 
-                    <div className="radio-group">
-                      <label>Is Deleted</label>
-                      <div>
-                        <label>
-                          <input
-                            type="radio"
-                            name="isDeleted"
-                            value="Yes"
-                            checked={formData.isDeleted === "Yes"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          Yes
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="isDeleted"
-                            value="No"
-                            checked={formData.isDeleted === "No"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          No
-                        </label>
-                      </div>
-                    </div>
-                  </div> */}
-                  <div className="typeform-row">
-                    <div className="typeform-group">
-                      <label>Is Active <span className="required">*</span></label>
-                      <select
-                        name="isActive"
-                        value={formData.isActive || ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setFormData({ ...formData, isActive: value });
-                          setFieldError("isActive", value ? "" : "Is Active is required");
-                        }}
-                        className={getError("isActive") ? "input-error" : ""}
-                      >
-                        <option value="">Select Is Active</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                      </select>
-                      {getError("isActive") && (
-                        <p className="error-message">{getError("isActive")}</p>
-                      )}
-                      {getError.isActive && <p className="error-message">{getError.isActive}</p>}
-                    </div>
 
-                    {/* Is Deleted */}
-                    <div className="typeform-group">
-                      <label>Is Deleted <span className="required">*</span></label>
-                      <select
-                        name="isDeleted"
-                        value={formData.isDeleted || ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setFormData({ ...formData, isDeleted: value });
-                          setFieldError("isDeleted", value ? "" : "Is Deleted is required");
-                        }}
-                        className={getError("isDeleted") ? "input-error" : ""}
-                      >
-                        <option value="">Select Is Deleted</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                      </select>
-                      {getError("isDeleted") && (
-                        <p className="error-message">{getError("isDeleted")}</p>
-                      )}
-
-                      {getError.isDeleted && <p className="error-message">{getError.isDeleted}</p>}
-                    </div>
-                  </div>
                 </>
               )}
 
@@ -891,82 +828,6 @@ const MasterData = () => {
                       {getError("description") && <p className="error-message">{getError("description")}</p>}
                     </div>
                   </div>
-
-                  {/* <div className="typeform-row">
-
-                    <div className="typeform-group">
-                      <label>Start Date<span className="required">*</span></label>
-                      <input
-                        type="date"
-                        name="satrtDate"
-                        value={formData.satrtDate || ""}
-                        onChange={(e) => {
-                          handleInputChange(e);
-                          setErrors((prev) => ({ ...prev, [errorKey("satrtDate")]: "" }));
-                        }}
-                      />
-                    </div>
-                    <div className="typeform-group">
-                      <label>End Date<span className="required">*</span></label>
-                      <input type="date" name="endDate" value={formData.endDate || ""} onChange={handleInputChange} />
-                    </div>
-
-
-                  </div> */}
-
-                  {/* <div className="radio-group-row">
-                    <div className="radio-group">
-                      <label>Is Active</label>
-                      <div>
-                        <label>
-                          <input
-                            type="radio"
-                            name="isActive"
-                            value="Yes"
-                            checked={formData.isActive === "Yes"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          Yes
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="isActive"
-                            value="No"
-                            checked={formData.isActive === "No"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          No
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="radio-group">
-                      <label>Is Deleted</label>
-                      <div>
-                        <label>
-                          <input
-                            type="radio"
-                            name="isDeleted"
-                            value="Yes"
-                            checked={formData.isDeleted === "Yes"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          Yes
-                        </label>
-                        <label>
-                          <input
-                            type="radio"
-                            name="isDeleted"
-                            value="No"
-                            checked={formData.isDeleted === "No"}
-                            onChange={handleInputChange}
-                          />{" "}
-                          No
-                        </label>
-                      </div>
-                    </div>
-                  </div> */}
 
                   <div className="typeform-row">
                     <div className="typeform-group">
