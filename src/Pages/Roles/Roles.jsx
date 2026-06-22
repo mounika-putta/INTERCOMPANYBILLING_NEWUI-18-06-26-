@@ -547,7 +547,7 @@ const Roles = () => {
 
               <form onSubmit={handleCreateItem}>
                 <div className="formlabel-group">
-                  <label>Role Name *</label>
+                  <label>Role Name  <span className="required">*</span></label>
                   <input
                     type="text"
                     value={newItem.RoleName}
@@ -561,7 +561,7 @@ const Roles = () => {
                 </div>
 
                 <div className="formlabel-group">
-                  <label>Role Description *</label>
+                  <label>Role Description  <span className="required">*</span></label>
                   <input
                     type="text"
                     value={newItem.RoleDescription}
@@ -596,7 +596,7 @@ const Roles = () => {
         )}
 
         {/* EDIT ITEM SCREEN */}
-        
+
 
         {showEditModal && (
           <div className="modal-overlay">
@@ -606,8 +606,7 @@ const Roles = () => {
                 <button onClick={() => setShowEditModal(false)}>✕</button>
               </div>
 
-              <form onSubmit={handleEditItem} className="create-item-form-row">
-                {/* Role Name */}
+              {/* <form onSubmit={handleEditItem} className="create-item-form-row">
                 <div className="formlabel-group">
                   <label>Role Name <span className="required">*</span></label>
                   <input
@@ -629,7 +628,6 @@ const Roles = () => {
                   {editErrors.RoleName && <p className="error-message">{editErrors.RoleName}</p>}
                 </div>
 
-                {/* Role Description */}
                 <div className="formlabel-group">
                   <label>Role Description <span className="required">*</span></label>
                   <input
@@ -709,6 +707,127 @@ const Roles = () => {
                       setEditRole({ Id: "", RoleName: "", RoleDescription: "", IsActive: "", IsDeleted: "" });
                     }}
                     disabled={updateLoading}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form> */}
+
+              <form onSubmit={handleEditItem}>
+                {/* Row 1 */}
+                <div className="form-row">
+                  <div className="formlabel-group">
+                    <label>
+                      Role Name <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={editItem.RoleName || ""}
+                      className={editErrors.RoleName ? "input-error" : ""}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^[a-zA-Z0-9\s]*$/.test(value)) {
+                          setEditRole({ ...editItem, RoleName: value });
+                        }
+                      }}
+                    />
+                    {editErrors.RoleName && (
+                      <p className="error-message">{editErrors.RoleName}</p>
+                    )}
+                  </div>
+                  <div className="formlabel-group">
+                    <label>
+                      Role Description <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={editItem.RoleDescription || ""}
+                      className={editErrors.RoleDescription ? "input-error" : ""}
+                      onChange={(e) =>
+                        setEditRole({
+                          ...editItem,
+                          RoleDescription: e.target.value,
+                        })
+                      }
+                    />
+                    {editErrors.RoleDescription && (
+                      <p className="error-message">{editErrors.RoleDescription}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Row 2 */}
+                <div className="form-row">
+                  <div className="formlabel-group">
+                    <label>
+                      Is Active <span className="required">*</span>
+                    </label>
+                    <select
+                      className={editErrors.IsActive ? "input-error" : ""}
+                      value={editItem.IsActive ?? ""}
+                      onChange={(e) =>
+                        setEditRole({ ...editItem, IsActive: e.target.value })
+                      }
+                    >
+                      <option value="">Select Is Active</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                    {editErrors.IsActive && (
+                      <p className="error-message">{editErrors.IsActive}</p>
+                    )}
+                  </div>
+
+                  <div className="formlabel-group">
+                    <label>
+                      Is Deleted <span className="required">*</span>
+                    </label>
+                    <select
+                      className={editErrors.IsDeleted ? "input-error" : ""}
+                      value={editItem.IsDeleted ?? ""}
+                      onChange={(e) =>
+                        setEditRole({ ...editItem, IsDeleted: e.target.value })
+                      }
+                    >
+                      <option value="">Select Is Deleted</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                    {editErrors.IsDeleted && (
+                      <p className="error-message">{editErrors.IsDeleted}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="Role-actions">
+                  <button
+                    type="submit"
+                    className="btn btn-success btn-lg"
+                    disabled={updateLoading}
+                  >
+                    {updateLoading ? (
+                      <>
+                        Update <span className="button-loader"></span>
+                      </>
+                    ) : (
+                      "Update"
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn btn-danger btn-lg"
+                    onClick={() => {
+                      setShowEditModal(false);
+                      setEditErrors({});
+                      setEditRole({
+                        Id: "",
+                        RoleName: "",
+                        RoleDescription: "",
+                        IsActive: "",
+                        IsDeleted: "",
+                      });
+                    }}
                   >
                     Cancel
                   </button>
