@@ -548,13 +548,14 @@ const Roles = () => {
               <form onSubmit={handleCreateItem}>
                 <div className="formlabel-group">
                   <label>Role Name  <span className="required">*</span></label>
-                  <input
-                    type="text"
-                    value={newItem.RoleName}
-                    onChange={(e) =>
-                      setNewItem({ ...newItem, RoleName: e.target.value })
-                    }
-                  />
+                 <input
+  type="text"
+  className={errors.RoleName ? "error-input" : ""}
+  value={newItem.RoleName}
+  onChange={(e) =>
+    setNewItem({ ...newItem, RoleName: e.target.value })
+  }
+/>
                   {errors.RoleName && (
                     <p className="error-message">{errors.RoleName}</p>
                   )}
@@ -562,16 +563,17 @@ const Roles = () => {
 
                 <div className="formlabel-group">
                   <label>Role Description  <span className="required">*</span></label>
-                  <input
-                    type="text"
-                    value={newItem.RoleDescription}
-                    onChange={(e) =>
-                      setNewItem({
-                        ...newItem,
-                        RoleDescription: e.target.value,
-                      })
-                    }
-                  />
+                 <input
+  type="text"
+  className={errors.RoleDescription ? "error-input" : ""}
+  value={newItem.RoleDescription}
+  onChange={(e) =>
+    setNewItem({
+      ...newItem,
+      RoleDescription: e.target.value,
+    })
+  }
+/>
                   {errors.RoleDescription && (
                     <p className="error-message">{errors.RoleDescription}</p>
                   )}
