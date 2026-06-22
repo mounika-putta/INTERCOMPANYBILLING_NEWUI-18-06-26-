@@ -10,9 +10,17 @@ import HelpModal from '../../components/Common/HelpModal';
 import { fetchCompaniesListwithoutRole } from '../../redux/CustomerSlice';
 
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Button, FormField, Icon } from '../../components/ui';
 import { colors } from '../../theme/tokens';
+
+const BRAND_FEATURES = [
+  'Quotations & approvals',
+  'Invoicing & credit notes',
+  'Customers & companies',
+  'Role-based access control',
+];
 
 /**
  * Section card with a light-green header band (brand palette) and a white body.

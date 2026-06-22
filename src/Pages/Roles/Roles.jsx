@@ -475,7 +475,7 @@ const Roles = () => {
                 {loading ? (
                   <tr>
                     <td colSpan="5" style={{ textAlign: "center" }}>
-                      <div className="spinner"></div>
+                      <div className="loader"></div>
                     </td>
                   </tr>
                 ) : currentRecords.length === 0 ? (

@@ -450,6 +450,7 @@
 
 /* Semantic colours — green edit, red delete, blue view, etc. */
 .action-icon.edit-icon,
+.action-icon.invoicepaid-icon,
 .edit-icon.action-icon {
   width: 28px !important;
   height: 28px !important;
@@ -461,12 +462,26 @@
   justify-content: center !important;
   cursor: pointer;
 }
+
+.action-icon.invoicecancel-icon
+{
+  width: 28px !important;
+  height: 28px !important;
+  background: rgb(219, 19, 19) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
 .action-icon.cancel-icon,
 .action-icon.delete-icon,
 .cancel-icon.action-icon,
 .delete-icon.action-icon {
   background: var(--ds-danger) !important;
-   width: 28px !important;
+  width: 28px !important;
   height: 28px !important;
   color: #fff !important;
   border-radius: 4px !important;

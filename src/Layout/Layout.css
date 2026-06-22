@@ -275,7 +275,18 @@ body,
   transition: filter 0.15s ease, box-shadow 0.15s ease; */
 
 }
-/* Filter Button */
+
+.clear-btn {
+
+  padding: 8px 16px;
+  background-color: #F3F4F6;
+  color: #000000c9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 450;
+}
+
 .filter-btn {
   background-color: #1E7D4E;
   color: #fff;

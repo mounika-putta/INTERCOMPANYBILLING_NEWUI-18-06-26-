@@ -52,6 +52,7 @@ const QuotationDashboard = () => {
     }
   };
   const handleViewClick = async (quotation) => {
+    debugger
 
     // Credit Note - Check both quotationStatus and invoiceStatus
     const isCreditNote =
@@ -61,11 +62,13 @@ const QuotationDashboard = () => {
     if (isCreditNote) {
 
       await handleCreditNoteViewClick(quotation);
+      setShowModal(true);
 
     } else {
 
       // Normal Popup
       setSelectedQuotation(quotation);
+      setShowModal(true);
     }
   };
   useEffect(() => {
@@ -291,14 +294,15 @@ const QuotationDashboard = () => {
       )} */}
       {/* Normal Popup */}
       {selectedQuotation && (
-        // <ViewPopup
-        //   data={selectedQuotation}
-        //   type={type}
-        //   onClose={() => setSelectedQuotation(null)}
-        // />
-
-         <ViewPopup show={showModal} onClose={() => setShowModal(false)} selectedInvoice={selectedQuotation} />
-        
+        <ViewPopup
+          show={showModal}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedQuotation(null);
+          }}
+          selectedInvoice={selectedQuotation}
+           type={type}
+        />
       )}
 
       {/* Credit Note Popup */}

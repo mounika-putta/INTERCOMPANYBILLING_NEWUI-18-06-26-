@@ -342,15 +342,18 @@
 }
 
 /* === Company Logo Styling === */
-.company-logo-corner {
-  width: 90px;
-  height: 90px;
+/* .company-logo-corner {
+  position: absolute;
+  width: 120px;
+  height: 100px;
   object-fit: contain;
   border-radius: 8px;
   border: 1px solid #ccc;
   background: #f9f9f9;
   margin-bottom: 10px;
-}
+  margin-top: 40px;
+  margin-right: 40px;
+} */
 
 /* === Table Styling === */
 .audit-view-table {

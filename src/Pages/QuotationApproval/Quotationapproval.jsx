@@ -383,12 +383,12 @@ const Quotationapproval = () => {
                                             {q.quotationStatus}
                                         </span>
                                     </td>
-                                    <td style={{ textAlign: "center" }}>
+                                    <td>
                                         <FaEye
                                         style={{  cursor: 'pointer' }}
                                             className="action-icon view-icon"
                                             onClick={() => handleViewClick(q)}
-                                            title="View Invoice Details"
+                                            title="View Quotation Details"
                                         />
                                     </td>
 
@@ -464,7 +464,10 @@ const Quotationapproval = () => {
                 />
             )}
 
-            <ViewPopup show={showModal} onClose={() => setShowModal(false)} selectedInvoice={selectedQuotation} />
+
+            <ViewPopup show={showModal} onClose={() => setShowModal(false)} selectedInvoice={selectedQuotation} type="quotationapproval" 
+            onGenerateInvoice={handleGenerateInvoice}
+            loadingRefNo={loadingRefNo} />
            
             <HelpModal show={showHelp} title="Quotation Approval List - Help & Overview" screenName="QuotationApproval" onClose={() => setShowHelp(false)} />
 

@@ -1,7 +1,8 @@
 ﻿import React from "react";
 import { baseURL } from "../../services/api";
 
-const ViewPopup = ({ show, onClose, selectedInvoice }) => {
+const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, loadingRefNo }) => {
+  debugger
   if (!show || !selectedInvoice) return null;
 
   return (
@@ -16,7 +17,7 @@ const ViewPopup = ({ show, onClose, selectedInvoice }) => {
 
         <h3 className="quotation-view-title">View Quotation Details</h3>
 
-        {/* {selectedInvoice.comapanyLogo && (() => {
+        {selectedInvoice.comapanyLogo && (() => {
           const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
           console.log('logoFileName', logoFileName);
           return (
@@ -26,22 +27,22 @@ const ViewPopup = ({ show, onClose, selectedInvoice }) => {
               className="company-logo-corner"
             />
           );
-        })()} */}
+        })()}
         {/* Company Information */}
         <h4 className="quotation-view-section-title">Company Information</h4>
         {selectedInvoice.comapanyLogo && (() => {
-              const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
-              console.log('logoFileName', logoFileName);
-              return (
-                <img
-                  src={`${baseURL}/UploadedFiles/${logoFileName}`}
-                  alt="Company Logo"
-                  className="company-logo-corner"
-                />
-              );
-            })()}
-           
-        <div className="quotation-view-info">     
+          const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
+          console.log('logoFileName', logoFileName);
+          return (
+            <img
+              src={`${baseURL}/UploadedFiles/${logoFileName}`}
+              alt="Company Logo"
+              className="company-logo-corner"
+            />
+          );
+        })()}
+
+        <div className="quotation-view-info">
           <div><span className="label">Company Name</span> : <span>{selectedInvoice.companyName}</span></div>
           <div><span className="label">Company Vat Number</span> :<span>{selectedInvoice.vatNumber}</span></div>
           <div><span className="label">Company Reg Number</span>: <span>{selectedInvoice.registrationNumber}</span></div>
@@ -76,10 +77,10 @@ const ViewPopup = ({ show, onClose, selectedInvoice }) => {
               : "/"}
 
           </span></div>
-          
+
           <div><span className="label">Status</span>: <span>{selectedInvoice.quotationStatus}</span></div>
           <div><span className="label">Currency</span>: <span>{selectedInvoice.currency}</span></div>
-          
+
           <div><span className="label">Total Amount</span> :<span>{selectedInvoice.totalAmount?.toFixed(2)}</span></div>
 
           {selectedInvoice.Status === "Rejected" && (
@@ -92,6 +93,46 @@ const ViewPopup = ({ show, onClose, selectedInvoice }) => {
           )}
         </div>
 
+        {(type === "invoiceapproval" || type === "Invoice") && (
+          <>
+            <h4 className="quotation-view-section-title">Invoice Information</h4>
+
+            <div className="quotation-view-info">
+              <div>
+                <span className="label">Invoice Id</span> :
+                <span>{selectedInvoice.invoiceReferenceNumber}</span>
+              </div>
+
+              <div>
+                <span className="label">Invoice Date</span> :
+                <span>
+                  {selectedInvoice?.invoiceDate
+                    ? (() => {
+                      const d = new Date(selectedInvoice.invoiceDate);
+                      const day = String(d.getDate()).padStart(2, "0");
+                      const month = String(d.getMonth() + 1).padStart(2, "0");
+                      const year = d.getFullYear();
+                      return `${day}/${month}/${year}`;
+                    })()
+                    : "/"}
+                </span>
+              </div>
+
+              <div>
+                <span className="label">Invoice Status</span> :
+                <span>{selectedInvoice.invoiceStatus}</span>
+              </div>
+
+              {selectedInvoice.invoiceStatus === "Cancelled" && (
+                <div className="info-row">
+                  <span className="label">Reason</span>
+                  <span className="colon">:</span>
+                  <span className="values">{selectedInvoice.reason}</span>
+                </div>
+              )}
+            </div>
+          </>
+        )}
         {/* Quotation Details Table */}
         <h4 className="quotation-view-section-title">Quotation Details</h4>
         <table className="data-table">
@@ -114,7 +155,7 @@ const ViewPopup = ({ show, onClose, selectedInvoice }) => {
               <tr key={i}>
                 <td>{d.itemCode}</td>
                 <td>{d.category}</td>
-                <td>{d.Name}</td>
+                <td>{d.itemName}</td>
                 <td style={{ textAlign: 'right' }}>{d.quotationQuantity}</td>
                 <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
                 <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
@@ -145,6 +186,30 @@ const ViewPopup = ({ show, onClose, selectedInvoice }) => {
           <div><span className="label">Payment Terms</span> :<span>{selectedInvoice.paymentTerms}</span></div>
 
         </div>
+
+        {type === "quotationapproval" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "20px",
+            }}
+          >
+            <button
+              className="generate-invoice-btn"
+              onClick={() =>
+                onGenerateInvoice &&
+                onGenerateInvoice(selectedInvoice.referenceNumber)
+              }
+              disabled={loadingRefNo === selectedInvoice.referenceNumber}
+            >
+              {loadingRefNo === selectedInvoice.referenceNumber && (
+                <span className="spinner"></span>
+              )}
+              Generate Invoice
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
