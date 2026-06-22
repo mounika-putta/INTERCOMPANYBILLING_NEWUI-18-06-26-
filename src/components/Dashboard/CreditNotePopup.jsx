@@ -22,13 +22,9 @@ const CreditNotePopup = ({ selectedCreditNote, onClose }) => {
 
                 {/* ---------- Company Information ---------- */}
 
-                <h4 className="quotation-view-section-title">
-                    Company Information
-                </h4>
 
-                <div className="quotation-view-info">
 
-                    <div>
+                <div>
 
                         {selectedCreditNote.comapanyLogo && (() => {
 
@@ -48,6 +44,13 @@ const CreditNotePopup = ({ selectedCreditNote, onClose }) => {
                         })()}
 
                     </div>
+                <h4 className="quotation-view-section-title">
+                    Company Information
+                </h4>
+
+                <div className="quotation-view-info">
+
+                    
 
                     <div>
                         <span className="label">Company Name</span>:

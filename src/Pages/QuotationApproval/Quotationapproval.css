@@ -220,6 +220,20 @@
   display: inline-block;
 }
 
+.generate-invoice-btn {
+  background: orange;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.generate-invoice-btn:hover {
+  opacity: 0.9;
+}
+
 @keyframes spin {
   100% {
     transform: rotate(360deg);

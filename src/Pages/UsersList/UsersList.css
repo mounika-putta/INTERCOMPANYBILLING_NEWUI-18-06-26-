@@ -70,12 +70,12 @@
   text-align: left;
 }
 
-.pagination-controls select {
+/* .pagination-controls select {
   padding: 5px 6px;
   border-radius: 5px;
   border: 1px solid #ccc;
   cursor: pointer;
-}
+} */
 
 .pagination-buttons {
   margin-top: 15px;

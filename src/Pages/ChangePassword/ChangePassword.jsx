@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import alertify from "alertifyjs";
 import "./ChangePassword.css";
-
 import { changePassword, resetChangePasswordState } from "../../redux/ChangePasswordSlice";
 
 const ChangePassword = () => {

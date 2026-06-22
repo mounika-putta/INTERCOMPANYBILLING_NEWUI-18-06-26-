@@ -401,4 +401,111 @@
     min-width: 110px;
     text-align: center;
 }
+.action-icon {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 7px !important;
+  margin: 0 3px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  background: #1f84e0;
+  cursor: pointer;
+  vertical-align: middle;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.14);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease,
+    background-color 0.12s ease;
+}
 
+.action-icon > svg,
+.action-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.action-icon:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 4px 10px rgba(16, 24, 40, 0.2);
+}
+
+.action-icon:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.action-icon:disabled,
+.action-icon.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Semantic colours — green edit, red delete, blue view, etc. */
+.action-icon.edit-icon,
+.action-icon.invoicepaid-icon,
+.edit-icon.action-icon {
+  width: 28px !important;
+  height: 28px !important;
+  background: #1E7D4E !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
+.action-icon.invoicecancel-icon
+{
+  width: 28px !important;
+  height: 28px !important;
+  background: rgb(219, 19, 19) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
+.action-icon.cancel-icon,
+.action-icon.delete-icon,
+.cancel-icon.action-icon,
+.delete-icon.action-icon {
+  background: var(--ds-danger) !important;
+  width: 28px !important;
+  height: 28px !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
+.action-icon.view-icon {
+  width: 28px !important;
+  height: 28px !important;
+  background: #1E7D4E !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
+.action-icon.view-icon svg {
+  color: #fff !important;
+  fill: #fff !important;
+  width: 16px;
+  height: 16px;
+}

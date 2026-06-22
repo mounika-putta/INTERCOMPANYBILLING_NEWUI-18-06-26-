@@ -18,6 +18,7 @@ import { downloadPdfFromPage } from '../../components/Common/downloadPdf';
 import { fetchCreditnotedetailswithInvoicerefno } from '../../redux/QuotationTemplateSlice';
 import { MdOutlineReceiptLong } from "react-icons/md";
 import CreditNotePopup from '../../components/Dashboard/CreditNotePopup';
+import { ViewPopup } from '../../components/Dashboard';
 
 const QuotationInvoiceList = () => {
     //method and return data handler
@@ -140,10 +141,12 @@ const QuotationInvoiceList = () => {
     //viewbutton//
     const handleViewClick = (quotation) => {
         setSelectedQuotation(quotation);
+        setShowModal(true);
     };
     //popup open//
     const handleClosePopup = () => {
         setSelectedQuotation(null);
+        setShowModal(false);
     };
 
     const [selectedCreditNote, setSelectedCreditNote] = useState(null);
@@ -475,7 +478,7 @@ const QuotationInvoiceList = () => {
                         {loading ? (
                             <tr>
                                 <td colSpan="10" style={{ textAlign: "center", padding: "40px 0" }}>
-                                    <div className="spinner"></div>
+                                    <div className="loader"></div>
                                 </td>
                             </tr>
                         ) : filteredQuotations.length === 0 ? (
@@ -527,13 +530,13 @@ const QuotationInvoiceList = () => {
                                                             <span className="icon-spinner"></span>
                                                         ) : (
                                                             <FaCheckCircle title="Marks as Paid"
-                                                                className="action-icon paid-icon"
+                                                                className="action-icon invoicepaid-icon"
                                                             />
                                                         )}
                                                     </div>
 
                                                     <FaTimesCircle
-                                                        className="action-icon cancel-icon" title="Marks as cancelled"
+                                                        className="action-icon invoicecancel-icon" title="Marks as cancelled"
                                                         onClick={() => handleCancel(q.invoiceId)}
                                                     />
                                                 </>
@@ -542,7 +545,7 @@ const QuotationInvoiceList = () => {
                                             {q.invoiceStatus === "Paid" && (
                                                 <>
                                                     <FaTimesCircle
-                                                        className="action-icon cancel-icon" title="Marks as cancelled"
+                                                        className="action-icon invoicecancel-icon" title="Marks as cancelled"
                                                         onClick={() => handleCancel(q.invoiceId)}
                                                     />
 
@@ -574,7 +577,7 @@ const QuotationInvoiceList = () => {
                                                         <span className="icon-spinner"></span>
                                                     ) : (
                                                         <FaCheckCircle
-                                                            className="action-icon paid-icon"
+                                                            className="action-icon invoicepaid-icon"
                                                         />
                                                     )}
                                                 </div>
@@ -783,207 +786,10 @@ const QuotationInvoiceList = () => {
             )}
 
             {selectedQuotation && (
-                <div className="quotation-view-overlay">
-                    <div className="quotation-view-modal">
-                        <button
-                            className="quotation-view-close-btn"
-                            onClick={handleClosePopup}
-                        >
-                            &times;
-                        </button>
-
-                        <div className="popup-header">
-
-                            <h3 className="quotation-view-title">
-                                View Invoice Details
-                            </h3>
-
-                            <div className="popup-header-actions">
-
-                                {/* <button
-                                    className="download-btn"
-                                    onClick={() =>
-                                        handleDownloadInvoice(
-                                            selectedQuotation.invoiceId,
-                                            selectedQuotation.invoiceReferenceNumber
-                                        )
-                                    }
-                                >
-                                    <FaDownload className="download-icon" />
-                                    Download
-                                </button> */}
-
-                                <button
-                                    className="quotation-view-close-btn"
-                                    onClick={handleClosePopup}
-                                >
-                                    &times;
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        {/* ---------- Company Information ---------- */}
-                        <h4 className="quotation-view-section-title">Company Information</h4>
-                        <div className="quotation-view-info">
-                            <div className="company-logo">
-                                {selectedQuotation.comapanyLogo && (() => {
-                                    const logoFileName = selectedQuotation.comapanyLogo.split(/[/\\]/).pop();
-                                    console.log('logoFileName', logoFileName);
-                                    return (
-                                        <img
-                                            src={`${baseURL}/UploadedFiles/${logoFileName}`}
-                                            alt="Company Logo"
-                                            className="company-logo-corner"
-                                        />
-                                    );
-                                })()}
-                            </div>
-                            <div><span className="label">Company Name</span>: {selectedQuotation.companyName}</div>
-                            <div><span className="label">Company Email</span>: {selectedQuotation.companyEmail}</div>
-                            <div><span className="label">Phone Number</span>: {selectedQuotation.companyPhoneNumber}</div>
-                            {/* <div><span className="label">Company Address</span>: {selectedQuotation.companyAddress}</div> */}
-                            <div className="info-row">
-                                <span className="label">Company Address</span>
-                                <span className="colon">:</span>
-                                <span className="values" style={{ marginLeft: '-8px' }}>{selectedQuotation.companyAddress}</span>
-                            </div>
-                            <div><span className="label">VAT Number</span>: {selectedQuotation.vatNumber}</div>
-                            <div><span className="label">Registration Number</span>: {selectedQuotation.registrationNumber}</div>
-                        </div>
-
-                        {/* ---------- Bank Info ---------- */}
-                        <h4 className="quotation-view-section-title">Bank Information</h4>
-                        <div className="quotation-view-info">
-                            <div><span className="label">Bank Account Number</span>: {selectedQuotation.bankAccountNumber}</div>
-                            <div><span className="label">Branch Code</span>: {selectedQuotation.branchCode}</div>
-                            <div className="info-row">
-                                <span className="label">Branch Address</span>
-                                <span className="colon">:</span>
-                                <span className="values" style={{ marginLeft: '-8px' }}>{selectedQuotation.brannchAddress}</span>
-                            </div>
-                            {/* <div><span className="label">IFSC Code</span>: {selectedQuotation.ifscCode}</div> */}
-
-                        </div>
-
-                        {/* ---------- Quotation Information ---------- */}
-                        <h4 className="quotation-view-section-title">Quotation Information</h4>
-                        <div className="quotation-view-info">
-                            <div><span className="label">Quotation Id</span>: {selectedQuotation.referenceNumber}</div>
-                            {/* <div><span className="label">Quotation Date</span>: {new Date(selectedQuotation.invoiceDate).toLocaleDateString()}</div> */}
-                            <div><span className="label">Quotation Date</span>: {selectedQuotation?.quotationDate
-                                ? (() => {
-                                    const d = new Date(selectedQuotation.quotationDate);
-                                    const day = String(d.getDate()).padStart(2, "0");
-                                    const month = String(d.getMonth() + 1).padStart(2, "0");
-                                    const year = d.getFullYear();
-                                    return `${day}/${month}/${year}`;
-                                })()
-                                : "/"}
-                            </div>
-                            <div><span className="label">Quotation Status</span>: {selectedQuotation.quotationStatus}</div>
-                            <div><span className="label">Currency</span>: {selectedQuotation.currency}</div>
-                            <div><span className="label">Type</span>: {selectedQuotation.quotationType}</div>
-                            <div><span className="label">Total Amount</span>: {selectedQuotation.totalAmount?.toFixed(2)}</div>
-                        </div>
-                        <h4 className="quotation-view-section-title">Invoice Information</h4>
-                        <div className="quotation-view-info">
-                            <div><span className="label">Invoice Id</span>: {selectedQuotation.invoiceReferenceNumber}</div>
-                            {/* <div><span className="label">Invoice Date</span>: {new Date(selectedQuotation.invoiceDate).toLocaleDateString()}</div> */}
-                            <div><span className="label">Invoice Date</span>: {selectedQuotation?.invoiceDate
-                                ? (() => {
-                                    const d = new Date(selectedQuotation.invoiceDate);
-                                    const day = String(d.getDate()).padStart(2, "0");
-                                    const month = String(d.getMonth() + 1).padStart(2, "0");
-                                    const year = d.getFullYear();
-                                    return `${day}/${month}/${year}`;
-                                })()
-                                : "/"}
-                            </div>
-                            <div><span className="label">Invoice Status</span>: {selectedQuotation.invoiceStatus}</div>
-
-                            {selectedQuotation.invoiceStatus === "Cancelled" && (
-
-                                <div className="info-row">
-                                    <span className="label">Reason</span>
-                                    <span className="colon">:</span>
-                                    <span className="values">{selectedQuotation.reason}</span>
-                                </div>
-                            )}
-
-
-                        </div>
-
-                        {/* ---------- Quotation Details ---------- */}
-                        <h4 className="quotation-view-section-title">Quotation Details</h4>
-                        <table className="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ITEM CODE</th>
-                                    <th>CATEGORY</th>
-                                    <th>NAME</th>
-                                    <th>QUANTITY</th>
-                                    <th>UNIT RATE EXCL VAT</th>
-                                    <th>AMOUNT</th>
-                                    <th>DISCOUNT</th>
-                                    <th>DISCOUNTED TOTAL</th>
-                                    <th>VAT %</th>
-                                    <th>NET AMOUNT</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {(selectedQuotation.details || []).map((d, idx) => (
-                                    <tr key={idx}>
-                                        <td className="desc">{d.itemCode}</td>
-                                        <td className="desc">{d.category}</td>
-                                        <td className="desc">{d.itemName}</td>
-                                        <td style={{ textAlign: 'right' }}>{d.quotationQuantity}</td>
-                                        <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
-                                        <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
-                                        <td style={{ textAlign: 'right' }}>{d.discount}</td>
-                                        <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                                        <td style={{ textAlign: 'right' }}>{d.tax}</td>
-                                        <td style={{ textAlign: 'right' }}>
-                                            {(
-                                                (d.quotationQuantity * d.unitRate - d.discount) +
-                                                ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
-                                            ).toFixed(2)}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-
-                        {/* ---------- Customer Info ---------- */}
-                        <h4 className="quotation-view-section-title">Customer Information</h4>
-                        <div className="quotation-view-info">
-                            <div><span className="label">Company Name</span>: {selectedQuotation.receivingEntity}</div>
-                            <div><span className="label">Name</span>: {selectedQuotation.customerName}</div>
-                            <div><span className="label">Email</span>: {selectedQuotation.customerEmail}</div>
-                            {/* <div><span className="label">Address</span>: {selectedQuotation.customerAddress}</div> */}
-                            <div><span className="label">Mobile Number</span>: {selectedQuotation.customerPhone}</div>
-                            <div className="info-row">
-                                <span className="label">Address</span>
-                                <span className="colon">:</span>
-                                <span className="values" style={{ marginLeft: '-8px' }}>{selectedQuotation.customerAddress}</span>
-                            </div>
-                            <div className="info-row">
-                                <span className="label">Payment Terms</span>
-                                <span className="colon">:</span>
-                                <span className="values" style={{ marginInlineStart: '-8px' }}>{selectedQuotation.paymentTerms}</span>
-                            </div>
-                        </div>
-                        <br />
-
-                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>
-
-                        </div>
-
-
-
-                    </div>
-                </div>
+                <ViewPopup show={showModal} onClose={() => setShowModal(false)}
+                    selectedInvoice={selectedQuotation} type="invoiceapproval"
+                    onGenerateInvoice={null}
+                    loadingRefNo={null} />
             )}
 
             {showCreditNotePopup && selectedCreditNote && (
@@ -997,7 +803,11 @@ const QuotationInvoiceList = () => {
             )}
             {showCreditModal && (
                 <div className="quotation-view-overlay">
-                    <div className="quotation-view-modal" style={{ maxWidth: '95vw', width: '1100px' }}>
+                    <div className="quotation-view-modal"
+                        style={{
+                            maxWidth: '75vw',
+                            width: '850px'
+                        }}>
                         <button
                             className="quotation-view-close-btn"
                             onClick={() => setShowCreditModal(false)}

@@ -296,7 +296,7 @@ const handleFilterChange = (eOrDate, fieldName) => {
         <tbody>
           {loading ? (
             <tr><td colSpan={7} style={{ textAlign: "center" }}>
-              <div className="spinner"></div></td></tr>
+              <div className="loader"></div></td></tr>
           ) : currentRecords.length > 0 ? (
             currentRecords.map((item, index) => (
               <tr key={index}>

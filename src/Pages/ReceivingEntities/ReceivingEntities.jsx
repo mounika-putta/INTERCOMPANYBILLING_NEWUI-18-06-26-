@@ -10,6 +10,7 @@ import HelpModal from "../../components/Common/HelpModal";
 import useSort from "../../components/Common/useSort";
 import Pagination from "../../components/Common/Pagination";
 import { FaEdit, FaTrash } from "react-icons/fa";
+
 const ReceivingEntities = () => {
   const [showCreateScreen, setShowCreateScreen] = useState(false);
   const [showEditScreen, setShowEditScreen] = useState(false);

@@ -68,10 +68,10 @@
   background-color: #1E7D4E;
   color: #fff;
   border: none;
-  padding: 8px 20px;
-  border-radius: 5px;
+  padding: 6px 18px;
+  border-radius: 4px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 450;
   transition: background-color 0.3s ease-in-out;
 }
 
@@ -342,15 +342,18 @@
 }
 
 /* === Company Logo Styling === */
-.company-logo-corner {
-  width: 90px;
-  height: 90px;
+/* .company-logo-corner {
+  position: absolute;
+  width: 120px;
+  height: 100px;
   object-fit: contain;
   border-radius: 8px;
   border: 1px solid #ccc;
   background: #f9f9f9;
   margin-bottom: 10px;
-}
+  margin-top: 40px;
+  margin-right: 40px;
+} */
 
 /* === Table Styling === */
 .audit-view-table {

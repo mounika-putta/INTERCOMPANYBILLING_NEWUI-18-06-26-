@@ -288,7 +288,7 @@ body,
 }
 
 .filter-btn {
-  background-color: rgb(27 5 98 / 90%);
+  background-color: #1E7D4E;
   color: #fff;
   border: none;
   padding: 8px 20px;
@@ -297,6 +297,21 @@ body,
   font-weight: 500;
   transition: background-color 0.3s ease-in-out;
 }
+
+.filter-btn:hover {
+  background-color: #1E7D4E;
+}
+.clear-btn {
+
+  padding: 8px 16px;
+  background-color: #F3F4F6;
+  color: #000000c9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 450;
+}
+
 
 .app-main button:not(:disabled):hover {
   filter: brightness(0.96);
