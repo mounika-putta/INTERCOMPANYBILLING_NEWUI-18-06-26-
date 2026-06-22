@@ -550,6 +550,7 @@ const Roles = () => {
                   <label>Role Name  <span className="required">*</span></label>
                   <input
                     type="text"
+                    className={errors.RoleName ? "error-input" : ""}
                     value={newItem.RoleName}
                     onChange={(e) =>
                       setNewItem({ ...newItem, RoleName: e.target.value })
@@ -564,6 +565,7 @@ const Roles = () => {
                   <label>Role Description  <span className="required">*</span></label>
                   <input
                     type="text"
+                    className={errors.RoleDescription ? "error-input" : ""}
                     value={newItem.RoleDescription}
                     onChange={(e) =>
                       setNewItem({
