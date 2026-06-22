@@ -246,14 +246,14 @@ body,
 }
 
 .app-main label {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: #1f2933;
 }
 
 /* Error helpers (shared by several pages) */
 .app-main .input-error {
-  border-color: #e0414a !important;
+ border: 1px solid red !important;
 
 }
 

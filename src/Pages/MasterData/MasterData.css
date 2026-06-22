@@ -499,33 +499,6 @@
   background: #1E7D4E;
 }
 
-/* ==========================
-   TABLE
-========================== */
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.data-table th {
-  background: #eef7f0;
-  color: #3d8c4f;
-  font-weight: 700;
-  padding: 14px;
-  text-align: center;
-  border-bottom: 2px solid #dce7dd;
-}
-
-.data-table td {
-  padding: 14px;
-  text-align: center;
-  border-bottom: 1px solid #ececec;
-}
-
-.data-table tbody tr:hover {
-  background: #f8faf9;
-}
 
 /* ==========================
    ACTION BUTTONS
@@ -609,7 +582,7 @@
 .typeform-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .typeform-group input,
@@ -680,7 +653,7 @@
 .data-table td.actions-cell .action-master,
 .action-master { justify-content: flex-end !important; gap: 6px !important; }
 .data-table td.actions-cell .icon-btn,
-.data-table td.actions-cell i, .icon-btn i { font-size: 16px !important; }
+.data-table td.actions-cell i, .icon-btn i { font-size: 13px !important; }
 
 
 

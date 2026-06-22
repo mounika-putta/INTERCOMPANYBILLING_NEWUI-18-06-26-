@@ -498,9 +498,11 @@ const MasterData = () => {
             </div>
             <div style={{ marginLeft: "auto" }}>
               {selectedType && selectedType !== "VAT" && (
-                <button type="button" className="add-new-btn" onClick={openCreateModal}>
+                <button type="button"   className="btn_add" onClick={openCreateModal}>
                   + Add New
                 </button>
+
+                
               )}
             </div>
           </div>
@@ -603,12 +605,12 @@ const MasterData = () => {
 
                         <td className="actions-cell">
                           <div className="action-master">
-                            <button className="icon-btn me-2" onClick={() => handleEdit(item)}>
+                            <button   className="action-icon edit-icon" onClick={() => handleEdit(item)}>
                               <i className="fas fa-edit"></i>
                             </button>
                             {item.isDeleted === "No" && (
-                              <button className="icon-btn" onClick={() => handleDelete(item)}>
-                                <i className="fas fa-trash" style={{ color: "red", cursor: "pointer" }}></i>
+                              <button   className="action-icon cancel-icon" onClick={() => handleDelete(item)}>
+                                <i className="fas fa-trash"></i>
                               </button>
                             )}
                           </div>
@@ -629,10 +631,10 @@ const MasterData = () => {
                               onClick={() => handleEdit(item)}
                             />
                             <button
-                              className={`icon-btn delete ${item.isDeleted === "Yes" ? "invisible" : ""}`}
+                              className="action-icon cancel-icon"
                               onClick={() => handleDelete(item)}
                               disabled={item.isDeleted === "Yes"}
-                            >
+                              >
                               <i className="fas fa-trash"></i>
                             </button>
                           </div>

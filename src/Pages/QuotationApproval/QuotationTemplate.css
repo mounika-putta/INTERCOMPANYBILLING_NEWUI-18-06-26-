@@ -639,7 +639,7 @@
   animation: spin 0.9s linear infinite;
 }
 
-.error-message {
+/* .error-message {
   max-width: var(--qt-page-width);
   margin: 40px auto;
   padding: 18px 24px;
@@ -651,6 +651,19 @@
   font-weight: 600;
   text-align: center;
   font-family: var(--qt-font);
+} */
+
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-top: 4px;
+  box-shadow: none !important;
+  display: inline !important;
+  width: auto !important;
+  height: auto !important;
 }
 
 @keyframes spin {
