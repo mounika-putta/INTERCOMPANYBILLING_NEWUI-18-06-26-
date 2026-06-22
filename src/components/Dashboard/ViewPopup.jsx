@@ -2,7 +2,7 @@
 import { baseURL } from "../../services/api";
 
 const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, loadingRefNo }) => {
-  debugger
+  
   if (!show || !selectedInvoice) return null;
 
   return (
@@ -57,7 +57,13 @@ const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, lo
         <div className="quotation-view-info">
           <div><span className="label">Account Number</span> : <span>{selectedInvoice.bankAccountNumber}</span></div>
           <div><span className="label">Branch Code</span> :<span>{selectedInvoice.branchCode}</span></div>
-          <div><span className="label">Branch Address</span>: <span>{selectedInvoice.brannchAddress}</span></div>
+          <div><span className="label">Branch Address</span>:
+            <span>
+              {selectedInvoice?.branchAddress ||
+                selectedInvoice?.brannchAddress ||
+                "-"}
+            </span>
+          </div>
           {/* <div><span className="label">IFSC Code</span> :<span>{selectedInvoice.ifscCode}</span></div> */}
         </div>
 

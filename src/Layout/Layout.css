@@ -253,13 +253,16 @@ body,
 
 /* Error helpers (shared by several pages) */
 .app-main .input-error {
+
  border: 1px solid red !important;
+
+  border-color: #db232c !important;
 
 }
 
 .app-main .error,
 .app-main .error-message {
-  color: #e0414a;
+  color: #db232c;
   font-size: 12.5px;
   margin-top: 4px;
 }
