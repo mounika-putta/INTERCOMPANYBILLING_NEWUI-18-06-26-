@@ -480,7 +480,7 @@
 .action-icon.delete-icon,
 .cancel-icon.action-icon,
 .delete-icon.action-icon {
-  background: var(--ds-danger) !important;
+  background: red;
   width: 28px !important;
   height: 28px !important;
   color: #fff !important;
