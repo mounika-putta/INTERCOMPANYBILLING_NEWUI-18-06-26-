@@ -503,29 +503,6 @@
    TABLE
 ========================== */
 
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.data-table th {
-  background: #eef7f0;
-  color: #3d8c4f;
-  font-weight: 700;
-  padding: 14px;
-  text-align: center;
-  border-bottom: 2px solid #dce7dd;
-}
-
-.data-table td {
-  padding: 14px;
-  text-align: center;
-  border-bottom: 1px solid #ececec;
-}
-
-.data-table tbody tr:hover {
-  background: #f8faf9;
-}
 
 /* ==========================
    ACTION BUTTONS

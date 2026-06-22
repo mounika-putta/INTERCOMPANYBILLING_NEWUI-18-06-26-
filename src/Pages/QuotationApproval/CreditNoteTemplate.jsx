@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import { fetchInvoicedetailswithRefno } from '../../redux/QuotationTemplateSlice';
-import './CreditNoteTemplate.css';
+import './QuotationTemplateModern.css';
 import { baseURL } from "../../services/api";
 import { updateCreditNote } from '../../redux/CreditNoteSlice';
 import { fetchActiveUrl } from '../../redux/RegistrationSlice';
@@ -208,6 +208,14 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
     const handleSave = async () => {
         if (!validateForm()) return;
 
+        if (derivedTotal <= 0) {
+        alertify.alert(
+            "Error",
+            "Total Amount Incl. VAT must be greater than 0 before saving."
+        );
+        return;
+    }
+
         const formatDate = (date) => {
             if (!date) return null;
             const d = new Date(date);
@@ -327,7 +335,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                 {/* ── Header ── */}
                 <header className="cn-header">
                     <div className="cn-header-left">
-                        {/* {editableInvoice.comapanyLogo && (() => {
+                        {editableInvoice.comapanyLogo && (() => {
                             const logoFileName = editableInvoice.comapanyLogo.split(/[/\\]/).pop();
                             // console.log('logoFileName', logoFileName);
                             return (
@@ -337,9 +345,9 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                                     className="cn-logo"
                                 />
                             );
-                        })()} */}
+                        })()}
 
-                        <img
+                        {/* <img
                             src={logoUrl}
                             alt="Company Logo"
                             className="cn-logo"
@@ -351,7 +359,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                                 e.target.onerror = null;
                                 e.target.src = LOCAL_LOGO;
                             }}
-                        />
+                        /> */}
                         {/* <img src={finalLogo} alt="Company Logo" className="cn-logo" /> */}
                     </div>
 

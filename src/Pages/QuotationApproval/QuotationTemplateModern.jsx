@@ -266,16 +266,16 @@ const QuotationTemplateModern = () => {
 
                         return (
                           <tr key={idx}>
-                            <td className="desc">{d.itemCode}</td>
-                            <td className="desc">{d.category}</td>
-                            <td className="desc">{d.itemName}</td>
-                            <td style={{ textAlign: 'right' }}>{d.quotationQuantity}</td>
-                            <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
-                            <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
-                            <td style={{ textAlign: 'right' }}>{d.discount}</td>
-                            <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                            <td style={{ textAlign: 'right' }}>{d.tax}</td>
-                            <td style={{ textAlign: 'right' }}>
+                            <td>{d.itemCode}</td>
+                            <td>{d.category}</td>
+                            <td>{d.itemName}</td>
+                            <td className="text-right" >{d.quotationQuantity}</td>
+                            <td className="text-right" >{d.unitRate}</td>
+                            <td className="text-right" >{(d.quotationQuantity * d.unitRate)}</td>
+                            <td className="text-right" >{d.discount}</td>
+                            <td className="text-right" >{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
+                            <td className="text-right" >{d.tax}</td>
+                            <td className="text-right" >
                               {(
                                 (d.quotationQuantity * d.unitRate - d.discount) +
                                 ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100

@@ -245,16 +245,16 @@ const QuotationTemplate = () => {
                       invoice.details.map((d, idx) => {
                         return (
                           <tr key={idx}>
-                            <td className="desc">{d.itemCode}</td>
-                            <td className="desc">{d.category}</td>
-                            <td className="desc">{d.itemName}</td>
-                            <td style={{ textAlign: 'right' }}>{d.itemQuantity}</td>
-                            <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
-                            <td style={{ textAlign: 'right' }}>{(d.itemQuantity * d.unitRate)}</td>
-                            <td style={{ textAlign: 'right' }}>{d.discount}</td>
-                            <td style={{ textAlign: 'right' }}>{(d.itemQuantity * d.unitRate) - (d.discount)}</td>
-                            <td style={{ textAlign: 'right' }}>{d.vat}</td>
-                            <td style={{ textAlign: 'right' }}>
+                            <td >{d.itemCode}</td>
+                            <td >{d.category}</td>
+                            <td >{d.itemName}</td>
+                            <td className="text-right" >{d.itemQuantity}</td>
+                            <td className="text-right" >{d.unitRate}</td>
+                            <td className="text-right" >{(d.itemQuantity * d.unitRate)}</td>
+                            <td className="text-right" >{d.discount}</td>
+                            <td className="text-right" >{(d.itemQuantity * d.unitRate) - (d.discount)}</td>
+                            <td className="text-right" >{d.vat}</td>
+                            <td className="text-right" >
                               {(
                                 (d.itemQuantity * d.unitRate - d.discount) +
                                 ((d.itemQuantity * d.unitRate - d.discount) * d.vat) / 100

@@ -30,17 +30,7 @@ const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, lo
         })()}
         {/* Company Information */}
         <h4 className="quotation-view-section-title">Company Information</h4>
-        {selectedInvoice.comapanyLogo && (() => {
-          const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
-          console.log('logoFileName', logoFileName);
-          return (
-            <img
-              src={`${baseURL}/UploadedFiles/${logoFileName}`}
-              alt="Company Logo"
-              className="company-logo-corner"
-            />
-          );
-        })()}
+        
 
         <div className="quotation-view-info">
           <div><span className="label">Company Name</span> : <span>{selectedInvoice.companyName}</span></div>

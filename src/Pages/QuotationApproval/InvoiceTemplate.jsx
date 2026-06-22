@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import { fetchInvoicedetailswithRefno } from '../../redux/QuotationTemplateSlice';
-import './QuotationTemplate.css';
+import './QuotationTemplateModern.css';
 import { baseURL } from "../../services/api";
 
 
@@ -219,16 +219,16 @@ const QuotationTemplate = () => {
                       invoice.details.map((d, idx) => {
                         return (
                           <tr key={idx}>
-                            <td className="desc">{d.itemCode}</td>
-                            <td className="desc">{d.category}</td>
-                            <td className="desc">{d.itemName}</td>
-                            <td style={{ textAlign: 'right' }}>{d.quotationQuantity}</td>
-                            <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
-                            <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
-                            <td style={{ textAlign: 'right' }}>{d.discount}</td>
-                            <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                            <td style={{ textAlign: 'right' }}>{d.tax}</td>
-                            <td style={{ textAlign: 'right' }}>
+                            <td >{d.itemCode}</td>
+                            <td >{d.category}</td>
+                            <td >{d.itemName}</td>
+                            <td className="black-text" >{d.quotationQuantity}</td>
+                            <td className="black-text" >{d.unitRate}</td>
+                            <td className="black-text" >{(d.quotationQuantity * d.unitRate)}</td>
+                            <td className="black-text" >{d.discount}</td>
+                            <td className="black-text" >{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
+                            <td className="black-text" >{d.tax}</td>
+                            <td className="black-text" >
                               {(
                                 (d.quotationQuantity * d.unitRate - d.discount) +
                                 ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100

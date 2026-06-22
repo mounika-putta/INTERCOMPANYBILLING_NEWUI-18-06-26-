@@ -1,13 +1,13 @@
 /* QuotationTemplateModern.css - modern clean styling */
 
 :root {
-  --accent: #2f8f6b;
+  --accent: #1E7D4E;
   --muted:  black;
   --bg: #f7fafc;
   --card-bg: #ffffff;
   --border: #e6e8eb;
   --danger: #d9534f;
-  --success: #2e7d32;
+  --success: #1E7D4E;
 }
 
 .qt-wrapper {
@@ -205,6 +205,157 @@
   margin-left: 8px;
 }
 
+/* Main card */
+.qt-card,
+.cn-card {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Information sections */
+.qt-row,
+.cn-row {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.qt-block,
+.cn-block {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Labels */
+.qt-kv span:first-child,
+.cn-kv span:first-child {
+  width: 160px;
+  flex-shrink: 0;
+}
+
+/* Table */
+.qt-table-wrap,
+.cn-table-wrap {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.data-table,
+.cn-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td,
+.cn-table th,
+.cn-table td {
+  padding: 8px 6px;
+  font-size: 13px;
+  word-wrap: break-word;
+}
+
+/* Make description columns wider */
+.data-table th:nth-child(2),
+.data-table th:nth-child(3),
+.data-table td:nth-child(2),
+.data-table td:nth-child(3),
+.cn-table th:nth-child(3),
+.cn-table th:nth-child(4),
+.cn-table td:nth-child(3),
+.cn-table td:nth-child(4) {
+  width: 140px;
+}
+
+/* Totals card */
+.qt-totals-card,
+.cn-totals-card {
+  width: 280px;
+  margin-left: auto;
+}
+
+/* Company logo */
+.qt-Logo,
+.cn-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .qt-row,
+  .cn-row {
+    flex-direction: column;
+  }
+
+  .qt-totals-card,
+  .cn-totals-card {
+    width: 100%;
+  }
+}
+:root {
+  --accent: #1E7D4E;
+  --green-text: #1E7D4E;
+}
+
+/* Main page */
+.qt-wrapper,
+.cn-wrapper {
+  background: transparent !important;
+}
+
+/* Card */
+.qt-card,
+.cn-card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 1px solid #d8e6df;
+}
+
+/* All text */
+.qt-card,
+.qt-card * {
+  color: #1E7D4E;
+}
+
+.cn-card,
+.cn-card * {
+  color: #1E7D4E;
+}
+
+/* Headings */
+.qt-title,
+.cn-title,
+.qt-block-title,
+.cn-block-title {
+  color: #1E7D4E!important;
+  font-weight: 700;
+}
+
+/* Table headers */
+.data-table th,
+.cn-table th {
+  background: transparent !important;
+  color: #1E7D4E !important;
+  border-bottom: 2px solid ;
+}
+
+/* Totals */
+.qt-totals-card,
+.cn-totals-card {
+  background: transparent !important;
+  border: 1px solid #d8e6df;
+}
+
+/* Terms box */
+.qt-terms,
+.cn-terms {
+  background: transparent !important;
+  color: #1E7D4E;
+}
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Responsive */
@@ -273,6 +424,39 @@
     color: #fff !important;
     font-weight: 600 !important;
   }
+}
+/* Table data black */
+.qt-table td,
+.data-table td,
+.cn-table td {
+    color: #000 !important;
+}
+
+/* Text columns */
+.qt-table td.desc,
+.data-table td.desc,
+.cn-table td.desc {
+    text-align: left !important;
+    color: #000 !important;
+}
+
+/* Numeric columns */
+.qt-table td:nth-child(4),
+.qt-table td:nth-child(5),
+.qt-table td:nth-child(6),
+.qt-table td:nth-child(7),
+.qt-table td:nth-child(8),
+.qt-table td:nth-child(9),
+.qt-table td:nth-child(10),
+.data-table td:nth-child(4),
+.data-table td:nth-child(5),
+.data-table td:nth-child(6),
+.data-table td:nth-child(7),
+.data-table td:nth-child(8),
+.data-table td:nth-child(9),
+.data-table td:nth-child(10) {
+    text-align: right !important;
+    color: #000 !important;
 }
 
 
