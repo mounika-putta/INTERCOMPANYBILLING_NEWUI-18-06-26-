@@ -11,6 +11,7 @@ import useSort from "../../components/Common/useSort";
 import { fetchCompanieswithfilter, fetchCompanieswithdeactivestatus } from '../../redux/CustomerSlice';
 import { fetchRolesforfilter } from '../../redux/RegistrationSlice';
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import Pagination from "../../components/Common/Pagination";
 
 
 
@@ -62,6 +63,7 @@ const UsersList = () => {
   };
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(5);
+  const handlePageChange = (page) => { setCurrentPage(page); };
   const [selectedUser, setSelectedUser] = useState(null);
   const [editUser, setEditUser] = useState(null);
   const [formData, setFormData] = useState({});
@@ -315,242 +317,229 @@ const UsersList = () => {
 
   return (
     <div className="Userlist-container">
+      <div className="users-page-card">
+        {/* Header */}
+        <div className="list-header">
+          <h2 className="Userlisttitle">Users List</h2>
 
-      <div className="list-header">
-        <h2 className="Userlisttitle">Users List</h2>
-        <button className="help-btn" onClick={() => setShowHelp(true)}>
-          <i className="fas fa-question-circle"></i> Help
-        </button>
-
-      </div>
-
-
-      {/* Filter */}
-      <div className="filter-section">
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={tempFilters.name}
-          onChange={(e) =>
-            setTempFilters({ ...tempFilters, name: e.target.value })
-          }
-        />
-        {/* <input
-          type="text"
-          name="company"
-          placeholder="Company"
-          value={tempFilters.company}
-          onChange={(e) =>
-            setTempFilters({ ...tempFilters, company: e.target.value })
-          }
-        /> */}
-        <select
-          value={tempFilters.companyName}
-          onChange={(e) =>
-            setTempFilters({ ...tempFilters, companyName: e.target.value })
-          }
-          className="form-control"
-        >
-          <option value="">Select Company </option>
-          {companiesforfilter.map((company) => (
-            <option key={company.companyName} value={company.companyName}>
-              {company.companyName}
-            </option>
-          ))}
-
-        </select>
-
-
-        <select
-          value={tempFilters.role}
-          onChange={(e) =>
-            setTempFilters({ ...tempFilters, role: e.target.value })
-          }
-          className="form-control"
-        >
-          <option value="">Select Role</option>
-          {roleslistwithfilter.map((role) => (
-            <option key={role.roleName} value={role.roleName}>
-              {role.roleName}
-            </option>
-          ))}
-        </select>
-
-
-        {/* <input
-          type="text"
-          name="role"
-          placeholder="Role"
-          value={tempFilters.role}
-          onChange={(e) =>
-            setTempFilters({ ...tempFilters, role: e.target.value })
-          }
-        /> */}
-        {/* <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={tempFilters.username}
-          onChange={(e) =>
-            setTempFilters({ ...tempFilters, username: e.target.value })
-          }
-        /> */}
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          value={tempFilters.email}
-          onChange={(e) =>
-            setTempFilters({ ...tempFilters, email: e.target.value })
-          }
-        />
-
-        <button className="filter-btn" onClick={handleApplyFilters}>
-          Filter
-        </button>
-
-        <button
-          className="clear-btn"
-          onClick={() => {
-            const clearedFilters = {
-              name: "",
-              company: "",
-              role: "",
-              username: "",
-              email: "",
-            };
-            setTempFilters(clearedFilters);
-            setFilters(clearedFilters);
-            setCurrentPage(1);
-          }}
-        >
-          Clear
-        </button>
-      </div>
-
-
-      {/* Records per page */}
-      <div className="pagination-controls">
-        <label>Records per page:&nbsp;</label>
-        <select value={recordsPerPage} onChange={handleRecordsChange}>
-          <option value={2}>2</option>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-        </select>
-      </div>
-
-      {/* Table */}
-      {/* Table Section */}
-      <table className="data-table">
-        <thead>
-          <tr>
-
-            {/* <th>NAME</th> */}
-            <th onClick={() => requestSort("name")}>
-              NAME {sortConfig.key === "name" ? (sortConfig.direction === "asc" ? "↑" : "↓") : "↑"}
-            </th>
-            <th>ROLE</th>
-            <th>USER NAME</th>
-            <th>COMPANY</th>
-            <th>EMAIL</th>
-            {/* <th>MOBILE</th> */}
-            <th>IS ACTIVE</th>
-            <th>IS DELETED</th>
-            <th>ACTION</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loadingTable ? (
-            <tr>
-              <td colSpan={8}>
-                <div className="table-loader-container">
-                  <div className="table-loader"></div>
-                </div>
-              </td>
-            </tr>
-          ) : currentRecords.length ? (
-            currentRecords.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.roleName}</td>
-                <td>{user.userName}</td>
-                <td>{user.companyName}</td>
-                <td>{user.email}</td>
-                {/* <td>{user.mobile}</td> */}
-                <td>{user.isActive}</td>
-                <td>{user.isDeleted}</td>
-                <td>
-                  <div className="actions-cell">
-                    <FaEye
-                      style={{ cursor: 'pointer' }}
-                      className="action-icon view-icon"
-                      title="View"
-                      onClick={() => handleViewClick(user)} />
-                    <FaEdit
-                      style={{ cursor: 'pointer' }}
-                      className="action-icon edit-icon"
-                      title="Edit"
-                      onClick={() => handleEditClick(user)} />
-
-                    <FaTrash style={{ cursor: 'pointer' }}
-                      className="action-icon cancel-icon"
-                      title="Delete" onClick={() => handleDelete(user.id)} />
-                    {/* <button className="icon-btn view-btn" onClick={() => handleViewClick(user)}>
-      <i className="fas fa-eye" style={{ color: "blue" }}></i>
-    </button>
-
-    <button className="icon-btn edit-btn" onClick={() => handleEditClick(user)}>
-      <i className="fas fa-edit" style={{ color: "blue" }}></i>
-    </button>
-
-    {user.isDeleted !== "Yes" && (
-      <button className="icon-btn delete-btn" onClick={() => handleDelete(user.id)}>
-        <i className="fas fa-trash"></i>
-      </button>
-    )} */}
-                  </div>
-                </td>
-
-
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={8}>No records found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-
-      {/* Pagination */}
-      <div className="pagination">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          Prev
-        </button>
-
-        {Array.from({ length: totalPages }, (_, i) => (
           <button
-            key={i}
-            onClick={() => setCurrentPage(i + 1)}
-            className={currentPage === i + 1 ? "active" : ""}
+            className="help-btn"
+            onClick={() => setShowHelp(true)}
           >
-            {i + 1}
+            <i className="fas fa-question-circle"></i> Help
           </button>
-        ))}
+        </div>
 
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          Next
-        </button>
+        <hr className="section-divider" />
+
+        {/* Filter Section */}
+        <div className="filter-section">
+
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={tempFilters.name}
+            onChange={(e) =>
+              setTempFilters({
+                ...tempFilters,
+                name: e.target.value,
+              })
+            }
+          />
+
+          <select
+            value={tempFilters.companyName}
+            onChange={(e) =>
+              setTempFilters({
+                ...tempFilters,
+                companyName: e.target.value,
+              })
+            }
+          >
+            <option value="">Select Company</option>
+
+            {companiesforfilter.map((company) => (
+              <option
+                key={company.companyName}
+                value={company.companyName}
+              >
+                {company.companyName}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={tempFilters.role}
+            onChange={(e) =>
+              setTempFilters({
+                ...tempFilters,
+                role: e.target.value,
+              })
+            }
+          >
+            <option value="">Select Role</option>
+
+            {roleslistwithfilter.map((role) => (
+              <option
+                key={role.roleName}
+                value={role.roleName}
+              >
+                {role.roleName}
+              </option>
+            ))}
+          </select>
+
+          <input
+            type="text"
+            placeholder="Email"
+            value={tempFilters.email}
+            onChange={(e) =>
+              setTempFilters({
+                ...tempFilters,
+                email: e.target.value,
+              })
+            }
+          />
+
+          <button
+            className="filter-btn"
+            onClick={handleApplyFilters}
+          >
+            Filter
+          </button>
+
+          <button
+            className="clear-btn"
+            onClick={() => {
+              const clearedFilters = {
+                name: "",
+                company: "",
+                role: "",
+                username: "",
+                email: "",
+              };
+
+              setTempFilters(clearedFilters);
+              setFilters(clearedFilters);
+              setCurrentPage(1);
+            }}
+          >
+            Clear
+          </button>
+        </div>
+
+        {/* Records Per Page */}
+        <div className="pagination-controls">
+          <label>Records per page:</label>
+
+          <select
+            value={recordsPerPage}
+            onChange={handleRecordsChange}
+          >
+            <option value={2}>2</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+          </select>
+        </div>
+
+        {/* Table Card */}
+        <div className="table-card">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th
+                  onClick={() => requestSort("name")}
+                >
+                  NAME{" "}
+                  {sortConfig.key === "name"
+                    ? sortConfig.direction === "asc"
+                      ? "↑"
+                      : "↓"
+                    : "↑"}
+                </th>
+
+                <th>ROLE</th>
+                <th>USER NAME</th>
+                <th>COMPANY</th>
+                <th>EMAIL</th>
+                <th>IS ACTIVE</th>
+                <th>IS DELETED</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {loadingTable ? (
+                <tr>
+                  <td colSpan={8}>
+                    <div className="table-loader-container">
+                      <div className="table-loader"></div>
+                    </div>
+                  </td>
+                </tr>
+              ) : currentRecords.length ? (
+                currentRecords.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.name}</td>
+                    <td>{user.roleName}</td>
+                    <td>{user.userName}</td>
+                    <td>{user.companyName}</td>
+                    <td>{user.email}</td>
+                    <td>{user.isActive}</td>
+                    <td>{user.isDeleted}</td>
+
+                    <td>
+                      <div className="actions-cell">
+
+                        <FaEye
+                          className="action-icon view-icon"
+                          onClick={() =>
+                            handleViewClick(user)
+                          }
+                        />
+
+                        <FaEdit
+                          className="action-icon edit-icon"
+                          onClick={() =>
+                            handleEditClick(user)
+                          }
+                        />
+
+                        <FaTrash
+                          className="action-icon cancel-icon"
+                          onClick={() =>
+                            handleDelete(user.id)
+                          }
+                        />
+
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={8}>
+                    No records found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        {!loading && totalRecords > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={totalRecords}
+            itemsPerPage={recordsPerPage}
+            onPageChange={handlePageChange}
+          />
+        )}
+
       </div>
 
       {/* View Modal */}
@@ -949,9 +938,12 @@ const UsersList = () => {
         </div>
       )}
 
-
-      <HelpModal show={showHelp} title="Users List - Help & Overview" screenName="UserSList" onClose={() => setShowHelp(false)} />
-
+      <HelpModal
+        show={showHelp}
+        title="Users List - Help & Overview"
+        screenName="UserSList"
+        onClose={() => setShowHelp(false)}
+      />
 
     </div>
   );
