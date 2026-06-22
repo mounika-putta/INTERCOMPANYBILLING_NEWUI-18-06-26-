@@ -730,9 +730,9 @@ const ReceivingEntities = () => {
                     }}
                     className={errors.CompanyName ? "input-error" : ""}
                   />
-                  {/* {errors.CompanyName && (
+                  {errors.CompanyName && (
                     <p className="error-message">{errors.CompanyName}</p>
-                  )} */}
+                  )}
                 </div>
 
                 <div className="formlabel-group">
@@ -776,9 +776,9 @@ const ReceivingEntities = () => {
                     className={errors.VatNumber ? "input-error" : ""}
                   />
 
-                  {/* {errors.VatNumber && (
+                  {errors.VatNumber && (
                     <p className="error-message">{errors.VatNumber}</p>
-                  )} */}
+                  )}
 
                 </div>
                 <div className="formlabel-group">
@@ -821,9 +821,9 @@ const ReceivingEntities = () => {
                     }}
                     className={errors.RegistrationNumber ? "input-error" : ""}
                   />
-                  {/* {errors.RegistrationNumber && (
+                  {errors.RegistrationNumber && (
                     <p className="error-message">{errors.RegistrationNumber}</p>
-                  )} */}
+                  )}
                 </div>
                 <div className="formlabel-group">
                   <label>
@@ -862,9 +862,9 @@ const ReceivingEntities = () => {
                     className={errors.BankAccountNumber ? "input-error" : ""}
                   />
 
-                  {/* {errors.BankAccountNumber && (
+                  {errors.BankAccountNumber && (
                     <p className="error-message">{errors.BankAccountNumber}</p>
-                  )} */}
+                  )}
 
 
                 </div>
@@ -920,9 +920,9 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.CompanyWebsite && (
+                  {errors.CompanyWebsite && (
                     <p className="error-message">{errors.CompanyWebsite}</p>
-                  )} */}
+                  )}
 
                 </div>
                 <div className="formlabel-group">
@@ -936,9 +936,9 @@ const ReceivingEntities = () => {
                     onChange={(e) => handleFieldChange("CompanyEmail", e.target.value)}
                     className={errors.CompanyEmail ? "input-error" : ""}
                   />
-                  {/* {errors.CompanyEmail && (
+                  {errors.CompanyEmail && (
                     <p className="error-message">{errors.CompanyEmail}</p>
-                  )} */}
+                  )}
                 </div>
                 <div className="formlabel-group">
                   <label>
@@ -967,9 +967,9 @@ const ReceivingEntities = () => {
                     }}
                     className={errors.CompanyPhoneNumber ? "input-error" : ""}
                   />
-                  {/* {errors.CompanyPhoneNumber && (
+                  {errors.CompanyPhoneNumber && (
                     <p className="error-message">{errors.CompanyPhoneNumber}</p>
-                  )} */}
+                  )}
 
                 </div>
                 <div className="formlabel-group">
@@ -989,9 +989,9 @@ const ReceivingEntities = () => {
                     }}
                     className={errors.AccountHolderName ? "input-error" : ""}
                   />
-                  {/* {errors.AccountHolderName && (
+                  {errors.AccountHolderName && (
                     <p className="error-message">{errors.AccountHolderName}</p>
-                  )} */}
+                  )}
                 </div>
                 <div className="formlabel-group">
                   <label>
@@ -1004,9 +1004,9 @@ const ReceivingEntities = () => {
                     onChange={(e) => handleFieldChange("BranchCode", e.target.value)}
                     className={errors.BranchCode ? "input-error" : ""}
                   />
-                  {/* {errors.BranchCode && (
+                  {errors.BranchCode && (
                     <p className="error-message">{errors.BranchCode}</p>
-                  )} */}
+                  )}
                 </div>
                 <div className="formlabel-group" style={{ display: "none" }}>
                   <label>
@@ -1019,9 +1019,9 @@ const ReceivingEntities = () => {
                     onChange={(e) => handleFieldChange("IFSCCode", e.target.value)}
                     className={errors.IFSCCode ? "input-error" : ""}
                   />
-                  {/* {errors.IFSCCode && (
+                  {errors.IFSCCode && (
                     <p className="error-message">{errors.IFSCCode}</p>
-                  )} */}
+                  )}
                 </div>
                 <div className="formlabel-group">
                   <label>
@@ -1036,9 +1036,9 @@ const ReceivingEntities = () => {
 
                   />
 
-                  {/* {errors.CompanyAddress && (
+                  {errors.CompanyAddress && (
                     <p className="error-message">{errors.CompanyAddress}</p>
-                  )} */}
+                  )}
                 </div>
 
                 <div className="formlabel-group">
@@ -1052,9 +1052,9 @@ const ReceivingEntities = () => {
                     className={errors.BranchAddress ? "input-error" : ""}
 
                   />
-                  {/* {errors.BranchAddress && (
+                  {errors.BranchAddress && (
                     <p className="error-message">{errors.BranchAddress}</p>
-                  )} */}
+                  )}
                 </div>
 
                 <div className="formlabel-group"
@@ -1091,9 +1091,9 @@ const ReceivingEntities = () => {
                     className={errors.CompanyLogo ? "input-error" : ""}
                   />
 
-                  {/* {errors.CompanyLogo && (
+                  {errors.CompanyLogo && (
                     <p className="error-message">{errors.CompanyLogo}</p>
-                  )} */}
+                  )}
 
 
                 </div>
@@ -1206,7 +1206,7 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.companyName && <p className="error-message">{errors.companyName}</p>} */}
+                  {errors.companyName && <p className="error-message">{errors.companyName}</p>}
 
 
                 </div>
@@ -1263,9 +1263,9 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.vatNumber && (
+                  {errors.vatNumber && (
                     <p className="error-message">{errors.vatNumber}</p>
-                  )} */}
+                  )}
 
                 </div>
                 <div className="formlabel-group">
@@ -1319,9 +1319,9 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.registrationNumber && (
+                  {errors.registrationNumber && (
                     <p className="error-message">{errors.registrationNumber}</p>
-                  )} */}
+                  )}
 
                 </div>
                 <div className="formlabel-group">
@@ -1372,9 +1372,9 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.bankAccountNumber && (
+                  {errors.bankAccountNumber && (
                     <p className="error-message">{errors.bankAccountNumber}</p>
-                  )} */}
+                  )}
 
 
                 </div>
@@ -1496,7 +1496,7 @@ const ReceivingEntities = () => {
                   />
 
 
-                  {/* {errors.companyEmail && <p className="error-message">{errors.companyEmail}</p>} */}
+                  {errors.companyEmail && <p className="error-message">{errors.companyEmail}</p>}
                 </div>
                 <div className="formlabel-group">
                   <label>
@@ -1546,9 +1546,9 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.companyPhoneNumber && (
+                  {errors.companyPhoneNumber && (
                     <p className="error-message">{errors.companyPhoneNumber}</p>
-                  )} */}
+                  )}
 
 
                 </div>
@@ -1600,7 +1600,7 @@ const ReceivingEntities = () => {
                           : ""
                     }
                   />
-                  {/* {errors.accountHolderName && <p className="error-message">{errors.accountHolderName}</p>} */}
+                  {errors.accountHolderName && <p className="error-message">{errors.accountHolderName}</p>}
 
                 </div>
                 <div className="formlabel-group">
@@ -1651,7 +1651,7 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.branchCode && <p className="error-message">{errors.branchCode}</p>} */}
+                  {errors.branchCode && <p className="error-message">{errors.branchCode}</p>}
 
 
                 </div>
@@ -1698,7 +1698,7 @@ const ReceivingEntities = () => {
                           : ""
                     }
                   />
-                  {/* {errors.ifscCode && <p className="error-message">{errors.ifscCode}</p>} */}
+                  {errors.ifscCode && <p className="error-message">{errors.ifscCode}</p>}
 
                 </div>
                 <div className="formlabel-group">
@@ -1737,9 +1737,9 @@ const ReceivingEntities = () => {
                     }
                   />
 
-                  {/* {errors.companyAddress && (
+                  {errors.companyAddress && (
                     <p className="error-message">{errors.companyAddress}</p>
-                  )} */}
+                  )}
 
 
                 </div>
@@ -1778,9 +1778,9 @@ const ReceivingEntities = () => {
                           : ""
                     }
                   />
-                  {/* {errors.brannchAddress && (
+                  {errors.brannchAddress && (
                     <p className="error-message">{errors.brannchAddress}</p>
-                  )} */}
+                  )}
 
                 </div>
                 <div className="formlabel-group">
@@ -1810,9 +1810,9 @@ const ReceivingEntities = () => {
                     <option value="No">No</option>
                   </select>
 
-                  {/* {errors.isActive && (
+                  {errors.isActive && (
                     <p className="error-message">{errors.isActive}</p>
-                  )} */}
+                  )}
                 </div>
 
 
@@ -1843,9 +1843,9 @@ const ReceivingEntities = () => {
                     <option value="No">No</option>
                   </select>
 
-                  {/* {errors.isDeleted && (
+                  {errors.isDeleted && (
                     <p className="error-message">{errors.isDeleted}</p>
-                  )} */}
+                  )}
                 </div>
 
                 <div className="formlabel-group">
