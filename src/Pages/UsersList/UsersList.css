@@ -70,12 +70,6 @@
   text-align: left;
 }
 
-/* .pagination-controls select {
-  padding: 5px 6px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-} */
 
 .pagination-buttons {
   margin-top: 15px;
@@ -208,9 +202,9 @@ new */
   background: #fff;
   padding: 25px 40px;
   border-radius: 10px;
-  width: 60%;
+  width: 45%;
   max-height: 70vh;
-  overflow-y: auto;
+
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   position: relative;
 }
@@ -294,10 +288,9 @@ new */
   background-color: #fff;
   padding: 30px 70px;
   border-radius: 8px;
-  width: 650px;      /* decreased width */
+  width: 45%;      /* decreased width */
   max-width: 90%;
-  max-height: 90%;   /* decreased max height */
-  overflow-y: auto;  /* scroll if content exceeds height */
+  max-height: 80%;   /* decreased max height */
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   position: relative;
   
@@ -468,8 +461,8 @@ new */
   border: 3px solid #f3f3f3;
   border-top: 3px solid #3498db;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   animation: spin 1s linear infinite;
 }
 
@@ -547,3 +540,26 @@ new */
   word-break: break-word; /* wrap long addresses */
   line-height: 1.6;
 }
+
+
+.users-page-card {
+  background: #fff;
+  border: 1px solid #d8e0e6;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 16px 0;
+}
+
+.table-card {
+  border: 1px solid #d8e0e6;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+

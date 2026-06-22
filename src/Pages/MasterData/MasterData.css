@@ -586,7 +586,7 @@
 .typeform-group label {
   display: block;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .typeform-group input,
@@ -657,7 +657,7 @@
 .data-table td.actions-cell .action-master,
 .action-master { justify-content: flex-end !important; gap: 6px !important; }
 .data-table td.actions-cell .icon-btn,
-.data-table td.actions-cell i, .icon-btn i { font-size: 16px !important; }
+.data-table td.actions-cell i, .icon-btn i { font-size: 13px !important; }
 
 
 

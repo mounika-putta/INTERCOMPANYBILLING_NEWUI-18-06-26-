@@ -602,7 +602,7 @@ const Customer = () => {
                                         <option value="Dr">Dr</option>
 
                                     </select>
-                                    {/* {createErrors.title && <p className="error-message">{createErrors.title}</p>} */}
+                                    {createErrors.title && <p className="error-message">{createErrors.title}</p>}
                                 </div>
 
                                 {/* Name */}
@@ -625,7 +625,7 @@ const Customer = () => {
                                         }
                                         className={createErrors.name ? "input-error" : ""}
                                     />
-                                    {/* {createErrors.name && <p className="error-message">{createErrors.name}</p>} */}
+                                    {createErrors.name && <p className="error-message">{createErrors.name}</p>}
                                 </div>
 
                                 {/* Surname */}
@@ -649,7 +649,7 @@ const Customer = () => {
                                         }
                                         className={createErrors.surname ? "input-error" : ""}
                                     />
-                                    {/* {createErrors.surname && <p className="error-message">{createErrors.surname}</p>} */}
+                                    {createErrors.surname && <p className="error-message">{createErrors.surname}</p>}
                                 </div>
 
                                 {/* Gender */}
@@ -674,7 +674,7 @@ const Customer = () => {
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
                                     </select>
-                                    {/* {createErrors.gender && <p className="error-message">{createErrors.gender}</p>} */}
+                                    {createErrors.gender && <p className="error-message">{createErrors.gender}</p>}
                                 </div>
 
                                 {/* Mobile */}
@@ -701,7 +701,7 @@ const Customer = () => {
                                         }}
                                         className={createErrors.mobile ? "input-error" : ""}
                                     />
-                                    {/* {createErrors.mobile && <p className="error-message">{createErrors.mobile}</p>} */}
+                                    {createErrors.mobile && <p className="error-message">{createErrors.mobile}</p>}
                                 </div>
 
                                 {/* Email */}
@@ -724,7 +724,7 @@ const Customer = () => {
                                         className={createErrors.email ? "input-error" : ""}
                                     />
 
-                                    {/* {createErrors.email && <p className="error-message">{createErrors.email}</p>} */}
+                                    {createErrors.email && <p className="error-message">{createErrors.email}</p>}
                                 </div>
 
                                 {/* Customer Account No */}
@@ -775,7 +775,7 @@ const Customer = () => {
                                             </option>
                                         ))}
                                     </select>
-                                    {/* {createErrors.companyId && <p className="error-message">{createErrors.companyId}</p>} */}
+                                    {createErrors.companyId && <p className="error-message">{createErrors.companyId}</p>}
                                 </div>
 
                                 {/* Address */}
@@ -795,7 +795,7 @@ const Customer = () => {
                                         }}
                                         className={createErrors.address ? "input-error" : ""}
                                     />
-                                    {/* {createErrors.address && <p className="error-message">{createErrors.address}</p>} */}
+                                    {createErrors.address && <p className="error-message">{createErrors.address}</p>}
                                 </div>
 
                                 {/* Actions */}
@@ -869,7 +869,7 @@ const Customer = () => {
                                         <option value="Ms">Mr</option>
                                         <option value="Dr">Dr</option>
                                     </select>
-                                    {/* {editErrors.title && <p className="error-message">{editErrors.title}</p>} */}
+                                    {editErrors.title && <p className="error-message">{editErrors.title}</p>}
                                 </div>
 
                                 {/* Name */}
@@ -903,7 +903,7 @@ const Customer = () => {
 
                                         className={editErrors.name ? "input-error" : ""}
                                     />
-                                    {/* {editErrors.name && <p className="error-message">{editErrors.name}</p>} */}
+                                    {editErrors.name && <p className="error-message">{editErrors.name}</p>}
                                 </div>
 
                                 {/* Surname */}
@@ -937,7 +937,7 @@ const Customer = () => {
 
                                         className={editErrors.surName ? "input-error" : ""}
                                     />
-                                    {/* {editErrors.surName && <p className="error-message">{editErrors.surName}</p>} */}
+                                    {editErrors.surName && <p className="error-message">{editErrors.surName}</p>}
                                 </div>
 
                                 {/* Gender */}
@@ -960,7 +960,7 @@ const Customer = () => {
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
                                     </select>
-                                    {/* {editErrors.gender && <p className="error-message">{editErrors.gender}</p>} */}
+                                    {editErrors.gender && <p className="error-message">{editErrors.gender}</p>}
                                 </div>
 
                                 {/* Mobile */}
@@ -985,7 +985,7 @@ const Customer = () => {
                                         }}
                                         className={editErrors.mobile ? "input-error" : ""}
                                     />
-                                    {/* {editErrors.mobile && <p className="error-message">{editErrors.mobile}</p>} */}
+                                    {editErrors.mobile && <p className="error-message">{editErrors.mobile}</p>}
                                 </div>
 
                                 {/* Email */}
@@ -1008,7 +1008,7 @@ const Customer = () => {
                                         className={editErrors.email ? "input-error" : ""}
                                     />
 
-                                    {/* {editErrors.email && <p className="error-message">{editErrors.email}</p>} */}
+                                    {editErrors.email && <p className="error-message">{editErrors.email}</p>}
                                 </div>
 
                                 {/* Customer Account No */}
@@ -1056,7 +1056,7 @@ const Customer = () => {
                                             </option>
                                         ))}
                                     </select>
-                                    {/* {editErrors.companyId && <p className="error-message">{editErrors.companyId}</p>} */}
+                                    {editErrors.companyId && <p className="error-message">{editErrors.companyId}</p>}
                                 </div>
 
                                 {/* Address */}
@@ -1074,7 +1074,7 @@ const Customer = () => {
                                         }}
                                         className={editErrors.address ? "input-error" : ""}
                                     />
-                                    {/* {editErrors.address && <p className="error-message">{editErrors.address}</p>} */}
+                                    {editErrors.address && <p className="error-message">{editErrors.address}</p>}
                                 </div>
                                 {/* Is Active */}
                                 <div className="form-group">
@@ -1097,7 +1097,7 @@ const Customer = () => {
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                     </select>
-                                    {/* {editErrors.isActive && <p className="error-message">{editErrors.isActive}</p>} */}
+                                    {editErrors.isActive && <p className="error-message">{editErrors.isActive}</p>}
                                 </div>
 
                                 {/* Is Deleted */}
@@ -1121,7 +1121,7 @@ const Customer = () => {
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
                                     </select>
-                                    {/* {editErrors.isDeleted && <p className="error-message">{editErrors.isDeleted}</p>} */}
+                                    {editErrors.isDeleted && <p className="error-message">{editErrors.isDeleted}</p>}
                                 </div>
                                 {/* Actions */}
                                 <div className="service-actions">

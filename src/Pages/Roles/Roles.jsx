@@ -550,6 +550,7 @@ const Roles = () => {
                   <label>Role Name  <span className="required">*</span></label>
                   <input
                     type="text"
+                    className={errors.RoleName ? "error-input" : ""}
                     value={newItem.RoleName}
                     onChange={(e) =>
                       setNewItem({ ...newItem, RoleName: e.target.value })
@@ -564,6 +565,7 @@ const Roles = () => {
                   <label>Role Description  <span className="required">*</span></label>
                   <input
                     type="text"
+                    className={errors.RoleDescription ? "error-input" : ""}
                     value={newItem.RoleDescription}
                     onChange={(e) =>
                       setNewItem({
@@ -578,7 +580,7 @@ const Roles = () => {
                 </div>
 
                 <div className="Role-actions">
-                  <button type="submit" className="btn btn-success">
+                  <button type="submit" className="btn btn-succes">
                     Save
                   </button>
 
@@ -802,7 +804,7 @@ const Roles = () => {
                 <div className="Role-actions">
                   <button
                     type="submit"
-                    className="btn btn-success btn-lg"
+                    className="btn btn-succes"
                     disabled={updateLoading}
                   >
                     {updateLoading ? (
