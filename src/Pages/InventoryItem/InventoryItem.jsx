@@ -499,8 +499,7 @@ const InventoryItem = () => {
     );
   };
 
-  // ✅ XL Template download — opens in Excel
-  const downloadTemplate = async () => {
+   const downloadTemplate = async () => {
     setIsDownloadingTemplate(true);
     try {
       const response = await AxiosInstance.get(
@@ -590,13 +589,13 @@ const InventoryItem = () => {
 
         const csvContent = rows.join("\n") + "\n";
 
-        // Use Word MIME type so file opens in Microsoft Word
-        const blob = new Blob([csvContent], { type: "application/msword;charset=utf-8;" });
+        // Use CSV MIME type for proper CSV format
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        // .doc extension so OS opens it with Word
-        link.setAttribute("download", "ProductTemplate.doc");
+        // .csv extension for CSV format
+        link.setAttribute("download", "ProductTemplate.csv");
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -609,330 +608,334 @@ const InventoryItem = () => {
     }, 300); // 300ms delay lets React paint the spinner before blob work starts
   };
 
-  const handleBulkUpload = (e) => {
-    console.log("Upload triggered");
-    setIsBulkUploading(true);
-
-    const file = e.target.files[0];
-    if (!file) {
-      console.log("No file selected");
-      e.target.value = "";
-      setIsBulkUploading(false);
-      return;
-    }
-
-    console.log("File:", file.name);
-    const fileType = file.name.split(".").pop().toLowerCase();
-
-    if (fileType === "csv") {
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: function (results) {
-          console.log("CSV Parsed Data:", results.data);
-          if (!results.data || results.data.length === 0) {
-            alertify.alert("Error", "CSV is empty");
-            e.target.value = "";
-            return;
-          }
-          sendBulkData(results.data);
-          e.target.value = "";
-          fetchItems();
-        },
-        error: function (err) {
-          console.error("CSV Parse Error:", err);
-          e.target.value = "";
-          alertify.alert("Error", "Failed to parse CSV file");
-          setIsBulkUploading(false);
-        },
-      });
-    } else if (fileType === "xlsx" || fileType === "xls") {
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        console.log("Excel file loaded");
-        try {
-          const data = evt.target.result;
-          const workbook = XLSX.read(data, { type: "binary" });
-          console.log("Workbook:", workbook);
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-          console.log("Excel Parsed Data:", jsonData);
-          if (!jsonData || jsonData.length === 0) {
-            alertify.alert("Error", "Excel file is empty");
-            e.target.value = "";
-            return;
-          }
-          const cleanedData = jsonData.map(item => ({
-            ...item,
-            VatableStatus:
-              item.VatableStatus === true ||
-              item.VatableStatus === "true" ||
-              item.VatableStatus === 1
-          }));
-          console.log("Cleaned Data:", cleanedData);
-          sendBulkData(cleanedData);
-          e.target.value = "";
-        } catch (err) {
-          console.error("Excel Processing Error:", err);
-          alertify.alert("Error", "Error reading Excel file");
-          e.target.value = "";
-          setIsBulkUploading(false);
-        }
-      };
-      reader.onerror = () => {
-        console.error("File reading failed");
-        alertify.alert("Error", "Failed to read file");
-        e.target.value = "";
-        setIsBulkUploading(false);
-      };
-      reader.readAsBinaryString(file);
-    } else {
-      alertify.alert("Error", "Only CSV or Excel files supported");
-      e.target.value = "";
-      setIsBulkUploading(false);
-    }
-  };
-
-  const sendBulkData = async (data) => {
-    console.log("Raw Data:", data);
-
-    const normalizeData = (rows) => {
-      return rows.map(row => {
-        const normalized = {};
-        for (let key in row) {
-          const value = row[key];
-          const lowerKey = key.toLowerCase().trim();
-          if (lowerKey === "itemname" || lowerKey === "item name") {
-            normalized.ItemName = value;
-          } else if (lowerKey === "itemcode" || lowerKey === "item code") {
-            normalized.ItemCode = value;
-          } else if (lowerKey === "description" || lowerKey === "item description" || lowerKey === "desc") {
-            normalized.Description = value;
-          } else if (lowerKey === "category") {
-            normalized.Category = value;
-          } else if (
-            lowerKey === "price" ||
-            lowerKey === "price excl vat" ||
-            lowerKey === "price exclvat"
-          ) {
-            normalized.Price = value;
-          } else if (lowerKey === "unitofmeasure" || lowerKey === "unit of measure" || lowerKey === "uom") {
-            normalized.UnitOfMeasure = value;
-          } else if (lowerKey === "companyid" || lowerKey === "company id") {
-            normalized.CompanyId = value;
-          } else if (lowerKey === "companyname" || lowerKey === "company name" || lowerKey === "company") {
-            normalized.CompanyName = value;
-          } else if (lowerKey === "vatablewstatus" || lowerKey === "is vatable" || lowerKey === "vatable") {
-            normalized.VatableStatus = value;
-          }
-        }
-        return normalized;
-      });
-    };
-
-    const filterUploadRows = (rows) => {
-      return rows.filter((row) => {
-        if (!row || typeof row !== "object") return false;
-        const values = Object.values(row).map((value) => String(value || "").trim());
-        const allEmpty = values.every((value) => value === "");
-        if (allEmpty) return false;
-        const lowerValues = values.map((value) => value.toLowerCase());
-        const lookupSectionLabels = [
-          "lookup_section",
-          "lookup name",
-          "allowed values",
-          "valid_categories",
-          "unit_of_measure",
-          "is_vatable",
-          "companies"
-        ];
-        if (lowerValues.some((value) => lookupSectionLabels.includes(value))) {
-          return false;
-        }
-        if (!values[0] && values[1] && lookupSectionLabels.includes(values[1].toLowerCase())) {
-          return false;
-        }
-        return true;
-      });
-    };
-
-    const filteredData = filterUploadRows(data);
-    console.log("Filtered Data:", filteredData);
-
-    const normalizedData = normalizeData(filteredData);
-    console.log("Normalized Data:", normalizedData);
-
-    const requiredFields = ["ItemName", "ItemCode", "Description", "Category", "UnitOfMeasure"];
-    const invalidRecords = [];
-
-    const allowedCategories = (categories || []).map(c => (c.name ? c.name : c).trim().toLowerCase());
-    const allowedCompanies = (companyList || []).map(c => c.companyName.trim().toLowerCase());
-    const allowedUOM = ["Hour", "Unit"].map(u => u.toLowerCase());
-    const allowedVatable = ["TRUE", "FALSE"].map(v => v.toLowerCase());
-
-    normalizedData.forEach((item, index) => {
-      const missingFields = requiredFields.filter(field => !item[field] || String(item[field]).trim() === "");
-      if (missingFields.length > 0) {
-        invalidRecords.push({
-          rowIndex: index + 1,
-          missingFields: missingFields,
-          record: item
-        });
-        return;
-      }
-
-      const itemCategoryLower = String(item.Category).trim().toLowerCase();
-      if (!allowedCategories.includes(itemCategoryLower)) {
-        invalidRecords.push({
-          rowIndex: index + 1,
-          error: `Invalid Category "${item.Category}". Allowed: ${allowedCategories.join(", ")}`,
-          record: item
-        });
-        return;
-      }
-
-      const itemUOMLower = String(item.UnitOfMeasure).trim().toLowerCase();
-      if (!allowedUOM.includes(itemUOMLower)) {
-        invalidRecords.push({
-          rowIndex: index + 1,
-          error: `Invalid Unit Of Measure "${item.UnitOfMeasure}". Allowed: Hour, Unit`,
-          record: item
-        });
-        return;
-      }
-
-      if (item.VatableStatus !== undefined && item.VatableStatus !== null && item.VatableStatus !== "") {
-        const itemVatableLower = String(item.VatableStatus).trim().toLowerCase();
-        if (!allowedVatable.includes(itemVatableLower)) {
-          invalidRecords.push({
-            rowIndex: index + 1,
-            error: `Invalid Is Vatable "${item.VatableStatus}". Allowed: TRUE, FALSE`,
-            record: item
-          });
-          return;
-        }
-      }
-
-      if (item.CompanyName) {
-        const itemCompanyLower = String(item.CompanyName).trim().toLowerCase();
-        if (!allowedCompanies.includes(itemCompanyLower)) {
-          invalidRecords.push({
-            rowIndex: index + 1,
-            error: `Invalid Company "${item.CompanyName}". Allowed: ${allowedCompanies.join(", ")}`,
-            record: item
-          });
-          return;
-        }
-      }
-    });
-
-    if (invalidRecords.length > 0) {
-      const errorMessage = `Validation Error: The following rows have issues:\n\n${invalidRecords
-          .slice(0, 5)
-          .map(record => {
-            if (record.missingFields) {
-              return `Row ${record.rowIndex}: Missing ${record.missingFields.join(", ")}`;
-            } else {
-              return `Row ${record.rowIndex}: ${record.error}`;
-            }
-          })
-          .join("\n")
-        }${invalidRecords.length > 5 ? `\n\n... and ${invalidRecords.length - 5} more rows` : ""}\n\nPlease check your file and ensure all values match the allowed lookup values.`;
-
-      console.error("Validation Errors:", invalidRecords);
-      alertify.alert("Validation Error", errorMessage);
-      setIsBulkUploading(false);
-      return;
-    }
-
-    const companyErrors = [];
-    const formattedData = normalizedData.map((item, index) => {
-      let companyId = parseInt(item.CompanyId) || 0;
-
-      if (!companyId && item.CompanyName) {
-        const matchedCompany = companyList?.find(
-          company => company.companyName?.toLowerCase().trim() === String(item.CompanyName).toLowerCase().trim()
-        );
-        companyId = matchedCompany?.id || 0;
-
-        if (!matchedCompany) {
-          companyErrors.push({
-            rowIndex: index + 1,
-            companyName: item.CompanyName
-          });
-          console.warn(`Company not found for: ${item.CompanyName}`);
-        }
-      }
-
-      return {
-        ItemName: item.ItemName?.toString().trim(),
-        ItemCode: item.ItemCode?.toString().trim(),
-        Description: item.Description?.toString().trim(),
-        Category: item.Category?.toString().trim(),
-        Price: parseFloat(item.Price) || 0,
-        UnitOfMeasure: item.UnitOfMeasure?.toString().trim(),
-        CompanyId: companyId,
-        VatableStatus:
-          item.VatableStatus === true ||
-          item.VatableStatus === "true" ||
-          item.VatableStatus === "TRUE" ||
-          item.VatableStatus === 1 ||
-          String(item.VatableStatus).toLowerCase() === "true"
-      };
-    });
-
-    if (companyErrors.length > 0) {
-      const errorMessage = `Warning: The following companies were not found in the system:\n\n${companyErrors
-          .slice(0, 5)
-          .map(err => `Row ${err.rowIndex}: "${err.companyName}"`)
-          .join("\n")
-        }${companyErrors.length > 5 ? `\n\n... and ${companyErrors.length - 5} more` : ""}\n\nAvailable companies: ${companyList?.map(c => c.companyName).join(", ") || "None"
-        }`;
-
-      alertify.alert("Company Mapping Warning", errorMessage);
-      return;
-    }
-
-    console.log("Formatted Data:", formattedData);
-
-    try {
-      const response = await AxiosInstance.post("/api/InventoryItems/BulkUpload", formattedData);
-      console.log("API Response:", response);
-      if (response.data.success) {
-        alertify.alert("Success", "Bulk upload successful", function () { fetchItems(); });
-        fetchItems();
-      } else {
-        alertify.alert("Warning", response.data.message, function () { fetchItems(); });
-      }
-    } catch (err) {
-      console.error("API Error:", err.response?.data || err);
-      if (err.response?.data?.errors) {
-        const errorObj = err.response.data.errors;
-        let errorMsg = "Upload failed with validation errors:\n\n";
-        let errorCount = 0;
-        for (let rowIndex in errorObj) {
-          if (errorCount >= 3) {
-            errorMsg += `\n... and more errors`;
-            break;
-          }
-          const rowErrors = errorObj[rowIndex];
-          if (Array.isArray(rowErrors)) {
-            errorMsg += `Row ${parseInt(rowIndex) + 1}: ${rowErrors.join(", ")}\n`;
-            errorCount++;
-          }
-        }
-        alertify.alert("Validation Error", errorMsg);
-        setIsBulkUploading(false);
-      } else {
-        alertify.alert("Error", err.response?.data?.message || "Bulk upload failed");
-        setIsBulkUploading(false);
-      }
-    } finally {
-      setIsBulkUploading(false);
-    }
-  };
-
+ 
+   const handleBulkUpload = (e) => {
+     console.log("Upload triggered");
+     setIsBulkUploading(true);
+ 
+     const file = e.target.files[0];
+     if (!file) {
+       console.log("No file selected");
+       e.target.value = "";
+       setIsBulkUploading(false);
+       return;
+     }
+ 
+     console.log("File:", file.name);
+     const fileType = file.name.split(".").pop().toLowerCase();
+ 
+     if (fileType === "csv") {
+       Papa.parse(file, {
+         header: true,
+         skipEmptyLines: true,
+         complete: function (results) {
+           console.log("CSV Parsed Data:", results.data);
+           if (!results.data || results.data.length === 0) {
+             alertify.alert("Error", "CSV is empty");
+             e.target.value = "";
+             return;
+           }
+           sendBulkData(results.data);
+           e.target.value = "";
+           fetchItems();
+         },
+         error: function (err) {
+           console.error("CSV Parse Error:", err);
+           e.target.value = "";
+           alertify.alert("Error", "Failed to parse CSV file");
+           setIsBulkUploading(false);
+         },
+       });
+     } else if (fileType === "xlsx" || fileType === "xls") {
+       const reader = new FileReader();
+       reader.onload = (evt) => {
+         console.log("Excel file loaded");
+         try {
+           const data = evt.target.result;
+           const workbook = XLSX.read(data, { type: "binary" });
+           console.log("Workbook:", workbook);
+           const sheetName = workbook.SheetNames[0];
+           const worksheet = workbook.Sheets[sheetName];
+           const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+           console.log("Excel Parsed Data:", jsonData);
+           if (!jsonData || jsonData.length === 0) {
+             alertify.alert("Error", "Excel file is empty");
+             e.target.value = "";
+             return;
+           }
+           const cleanedData = jsonData.map(item => ({
+             ...item,
+             VatableStatus:
+               item.VatableStatus === true ||
+               item.VatableStatus === "true" ||
+               item.VatableStatus === 1
+           }));
+           console.log("Cleaned Data:", cleanedData);
+           sendBulkData(cleanedData);
+           e.target.value = "";
+         } catch (err) {
+           console.error("Excel Processing Error:", err);
+           alertify.alert("Error", "Error reading Excel file");
+           e.target.value = "";
+           setIsBulkUploading(false);
+         }
+       };
+       reader.onerror = () => {
+         console.error("File reading failed");
+         alertify.alert("Error", "Failed to read file");
+         e.target.value = "";
+         setIsBulkUploading(false);
+       };
+       reader.readAsBinaryString(file);
+     } else {
+       alertify.alert("Error", "Only CSV or Excel files supported");
+       e.target.value = "";
+       setIsBulkUploading(false);
+     }
+   };
+ 
+   const sendBulkData = async (data) => {
+     console.log("Raw Data:", data);
+ 
+     const normalizeData = (rows) => {
+       return rows.map(row => {
+         const normalized = {};
+         for (let key in row) {
+           const value = row[key];
+           const lowerKey = key.toLowerCase().trim();
+           if (lowerKey === "itemname" || lowerKey === "item name") {
+             normalized.ItemName = value;
+           } else if (lowerKey === "itemcode" || lowerKey === "item code") {
+             normalized.ItemCode = value;
+           } else if (lowerKey === "description" || lowerKey === "item description" || lowerKey === "desc") {
+             normalized.Description = value;
+           } else if (lowerKey === "category") {
+             normalized.Category = value;
+           } else if (
+             lowerKey === "price" ||
+             lowerKey === "price excl vat" ||
+             lowerKey === "price exclvat"
+           ) {
+             normalized.Price = value;
+           } else if (lowerKey === "unitofmeasure" || lowerKey === "unit of measure" || lowerKey === "uom") {
+             normalized.UnitOfMeasure = value;
+           } else if (lowerKey === "companyid" || lowerKey === "company id") {
+             normalized.CompanyId = value;
+           } else if (lowerKey === "companyname" || lowerKey === "company name" || lowerKey === "company") {
+             normalized.CompanyName = value;
+           } else if (lowerKey === "vatablewstatus" || lowerKey === "is vatable" || lowerKey === "vatable") {
+             normalized.VatableStatus = value;
+           }
+         }
+         return normalized;
+       });
+     };
+ 
+     const filterUploadRows = (rows) => {
+       return rows.filter((row) => {
+         if (!row || typeof row !== "object") return false;
+         const values = Object.values(row).map((value) => String(value || "").trim());
+         const allEmpty = values.every((value) => value === "");
+         if (allEmpty) return false;
+         const lowerValues = values.map((value) => value.toLowerCase());
+         const lookupSectionLabels = [
+           "lookup_section",
+           "lookup name",
+           "allowed values",
+           "valid_categories",
+           "unit_of_measure",
+           "is_vatable",
+           "companies"
+         ];
+         if (lowerValues.some((value) => lookupSectionLabels.includes(value))) {
+           return false;
+         }
+         if (!values[0] && values[1] && lookupSectionLabels.includes(values[1].toLowerCase())) {
+           return false;
+         }
+         return true;
+       });
+     };
+ 
+     const filteredData = filterUploadRows(data);
+     console.log("Filtered Data:", filteredData);
+ 
+     const normalizedData = normalizeData(filteredData);
+     console.log("Normalized Data:", normalizedData);
+ 
+     const requiredFields = ["ItemName", "ItemCode", "Description", "Category", "UnitOfMeasure"];
+     const invalidRecords = [];
+ 
+     const allowedCategories = (categories || []).map(c => (c.name ? c.name : c).trim().toLowerCase());
+     const allowedCompanies = (companyList || []).map(c => c.companyName.trim().toLowerCase());
+     const allowedUOM = ["Hour", "Unit"].map(u => u.toLowerCase());
+     const allowedVatable = ["TRUE", "FALSE"].map(v => v.toLowerCase());
+ 
+     normalizedData.forEach((item, index) => {
+       const missingFields = requiredFields.filter(field => !item[field] || String(item[field]).trim() === "");
+       if (missingFields.length > 0) {
+         invalidRecords.push({
+           rowIndex: index + 1,
+           missingFields: missingFields,
+           record: item
+         });
+         return;
+       }
+ 
+       const itemCategoryLower = String(item.Category).trim().toLowerCase();
+       if (!allowedCategories.includes(itemCategoryLower)) {
+         invalidRecords.push({
+           rowIndex: index + 1,
+           error: `Invalid Category "${item.Category}". Allowed: ${allowedCategories.join(", ")}`,
+           record: item
+         });
+         return;
+       }
+ 
+       const itemUOMLower = String(item.UnitOfMeasure).trim().toLowerCase();
+       if (!allowedUOM.includes(itemUOMLower)) {
+         invalidRecords.push({
+           rowIndex: index + 1,
+           error: `Invalid Unit Of Measure "${item.UnitOfMeasure}". Allowed: Hour, Unit`,
+           record: item
+         });
+         return;
+       }
+ 
+       if (item.VatableStatus !== undefined && item.VatableStatus !== null && item.VatableStatus !== "") {
+         const itemVatableLower = String(item.VatableStatus).trim().toLowerCase();
+         if (!allowedVatable.includes(itemVatableLower)) {
+           invalidRecords.push({
+             rowIndex: index + 1,
+             error: `Invalid Is Vatable "${item.VatableStatus}". Allowed: TRUE, FALSE`,
+             record: item
+           });
+           return;
+         }
+       }
+ 
+       if (item.CompanyName) {
+         const itemCompanyLower = String(item.CompanyName).trim().toLowerCase();
+         if (!allowedCompanies.includes(itemCompanyLower)) {
+           invalidRecords.push({
+             rowIndex: index + 1,
+             error: `Invalid Company "${item.CompanyName}". Allowed: ${allowedCompanies.join(", ")}`,
+             record: item
+           });
+           return;
+         }
+       }
+     });
+ 
+     if (invalidRecords.length > 0) {
+       const errorMessage = `Validation Error: The following rows have issues:\n\n${
+         invalidRecords
+           .slice(0, 5)
+           .map(record => {
+             if (record.missingFields) {
+               return `Row ${record.rowIndex}: Missing ${record.missingFields.join(", ")}`;
+             } else {
+               return `Row ${record.rowIndex}: ${record.error}`;
+             }
+           })
+           .join("\n")
+       }${invalidRecords.length > 5 ? `\n\n... and ${invalidRecords.length - 5} more rows` : ""}\n\nPlease check your file and ensure all values match the allowed lookup values.`;
+ 
+       console.error("Validation Errors:", invalidRecords);
+       alertify.alert("Validation Error", errorMessage);
+       setIsBulkUploading(false);
+       return;
+     }
+ 
+     const companyErrors = [];
+     const formattedData = normalizedData.map((item, index) => {
+       let companyId = parseInt(item.CompanyId) || 0;
+ 
+       if (!companyId && item.CompanyName) {
+         const matchedCompany = companyList?.find(
+           company => company.companyName?.toLowerCase().trim() === String(item.CompanyName).toLowerCase().trim()
+         );
+         companyId = matchedCompany?.id || 0;
+ 
+         if (!matchedCompany) {
+           companyErrors.push({
+             rowIndex: index + 1,
+             companyName: item.CompanyName
+           });
+           console.warn(`Company not found for: ${item.CompanyName}`);
+         }
+       }
+ 
+       return {
+         ItemName: item.ItemName?.toString().trim(),
+         ItemCode: item.ItemCode?.toString().trim(),
+         Description: item.Description?.toString().trim(),
+         Category: item.Category?.toString().trim(),
+         Price: parseFloat(item.Price) || 0,
+         UnitOfMeasure: item.UnitOfMeasure?.toString().trim(),
+         CompanyId: companyId,
+         VatableStatus:
+           item.VatableStatus === true ||
+           item.VatableStatus === "true" ||
+           item.VatableStatus === "TRUE" ||
+           item.VatableStatus === 1 ||
+           String(item.VatableStatus).toLowerCase() === "true"
+       };
+     });
+ 
+     if (companyErrors.length > 0) {
+       const errorMessage = `Warning: The following companies were not found in the system:\n\n${
+         companyErrors
+           .slice(0, 5)
+           .map(err => `Row ${err.rowIndex}: "${err.companyName}"`)
+           .join("\n")
+       }${companyErrors.length > 5 ? `\n\n... and ${companyErrors.length - 5} more` : ""}\n\nAvailable companies: ${
+         companyList?.map(c => c.companyName).join(", ") || "None"
+       }`;
+ 
+       alertify.alert("Company Mapping Warning", errorMessage);
+       return;
+     }
+ 
+     console.log("Formatted Data:", formattedData);
+ 
+     try {
+       const response = await AxiosInstance.post("/api/InventoryItems/BulkUpload", formattedData);
+       console.log("API Response:", response);
+       if (response.data.success) {
+         alertify.alert("Success", "Bulk upload successful", function () { fetchItems(); });
+         fetchItems();
+       } else {
+         alertify.alert("Warning", response.data.message, function () { fetchItems(); });
+       }
+     } catch (err) {
+       console.error("API Error:", err.response?.data || err);
+       if (err.response?.data?.errors) {
+         const errorObj = err.response.data.errors;
+         let errorMsg = "Upload failed with validation errors:\n\n";
+         let errorCount = 0;
+         for (let rowIndex in errorObj) {
+           if (errorCount >= 3) {
+             errorMsg += `\n... and more errors`;
+             break;
+           }
+           const rowErrors = errorObj[rowIndex];
+           if (Array.isArray(rowErrors)) {
+             errorMsg += `Row ${parseInt(rowIndex) + 1}: ${rowErrors.join(", ")}\n`;
+             errorCount++;
+           }
+         }
+         alertify.alert("Validation Error", errorMsg);
+         setIsBulkUploading(false);
+       } else {
+         alertify.alert("Error", err.response?.data?.message || "Bulk upload failed");
+         setIsBulkUploading(false);
+       }
+     } finally {
+       setIsBulkUploading(false);
+     }
+   };
+ 
   return (
     <div className="dashboard-container">
       <div className="dashboard-content">
@@ -954,6 +957,7 @@ const InventoryItem = () => {
                 onChange={(e) =>
                   setTempFilters({ ...tempFilters, Category: e.target.value })
                 }
+                className="inventoryitem-input"
               >
                 <option value="">Select Category</option>
                 {categories.map((cat) => (
@@ -970,6 +974,7 @@ const InventoryItem = () => {
                   setTempFilters({ ...tempFilters, ItemName: e.target.value })
                 }
                 placeholder="Item Name"
+                className="inventoryitem-input"
               />
               <input
                 type="text"
@@ -978,6 +983,7 @@ const InventoryItem = () => {
                   setTempFilters({ ...tempFilters, itemCode: e.target.value })
                 }
                 placeholder="Item Code"
+                className="inventoryitem-input"
               />
               <input
                 type="text"
@@ -986,6 +992,7 @@ const InventoryItem = () => {
                   setTempFilters({ ...tempFilters, Price: e.target.value })
                 }
                 placeholder="Price"
+                className="inventoryitem-input"
               />
               <button className="filter-btn" onClick={applyFilter}>
                 Filter
@@ -1019,71 +1026,71 @@ const InventoryItem = () => {
                   + Add New
                 </button>
 
-                {/* Bulk Upload Button */}
-                <button
-                  className="btn btn-primary"
-                  style={{ color: "white", backgroundColor: "green", cursor: "pointer" }}
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isBulkUploading}
-                >
-                  {isBulkUploading ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      &nbsp;Uploading...
-                    </>
-                  ) : (
-                    "Bulk Upload"
-                  )}
-                </button>
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".csv, .xlsx, .xls"
-                  style={{ display: "none" }}
-                  onChange={handleBulkUpload}
-                  disabled={isBulkUploading}
-                />
-
-                {/* Download buttons — only visible after table data has loaded */}
-                {!loading && (
+                 {/* Bulk Upload Button */}
+              <button
+                className="btn btn-primary"
+                style={{ color: "white", backgroundColor: "green", cursor: "pointer" }}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isBulkUploading}
+              >
+                {isBulkUploading ? (
                   <>
-                    {/* XL Template — opens in Excel, spinner only while downloading */}
-                    <button
-                      className="btn btn-primary"
-                      style={{ color: "white", backgroundColor: "#006fff", cursor: "pointer" }}
-                      onClick={downloadTemplate}
-                      disabled={isDownloadingTemplate}
-                    >
-                      {isDownloadingTemplate ? (
-                        <>
-                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                          &nbsp;Downloading...
-                        </>
-                      ) : (
-                        "Download xl Template"
-                      )}
-                    </button>
-
-                    {/* CSV Template — opens in Word (.doc), spinner only while downloading */}
-                    <button
-                      className="btn btn-secondary"
-                      style={{ color: "white", backgroundColor: "#444", cursor: "pointer" }}
-                      onClick={downloadCsvTemplate}
-                      disabled={isDownloadingCsvTemplate}
-                    >
-                      {isDownloadingCsvTemplate ? (
-                        <>
-                          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                          &nbsp;Downloading...
-                        </>
-                      ) : (
-                        "Download CSV Template"
-                      )}
-                    </button>
+                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    &nbsp;Uploading...
                   </>
+                ) : (
+                  "Bulk Upload"
                 )}
-              </div>
+              </button>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv, .xlsx, .xls"
+                style={{ display: "none" }}
+                onChange={handleBulkUpload}
+                disabled={isBulkUploading}
+              />
+
+              {/* Download buttons — only visible after table data has loaded */}
+              {!loading && (
+                <>
+                  {/* XL Template — opens in Excel, spinner only while downloading */}
+                  <button
+                    className="btn btn-primary"
+                    style={{ color: "white", backgroundColor: "#006fff", cursor: "pointer" }}
+                    onClick={downloadTemplate}
+                    disabled={isDownloadingTemplate}
+                  >
+                    {isDownloadingTemplate ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        &nbsp;Downloading...
+                      </>
+                    ) : (
+                      "Download xl Template"
+                    )}
+                  </button>
+
+                  {/* CSV Template — opens in Word (.doc), spinner only while downloading */}
+                  <button
+                    className="btn btn-secondary"
+                    style={{ color: "white", backgroundColor: "#444", cursor: "pointer" }}
+                    onClick={downloadCsvTemplate}
+                    disabled={isDownloadingCsvTemplate}
+                  >
+                    {isDownloadingCsvTemplate ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        &nbsp;Downloading...
+                      </>
+                    ) : (
+                      "Download CSV Template"
+                    )}
+                  </button>
+                </>
+              )}
+            </div>
 
               <div className="records-per-page">
                 Records per page:
@@ -1093,6 +1100,7 @@ const InventoryItem = () => {
                     setRecordsPerPage(Number(e.target.value));
                     setCurrentPage(1);
                   }}
+                  className="inventoryitem-input"
                 >
                   {[5, 10, 25].map((num) => (
                     <option key={num} value={num}>
@@ -1222,7 +1230,7 @@ const InventoryItem = () => {
                     name="Category"
                     value={newItem.Category}
                     onChange={handleInputChange}
-                    className={errors.Category ? "error-border" : ""}
+                    className={`inventoryitem-input ${errors.Category ? "error-border" : ""}`}
                   >
                     <option value="">Select Category</option>
                     {categories.map((Category) => (
@@ -1242,7 +1250,7 @@ const InventoryItem = () => {
                     placeholder="Item Name"
                     value={newItem.ItemName}
                     onChange={handleInputChange}
-                    className={errors.ItemName ? "error-border" : ""}
+                    className={`inventoryitem-input ${errors.ItemName ? "error-border" : ""}`}
                   />
                   {errors.ItemName && <p className="error-message">{errors.ItemName}</p>}
                 </div>
@@ -1254,7 +1262,7 @@ const InventoryItem = () => {
                       name="MeterTypeId"
                       value={newItem.MeterTypeId}
                       onChange={handleInputChange}
-                      className={errors.MeterTypeId ? "error-border" : ""}
+                      className={`inventoryitem-input ${errors.MeterTypeId ? "error-border" : ""}`}
                     >
                       <option value="">Select MeterType</option>
                       {meterType.map((meterType) => (
@@ -1275,7 +1283,7 @@ const InventoryItem = () => {
                     placeholder="Item Code"
                     value={newItem.ItemCode}
                     onChange={handleInputChange}
-                    className={errors.ItemCode ? "error-border" : ""}
+                    className={`inventoryitem-input ${errors.ItemCode ? "error-border" : ""}`}
                   />
                   {errors.ItemCode && <p className="error-message">{errors.ItemCode}</p>}
                 </div>
@@ -1288,7 +1296,7 @@ const InventoryItem = () => {
                     placeholder="Description"
                     value={newItem.Description}
                     onChange={handleInputChange}
-                    className={errors.Description ? "error-border" : ""}
+                    className={`inventoryitem-input ${errors.Description ? "error-border" : ""}`}
                   />
                   {errors.Description && <p className="error-message">{errors.Description}</p>}
                 </div>
@@ -1299,7 +1307,7 @@ const InventoryItem = () => {
                     name="Discount"
                     value={newItem.Discount}
                     onChange={handleInputChange}
-                    className={errors.Discount ? "error-border" : ""}
+                    className={`inventoryitem-input ${errors.Discount ? "error-border" : ""}`}
                   >
                     <option value="">Select Company</option>
                     {companyList.map((company) => (
@@ -1329,7 +1337,7 @@ const InventoryItem = () => {
                         Price: isNaN(parsed) ? "" : Number(parsed.toFixed(2)),
                       });
                     }}
-                    className={errors.PriceDisplay ? "error-border" : ""}
+                    className={`inventoryitem-input ${errors.PriceDisplay ? "error-border" : ""}`}
                   />
                   {errors.PriceDisplay && <p className="error-message">{errors.PriceDisplay}</p>}
                 </div>
@@ -1340,7 +1348,7 @@ const InventoryItem = () => {
                     name="UnitOfMeasure"
                     value={newItem.UnitOfMeasure}
                     onChange={handleInputChange}
-                    className={errors.UnitOfMeasure ? "error-border" : ""}
+                    className={`inventoryitem-input ${errors.UnitOfMeasure ? "error-border" : ""}`}
                   >
                     <option value="">Select UOM</option>
                     <option value="Hour">Hour</option>
@@ -1414,7 +1422,7 @@ const InventoryItem = () => {
                     name="Category"
                     value={editItem.Category}
                     onChange={handleEditChange}
-                    className={editErrors.Category ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.Category ? "error-border" : ""}`}
                   >
                     <option value="">Select Category</option>
                     {categories.map((Category) => (
@@ -1434,7 +1442,7 @@ const InventoryItem = () => {
                     placeholder="Item Name"
                     value={editItem.ItemName || ""}
                     onChange={handleEditChange}
-                    className={editErrors.ItemName ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.ItemName ? "error-border" : ""}`}
                   />
                   {editErrors.ItemName && <p className="error-message">{editErrors.ItemName}</p>}
                 </div>
@@ -1446,7 +1454,7 @@ const InventoryItem = () => {
                       name="MeterTypeId"
                       value={editItem.MeterTypeId}
                       onChange={handleEditChange}
-                      className={editErrors.MeterTypeId ? "error-border" : ""}
+                      className={`inventoryitem-input ${editErrors.MeterTypeId ? "error-border" : ""}`}
                     >
                       <option value="">Select MeterType</option>
                       {meterType.map((meterType) => (
@@ -1467,7 +1475,7 @@ const InventoryItem = () => {
                     placeholder="Item Code"
                     value={editItem.ItemCode}
                     onChange={handleEditChange}
-                    className={editErrors.ItemCode ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.ItemCode ? "error-border" : ""}`}
                   />
                   {editErrors.ItemCode && <p className="error-message">{editErrors.ItemCode}</p>}
                 </div>
@@ -1480,7 +1488,7 @@ const InventoryItem = () => {
                     placeholder="Description"
                     value={editItem.Description}
                     onChange={handleEditChange}
-                    className={editErrors.Description ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.Description ? "error-border" : ""}`}
                   />
                   {editErrors.Description && <p className="error-message">{editErrors.Description}</p>}
                 </div>
@@ -1491,7 +1499,7 @@ const InventoryItem = () => {
                     name="Discount"
                     value={editItem.Discount}
                     onChange={handleEditChange}
-                    className={editErrors.Discount ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.Discount ? "error-border" : ""}`}
                   >
                     <option value="">Select Company</option>
                     {companyList.map((company) => (
@@ -1525,7 +1533,7 @@ const InventoryItem = () => {
                         Price: isNaN(parsed) ? "" : Number(parsed.toFixed(2)),
                       });
                     }}
-                    className={editErrors.PriceDisplay ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.PriceDisplay ? "error-border" : ""}`}
                   />
                   {editErrors.PriceDisplay && <p className="error-message">{editErrors.PriceDisplay}</p>}
                 </div>
@@ -1536,7 +1544,7 @@ const InventoryItem = () => {
                     name="UnitOfMeasure"
                     value={editItem.UnitOfMeasure}
                     onChange={handleEditChange}
-                    className={editErrors.UnitOfMeasure ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.UnitOfMeasure ? "error-border" : ""}`}
                   >
                     <option value="">Select UOM</option>
                     <option value="Hour">Hour</option>
@@ -1574,7 +1582,7 @@ const InventoryItem = () => {
                     name="IsActive"
                     value={editItem.IsActive}
                     onChange={handleEditChange}
-                    className={editErrors.IsActive ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.IsActive ? "error-border" : ""}`}
                   >
                     <option value="">Select Is Active</option>
                     <option value="Yes">Yes</option>
@@ -1589,7 +1597,7 @@ const InventoryItem = () => {
                     name="IsDeleted"
                     value={editItem.IsDeleted}
                     onChange={handleEditChange}
-                    className={editErrors.IsDeleted ? "error-border" : ""}
+                    className={`inventoryitem-input ${editErrors.IsDeleted ? "error-border" : ""}`}
                   >
                     <option value="">Select Is Deleted</option>
                     <option value="Yes">Yes</option>

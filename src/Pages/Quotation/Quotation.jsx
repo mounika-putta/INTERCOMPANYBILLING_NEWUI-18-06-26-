@@ -1428,31 +1428,26 @@ if (Number(row.price) <= 0 || isNaN(Number(row.price))) {
     margin: "10px 0",
   }}
 >
-  {/* Left Side */}
-  <div
-    className="records-per-page"
-    // style={{
-    //   display: "flex",
-    //   alignItems: "center",
-    //   gap: "8px",
-    //   whiteSpace: "nowrap",
-    // }}
+  
+ <div
+  className="records-per-page"
+  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+>
+  <span>Records per page:</span>
+  <select
+    value={itemsPerPage}
+    onChange={(e) => {
+      setItemsPerPage(Number(e.target.value));
+      setCurrentPage(1);
+    }}
   >
-    <span>Records per page:</span>
-    <select
-      value={itemsPerPage}
-      onChange={(e) => {
-        setItemsPerPage(Number(e.target.value));
-        setCurrentPage(1);
-      }}
-    >
-      {[2, 5, 10, 25].map((num) => (
-        <option key={num} value={num}>
-          {num}
-        </option>
-      ))}
-    </select>
-  </div>
+    {[2, 5, 10, 25].map((num) => (
+      <option key={num} value={num}>
+        {num}
+      </option>
+    ))}
+  </select>
+</div>
 
   {/* Right Side */}
   <div className="Invoicebuttons">
