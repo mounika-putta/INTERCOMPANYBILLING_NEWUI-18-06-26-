@@ -1103,7 +1103,7 @@ const ReceivingEntities = () => {
                 )}
 
                 <div className="receiv-actions">
-                  <button type="submit" className="btn btn-success btn-lg" disabled={createLoading}>
+                  <button type="submit" className="btn btn-succes" disabled={createLoading}>
                     {createLoading ? (
                       <>
                         <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -1895,7 +1895,7 @@ const ReceivingEntities = () => {
                   <p className="error-message">{errors.duplicate}</p>
                 )}
                 <div className="receiving-actions">
-                  <button type="submit" className="btn btn-success btn-lg" disabled={updateLoading}>
+                  <button type="submit" className="btn btn-succes" disabled={updateLoading}>
                     {updateLoading ? (
                       <>
                         <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
