@@ -1366,7 +1366,7 @@ const InventoryItem = () => {
                         TaxRate: isChecked ? taxes.id : 0,
                       });
                     }}
-                    style={{ marginBottom: "-15px" }}
+                    style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
                   />
                 </div>
 
