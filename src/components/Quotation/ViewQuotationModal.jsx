@@ -7,14 +7,17 @@ const ViewQuotationModal = ({ show, onClose, selectedInvoice }) => {
   return (
     <div className="quotation-view-overlay">
       <div className="quotation-view-modal">
-        <button
-          className="quotation-view-close-btn"
-          onClick={onClose}
-        >
-          &times;
-        </button>
+        <div className="quotation-view-header">
+          <h3 className="quotation-view-title">View Quotation Details</h3>
+          <button
+            className="quotation-view-close-btn"
+            onClick={onClose}
+          >
+            &times;
+          </button>
+        </div>
 
-        <h3 className="quotation-view-title">View Quotation Details</h3>
+        <div className="quotation-view-body">
 
         {/* {selectedInvoice.comapanyLogo && (() => {
           const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
@@ -131,6 +134,7 @@ const ViewQuotationModal = ({ show, onClose, selectedInvoice }) => {
           <div><span className="label">Address</span> :<span>{selectedInvoice.customerAddress}</span></div>
           <div><span className="label">Payment Terms</span> :<span>{selectedInvoice.paymentTerms}</span></div>
 
+        </div>
         </div>
       </div>
     </div>

@@ -47,7 +47,7 @@ const AuthLayout = ({
           display: { xs: 'none', md: 'flex' },
           flexDirection: 'column',
           justifyContent: 'center',
-          width: { md: '40%', lg: '48%' },
+          width: { md: '35%', lg: '40%' },
           px: { md: 6, lg: 8 },
           py: 6,
           position: 'relative',

@@ -4,6 +4,7 @@ import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import { fetchInvoicedetailswithRefno } from '../../redux/QuotationTemplateSlice';
 import './QuotationTemplateModern.css';
+import './CreditNoteTemplate.css';
 import { baseURL } from "../../services/api";
 import { updateCreditNote } from '../../redux/CreditNoteSlice';
 import { fetchActiveUrl } from '../../redux/RegistrationSlice';
@@ -389,7 +390,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                             <KVReadOnly label="Website" value={editableInvoice.companyWebsite} />
                             {/* <KVReadOnly label="Address" value={editableInvoice.companyAddress} /> */}
 
-                            <br />
+                            <div style={{ height: 10 }} />
                             <h4 className="cn-block-title">Bank Account Information</h4>
                             <KVReadOnly label="Account Holder" value={editableInvoice.accountHolderName} />
                             <KVReadOnly label="Branch Code" value={editableInvoice.branchCode} />
@@ -441,7 +442,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                                 value={formatDateDisplay(editableInvoice.dueDate)}
                             />
                             {/* <KVEdit label="Invoice Ref"   value={editableInvoice.invoiceReferenceNumber} onChange={v => handleChange('invoiceReferenceNumber', v)} /> */}
-                            <br />
+                            <div style={{ height: 10 }} />
                             <h4 className="cn-block-title">Customer Information</h4>
 
                             <div className="cn-form-grid">
@@ -654,7 +655,6 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                 </section>
 
                 {/* ── Save ── */}
-                <br />
                 <div className="cn-save-wrapper">
                     <button
                         className="cn-save-btn"

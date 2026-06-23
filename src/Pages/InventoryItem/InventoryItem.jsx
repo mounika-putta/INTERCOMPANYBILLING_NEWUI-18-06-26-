@@ -1028,8 +1028,8 @@ const InventoryItem = () => {
 
                  {/* Bulk Upload Button */}
               <button
-                className="btn btn-primary"
-                style={{ color: "white", backgroundColor: "green", cursor: "pointer" }}
+                className="btn_add"
+                style={{ color: "white", backgroundColor: "#fd7e14", cursor: "pointer" }}
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isBulkUploading}
               >
@@ -1057,8 +1057,8 @@ const InventoryItem = () => {
                 <>
                   {/* XL Template — opens in Excel, spinner only while downloading */}
                   <button
-                    className="btn btn-primary"
-                    style={{ color: "white", backgroundColor: "#006fff", cursor: "pointer" }}
+                    className="btn_add"
+                    style={{ color: "white", backgroundColor: "#0d6efd", cursor: "pointer" }}
                     onClick={downloadTemplate}
                     disabled={isDownloadingTemplate}
                   >
@@ -1074,8 +1074,8 @@ const InventoryItem = () => {
 
                   {/* CSV Template — opens in Word (.doc), spinner only while downloading */}
                   <button
-                    className="btn btn-secondary"
-                    style={{ color: "white", backgroundColor: "#444", cursor: "pointer" }}
+                    className="btn_add"
+                    style={{ color: "white", backgroundColor: "#6f42c1", cursor: "pointer" }}
                     onClick={downloadCsvTemplate}
                     disabled={isDownloadingCsvTemplate}
                   >
@@ -1220,7 +1220,6 @@ const InventoryItem = () => {
         {showCreateScreen && (
           <div className="create-item-section">
             <div className="create-item-box">
-              <br />
               <h3 className="role-title">Create New Item</h3>
               <form onSubmit={onSubmit} noValidate className="create-item-form-row">
 
@@ -1412,7 +1411,6 @@ const InventoryItem = () => {
         {showEditScreen && selectedInvoice && (
           <div className="create-item-section">
             <div className="create-item-box">
-              <br />
               <h3 className="role-title">Edit Item</h3>
               <form onSubmit={handleEditItem} className="create-item-form-row">
 

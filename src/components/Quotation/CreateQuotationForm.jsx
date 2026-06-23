@@ -100,10 +100,6 @@ const CreateQuotationForm = ({
               {logoFile && (
                 <img
                   src={`${baseURL}/UploadedFiles/${logoFile}`}
-                  style={{
-                    position: "absolute",
-                    top: "-20px",
-                  }}
                   alt="Company Logo"
                   className="company-logo-corner"
                 />
@@ -112,7 +108,7 @@ const CreateQuotationForm = ({
 
             <h4 className="quotationsub-title" style={{ color: "green" }}>Company Information</h4>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", marginBottom: "10px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "4px" }}>
               {/* setCompanyLogo(apiResponse.companyLogo || ""); */}
 
               <div style={{ flex: "1 1 22%" }}>
@@ -195,10 +191,10 @@ const CreateQuotationForm = ({
                   type="text"
                   style={{
                     width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: "12px",
+                    padding: "6px 9px",
+                    borderRadius: "8px",
                     border: "1px solid #28a745",
-                    fontSize: "1rem",
+                    fontSize: "13px",
                     fontFamily: "'Open Sans', sans-serif",
                     boxSizing: "border-box",
                     resize: "none",
@@ -300,7 +296,7 @@ const CreateQuotationForm = ({
 
 
             <h4 className="quotationsub-title" style={{ color: "green" }}>Banking Details</h4>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", marginBottom: "10px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "4px" }}>
 
 
               <div style={{ flex: "1 1 22%" }}>
@@ -354,10 +350,10 @@ const CreateQuotationForm = ({
                   type="text"
                   style={{
                     width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: "12px",
+                    padding: "6px 9px",
+                    borderRadius: "8px",
                     border: "1px solid #28a745",
-                    fontSize: "1rem",
+                    fontSize: "13px",
                     fontFamily: "'Open Sans', sans-serif",
                     boxSizing: "border-box",
                     resize: "none",
@@ -410,19 +406,18 @@ const CreateQuotationForm = ({
             <h4 className="quotationsub-title" style={{ color: "green" }}>Quotation Information</h4>
             <div style={{ maxWidth: "100%", padding: "0px" }}>
               {/* quotation ID */}
-              <div style={{ display: "flex", marginBottom: "10px" }}>
+              <div style={{ display: "flex", marginBottom: "4px" }}>
                 <label style={{ width: "120px", fontWeight: "500" }}>Quotation Id   &nbsp;&nbsp;&nbsp;&nbsp;  : </label>
                 <span style={{ fontWeight: "bold" }}>{generatedQuotationId}</span>
               </div>
 
               {/* Invoice Date */}
-              <div style={{ display: "flex", marginBottom: "10px" }}>
+              <div style={{ display: "flex", marginBottom: "8px" }}>
                 <label style={{ width: "120px", fontWeight: "100" }}>Quotation Date :</label>
                 <span style={{ fontWeight: "bold" }}>{todayDate}</span>
               </div>
-              <br />
               {/* Billing, Receiving, and Currency */}
-              <div style={{ display: "flex", gap: "16px", marginBottom: "10px", width: "100%" }}>
+              <div style={{ display: "flex", gap: "12px", marginBottom: "4px", width: "100%" }}>
 
                 <div style={{ flex: 1 }}>
                   <label>Receiving Entity<span className="required">*</span>
@@ -780,10 +775,10 @@ const CreateQuotationForm = ({
               <div
                 className="totals-section"
                 style={{
-                  width: "250px",      
-                  display: "flex",     
+                  width: "250px",
+                  display: "flex",
                   flexDirection: "column",
-                  gap: "10px"         
+                  gap: "2px"
                 }}
               >
                 <div>
@@ -831,7 +826,7 @@ const CreateQuotationForm = ({
             <h4 className="quotationsub-title" style={{ color: "green" }}>Customer Information</h4>
 
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", marginBottom: "10px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "4px" }}>
 
 
               <div style={{ flex: "1 1 22%" }}>
@@ -909,10 +904,10 @@ const CreateQuotationForm = ({
                   type="text"
                   style={{
                     width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: "12px",
+                    padding: "6px 9px",
+                    borderRadius: "8px",
                     border: "1px solid #28a745",
-                    fontSize: "1rem",
+                    fontSize: "13px",
                     fontFamily: "'Open Sans', sans-serif",
                     boxSizing: "border-box",
                     resize: "none",
@@ -945,7 +940,7 @@ const CreateQuotationForm = ({
                 Payment Terms <span className="required">*</span>
               </label>
               <textarea
-                style={{ width: "100%", minHeight: "70px" }}
+                style={{ width: "100%", minHeight: "54px" }}
                 value={PaymentTerms}
                 onChange={(e) => {
                   const rawValue = e.target.value;
@@ -978,8 +973,7 @@ const CreateQuotationForm = ({
               )}
             </div>
 
-            <br />
-            <div className="quotation-actions">
+            <div className="quotation-actions" style={{ marginTop: "14px" }}>
 
               <button className="submit-btn" onClick={handleSave} disabled={isSaving}>
                 {isSaving && (

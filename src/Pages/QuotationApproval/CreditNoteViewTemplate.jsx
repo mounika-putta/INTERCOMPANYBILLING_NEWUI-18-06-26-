@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import { fetchCreditnotedetailswithRefno } from '../../redux/QuotationTemplateSlice';
-import './QuotationTemplate.css';
+import './QuotationTemplateModern.css';
 import { baseURL } from "../../services/api";
 
 

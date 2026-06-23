@@ -198,159 +198,129 @@ const QuotationTemplateModern = () => {
 
         {/* Body */}
         <section className="qt-body">
-          <div className="qt-row">
-            <div className="qt-block">
-              <h4 className="qt-block-title">Company Information</h4>
-              <div className="qt-kv"><span>Registration No</span><span>{quotation?.registrationNumber || "-"}</span></div>
-              <div className="qt-kv"><span>VAT Number</span><span>{quotation?.vatNumber || "-"}</span></div>
-              <div className="qt-kv"><span>Phone</span><span>{quotation?.companyPhoneNumber || "-"}</span></div>
-              <div className="qt-kv"><span>Website</span><span>{quotation?.companyWebsite || "-"}</span></div>
-              <div className="qt-kv"><span>Address</span><span>{quotation?.companyAddress || "-"}</span></div>
-
-              <br />
-              <h4 className="qt-block-title">Customer Information</h4>
-              <div className="qt-kv"><span>Reference No</span><span>{quotation?.customerRefno || "-"}</span></div>
-              <div className="qt-kv"><span>Company Name</span><span>{quotation?.receivingEntity || "-"}</span></div>
-              <div className="qt-kv"><span>Name</span><span>{quotation?.customerName || "-"}</span></div>
-              <div className="qt-kv"><span>Email</span><span>{quotation?.customerEmail || "-"}</span></div>
-
-            </div>
-
-            <div className="qt-block">
-              <h4 className="qt-block-title">Quotation Info</h4>
-              <div className="qt-kv"><span>Reference No</span><span>{quotation?.referenceNumber || "-"}</span></div>
-              <div className="qt-kv">
-                <span>Date</span>
-                <span>
-                  {quotation?.invoiceDate
-                    ? (() => {
-                      const d = new Date(quotation.invoiceDate);
-                      const day = String(d.getDate()).padStart(2, "0");
-                      const month = String(d.getMonth() + 1).padStart(2, "0");
-                      const year = d.getFullYear();
-                      return `${day}/${month}/${year}`;
-                    })()
-                    : "/"}
-                </span>
-              </div>
-              <div className="qt-kv"><span>Status</span><span>{quotation?.quotationStatus || "-"}</span></div>
-              <div className="qt-kv"><span>Currency</span><span>{quotation?.currency || "-"}</span></div>
-              <div className="qt-kv"><span>Type</span><span>{quotation?.quotationType || "-"}</span></div>
-              <div className="qt-kv"><span>Total</span><span>{quotation?.totalAmount || 0}</span></div>
-            </div>
+          {/* Company Information */}
+          <h4 className="qt-block-title">Company Information</h4>
+          <div className="qt-info">
+            <div className="qt-kv"><span>Registration No</span><span>{quotation?.registrationNumber || "-"}</span></div>
+            <div className="qt-kv"><span>VAT Number</span><span>{quotation?.vatNumber || "-"}</span></div>
+            <div className="qt-kv"><span>Phone</span><span>{quotation?.companyPhoneNumber || "-"}</span></div>
+            <div className="qt-kv"><span>Website</span><span>{quotation?.companyWebsite || "-"}</span></div>
+            <div className="qt-kv"><span>Address</span><span>{quotation?.companyAddress || "-"}</span></div>
           </div>
 
-          <div className="qt-row qt-items-row">
-            <div className="qt-block full">
-              <h4 className="qt-block-title">Quotation Details</h4>
+          {/* Customer Information */}
+          <h4 className="qt-block-title">Customer Information</h4>
+          <div className="qt-info">
+            <div className="qt-kv"><span>Reference No</span><span>{quotation?.customerRefno || "-"}</span></div>
+            <div className="qt-kv"><span>Company Name</span><span>{quotation?.receivingEntity || "-"}</span></div>
+            <div className="qt-kv"><span>Name</span><span>{quotation?.customerName || "-"}</span></div>
+            <div className="qt-kv"><span>Email</span><span>{quotation?.customerEmail || "-"}</span></div>
+          </div>
 
-              <div className="qt-table-wrap">
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      <th>ITEM CODE</th>
-                      <th>CATEGORY</th>
-                      <th>NAME</th>
-                      <th>QUANTITY</th>
-                      <th>UNIT RATE EXCL VAT</th>
-                      <th>AMOUNT</th>
-                      <th>DISCOUNT</th>
-                      <th>DISCOUNTED TOTAL</th>
-                      <th>VAT %</th>
-                      <th>NET AMOUNT</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {quotation?.details?.length > 0 ? (
-                      quotation.details.map((d, idx) => {
+          {/* Quotation Information */}
+          <h4 className="qt-block-title">Quotation Information</h4>
+          <div className="qt-info">
+            <div className="qt-kv"><span>Reference No</span><span>{quotation?.referenceNumber || "-"}</span></div>
+            <div className="qt-kv">
+              <span>Date</span>
+              <span>
+                {quotation?.invoiceDate
+                  ? (() => {
+                    const d = new Date(quotation.invoiceDate);
+                    const day = String(d.getDate()).padStart(2, "0");
+                    const month = String(d.getMonth() + 1).padStart(2, "0");
+                    const year = d.getFullYear();
+                    return `${day}/${month}/${year}`;
+                  })()
+                  : "/"}
+              </span>
+            </div>
+            <div className="qt-kv"><span>Status</span><span>{quotation?.quotationStatus || "-"}</span></div>
+            <div className="qt-kv"><span>Currency</span><span>{quotation?.currency || "-"}</span></div>
+            <div className="qt-kv"><span>Type</span><span>{quotation?.quotationType || "-"}</span></div>
+            <div className="qt-kv"><span>Total</span><span>{quotation?.totalAmount || 0}</span></div>
+          </div>
 
-                        return (
-                          <tr key={idx}>
-                            <td>{d.itemCode}</td>
-                            <td>{d.category}</td>
-                            <td>{d.itemName}</td>
-                            <td className="text-right" >{d.quotationQuantity}</td>
-                            <td className="text-right" >{d.unitRate}</td>
-                            <td className="text-right" >{(d.quotationQuantity * d.unitRate)}</td>
-                            <td className="text-right" >{d.discount}</td>
-                            <td className="text-right" >{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                            <td className="text-right" >{d.tax}</td>
-                            <td className="text-right" >
-                              {(
-                                (d.quotationQuantity * d.unitRate - d.discount) +
-                                ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
-                              ).toFixed(2)}
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr>
-                        <td colSpan="6" className="no-data">No quotation details found.</td>
+          {/* Quotation Details */}
+          <h4 className="qt-block-title">Quotation Details</h4>
+          <div className="qt-table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>ITEM CODE</th>
+                  <th>CATEGORY</th>
+                  <th>NAME</th>
+                  <th>QUANTITY</th>
+                  <th>UNIT RATE EXCL VAT</th>
+                  <th>AMOUNT</th>
+                  <th>DISCOUNT</th>
+                  <th>DISCOUNTED TOTAL</th>
+                  <th>VAT %</th>
+                  <th>NET AMOUNT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {quotation?.details?.length > 0 ? (
+                  quotation.details.map((d, idx) => {
+
+                    return (
+                      <tr key={idx}>
+                        <td>{d.itemCode}</td>
+                        <td>{d.category}</td>
+                        <td>{d.itemName}</td>
+                        <td className="text-right" >{d.quotationQuantity}</td>
+                        <td className="text-right" >{d.unitRate}</td>
+                        <td className="text-right" >{(d.quotationQuantity * d.unitRate)}</td>
+                        <td className="text-right" >{d.discount}</td>
+                        <td className="text-right" >{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
+                        <td className="text-right" >{d.tax}</td>
+                        <td className="text-right" >
+                          {(
+                            (d.quotationQuantity * d.unitRate - d.discount) +
+                            ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
+                          ).toFixed(2)}
+                        </td>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="no-data">No quotation details found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
 
-          <div className="qt-row bottom-row">
-            <div className="qt-block">
-              <h4 className="qt-block-title">Bank Account Information</h4>
+          {/* Bank Account + Totals */}
+          <h4 className="qt-block-title">Bank Account Information</h4>
+          <div className="qt-bottom">
+            <div className="qt-info qt-bank-info">
               <div className="qt-kv"><span>Account Name</span><span>{quotation?.accountHolderName || "-"}</span></div>
               <div className="qt-kv"><span>Branch Code</span><span>{quotation?.branchCode || "-"}</span></div>
               <div className="qt-kv"><span>Account Number</span><span>{quotation?.bankAccountNumber || "-"}</span></div>
-
-              {/* <div className="qt-kv"><span>Phone</span><span>{quotation?.customerPhone || "-"}</span></div>
-              <div className="qt-kv"><span>Payment terms</span><span>{quotation?.paymentTerms || "-"}</span></div> */}
             </div>
 
-            <div className="qt-block totals">
-              <div className="qt-totals-card">
-                <div className="qt-totals-row">
-                  <div>Subtotal</div>
-                  <div>
-                    {quotation?.subTotal || 0}
-                    {/* {formatCurrency(
-                    quotation?.details?.reduce((s, it) => {
-                      const q = Number(it.quotationQuantity) || 0;
-                      const r = Number(it.unitRate) || 0;
-                      return s + q * r;
-                    }, 0)
-                  )} */}
-                  </div>
-                </div>
-                <div className="qt-totals-row">
-                  <div>VAT</div>
-                  <div>
-                    {quotation?.taxAmount || 0}
-                    {/* {formatCurrency(
-                    quotation?.details?.reduce((s, it) => {
-                      const q = Number(it.quotationQuantity) || 0;
-                      const r = Number(it.unitRate) || 0;
-                      const t = Number(it.tax) || 0;
-                      return s + (q * r) * (t / 100);
-                    }, 0)
-                  )} */}
-                  </div>
-                </div>
-                <div className="qt-totals-row grand">
-                  <div>Total Amount Incl. VAT</div>
-                  <div>{quotation?.totalAmount || 0}</div>
-                </div>
+            <div className="qt-totals-card">
+              <div className="qt-totals-row">
+                <div>Subtotal</div>
+                <div>{quotation?.subTotal || 0}</div>
+              </div>
+              <div className="qt-totals-row">
+                <div>VAT</div>
+                <div>{quotation?.taxAmount || 0}</div>
+              </div>
+              <div className="qt-totals-row grand">
+                <div>Total Amount Incl. VAT</div>
+                <div>{quotation?.totalAmount || 0}</div>
               </div>
             </div>
           </div>
 
-          <div className="qt-row">
-            <div className="qt-block full">
-              <h4 className="qt-block-title">Payment Terms</h4>
-              <div className="qt-terms">
-                {quotation?.paymentTerms ||
-                  "Null"}
-              </div>
-            </div>
+          {/* Payment Terms */}
+          <h4 className="qt-block-title">Payment Terms</h4>
+          <div className="qt-terms">
+            {quotation?.paymentTerms || "Null"}
           </div>
 
           {/* Actions */}
