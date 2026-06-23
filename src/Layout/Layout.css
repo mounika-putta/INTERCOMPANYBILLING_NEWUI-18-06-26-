@@ -142,10 +142,10 @@ body,
 /* ============================================================
    Headings — fix legacy white-on-white text
    ============================================================ */
-.app-main h1,
+
 .app-main h2,
 .app-main h3 {
-  color: #1f2933;
+  color: #1E7D4E;
 }
 
 .app-main .section-header h2,
@@ -396,7 +396,7 @@ body,
   padding: 0;
   font-size: 22px !important;
   font-weight: 700 !important;
-  color: #1f2933 !important;
+  color: #1E7D4E !important;
   text-align: left !important;
 }
 
@@ -468,7 +468,7 @@ body,
 .app-main .records-per-page {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 6px;
   flex-wrap: wrap;
   margin-bottom: 15px;

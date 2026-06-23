@@ -4,23 +4,23 @@
 }
 .custmer-content {
   flex: 1;
-  padding: 70px;
+  padding: 24px 28px;
   margin-left: 260px;
   background-size: cover;
   overflow-y: auto;
 }
 .custmer-section {
-  margin-top: 30px;
-  padding: 20px;
+  margin-top: 12px;
+  padding: 12px;
   border-radius: 12px;
   border-color: black;
-  
+
 }
 
 .create-item-box {
   max-width: 1000px;
-  margin: 20px auto;
-  padding: 20px;
+  margin: 10px auto;
+  padding: 20px 24px 22px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0px 3px 8px rgba(0,0,0,0.1);
@@ -214,8 +214,17 @@
 
 .create-item-form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 18px;
+  row-gap: 14px;
+}
+
+/* Keep the panel heading neatly inside the card (no negative pull) */
+.create-item-box .role-title {
+  margin-top: 0;
+  margin-bottom: 14px;
+  padding: 0 0 8px 0;
+  border-bottom: 2px solid #f0f0f0;
 }
 
 .custom-group {
@@ -295,11 +304,11 @@
 }
 
 .service-actions {
-  grid-column: span 3 !important;
+  grid-column: 1 / -1 !important;
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-top: -30px;
+  margin-top: 8px;
 }
 .service-cell {
   width: auto;        /* fixed width */

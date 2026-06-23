@@ -20,6 +20,7 @@ const ReportsDashboard = () => {
   const [period, setPeriod] = useState("");
   const [selectedType, setSelectedType] = useState("quotation");
   const [comparisonType, setComparisonType] = useState("quotation");
+  const [pieType, setPieType] = useState("quotation");
   const [searchTerm, setSearchTerm] = useState("");
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [detailType, setDetailType] = useState("");
@@ -191,22 +192,27 @@ const ReportsDashboard = () => {
     })) || [];
 
   const invoiceStatus =
-    dashboardData?.invoiceStatus?.map((x) => ({
+    dashboardData?.invoiceStatus?.map((x,) => ({
       name: normalizeInvoiceStatus(x.status),
       value: x.count,
     })) || [];
 
   const quotationTrend =
     dashboardData?.quotationTrend?.map((x) => ({
-      date: new Date(x.date).toLocaleDateString(),
+      period: new Date(x.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
       count: x.count,
     })) || [];
 
   const invoiceTrend =
     dashboardData?.invoiceTrend?.map((x) => ({
-      date: new Date(x.date).toLocaleDateString(),
+      period: new Date(x.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
       count: x.count,
-      status: normalizeInvoiceStatus(x.status), // if backend sends status
     })) || [];
 
   // Derived KPI values from the real status breakdowns
@@ -417,65 +423,45 @@ const ReportsDashboard = () => {
               </div>
             )}
 
-            {/* INVOICE PIE */}
-            {hasInvoiceStatus && (
+            {/* INVOICE PIE */} {/* QUOTATION PIE */}
+
+            {(hasInvoiceStatus || hasQuotationStatus) && (
               <div className="reportdashboard-chart-card">
-                <div className="reportdashboard-chart-header">
-                  Invoice Status
+                <div className="reportdashboard-chart-header d-flex justify-content-between">
+                  <span>Status Distribution</span>
+
+                  <select
+                    value={pieType}
+                    onChange={(e) => setPieType(e.target.value)}
+                  >
+                    <option value="invoice">Invoice</option>
+                    <option value="quotation">Quotation</option>
+                  </select>
                 </div>
 
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={invoiceStatus}
+                      data={
+                        pieType === "invoice"
+                          ? invoiceStatus
+                          : quotationStatus
+                      }
                       dataKey="value"
+                      nameKey="name"
                       outerRadius={100}
                       label
                       onClick={(data) =>
                         handleChartClick(
-                          "Invoice",
+                          pieType === "invoice" ? "Invoice" : "Quotation",
                           data.name
                         )
                       }
                     >
-                      {invoiceStatus.map((entry, index) => (
-                        <Cell
-                          key={index}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-
-                    </Pie>
-
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-
-            {/* QUOTATION PIE */}
-            {hasQuotationStatus && (
-              <div className="reportdashboard-chart-card">
-                <div className="reportdashboard-chart-header">
-                  Quotation Status
-                </div>
-
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={quotationStatus}
-                      dataKey="value"
-                      outerRadius={100}
-                      label
-                      onClick={(data) =>
-                        handleChartClick(
-                          "Quotation",
-                          data.name
-                        )
-                      }
-                    >
-                      {quotationStatus.map((entry, index) => (
+                      {(pieType === "invoice"
+                        ? invoiceStatus
+                        : quotationStatus
+                      ).map((entry, index) => (
                         <Cell
                           key={index}
                           fill={COLORS[index % COLORS.length]}
@@ -489,10 +475,9 @@ const ReportsDashboard = () => {
                 </ResponsiveContainer>
               </div>
             )}
-
             {/* TREND LINE CHART */}
             {hasLineData && (
-              <div className="reportdashboard-chart-card">
+              <div className="reportdashboard-chart-card reportdashboard-full-width">
                 <div className="reportdashboard-chart-header d-flex justify-content-between">
                   <span>Trend Analysis</span>
 
@@ -515,16 +500,21 @@ const ReportsDashboard = () => {
 
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="period" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
 
+
                     <Line
-                      type="monotone"
+
+                      type="bump"
                       dataKey="count"
-                      stroke="#5C9DED"
-                      strokeWidth={3}
+                      stroke="#00C896"
+                      strokeWidth={4}
+                      dot={false}
+                      activeDot={{ r: 7 }}
+
                       name={
                         comparisonType === "quotation"
                           ? "Quotation Count"

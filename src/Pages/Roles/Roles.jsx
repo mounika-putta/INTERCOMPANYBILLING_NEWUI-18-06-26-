@@ -580,7 +580,7 @@ const Roles = () => {
                 </div>
 
                 <div className="Role-actions">
-                  <button type="submit" className="btn btn-success">
+                  <button type="submit" className="btn btn-succes">
                     Save
                   </button>
 
@@ -804,7 +804,7 @@ const Roles = () => {
                 <div className="Role-actions">
                   <button
                     type="submit"
-                    className="btn btn-success btn-lg"
+                    className="btn btn-succes"
                     disabled={updateLoading}
                   >
                     {updateLoading ? (

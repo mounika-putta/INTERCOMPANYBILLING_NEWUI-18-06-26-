@@ -171,13 +171,13 @@
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
 }
 
-.company-logo-corner {
+/* .company-logo-corner {
   position: absolute;
-  top: 90px;      /* distance from top */
-  right: 20px;    /* distance from right */
-  width: 270px;   /* adjust size */
+  top: 90px;     
+  right: 20px;  
+  width: 270px;   
   height: auto;
-}
+} */
 
 /* addresscss */
 .quotation-view-info .info-row {

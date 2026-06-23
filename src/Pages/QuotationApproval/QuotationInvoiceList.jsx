@@ -806,7 +806,7 @@ const QuotationInvoiceList = () => {
                     <div className="quotation-view-modal"
                         style={{
                             maxWidth: '75vw',
-                            width: '850px'
+                            width: '1200px'
                         }}>
                         <button
                             className="quotation-view-close-btn"

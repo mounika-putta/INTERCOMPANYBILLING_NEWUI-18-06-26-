@@ -1,46 +1,41 @@
 ﻿import React from "react";
 import { baseURL } from "../../services/api";
+import "./ViewPopup.css";
 
 const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, loadingRefNo }) => {
   
   if (!show || !selectedInvoice) return null;
 
   return (
-    <div className="quotation-view-overlay">
+    <div className="quotation-view-overlay viewpopup-modern">
       <div className="quotation-view-modal">
-        <button
-          className="quotation-view-close-btn"
-          onClick={onClose}
-        >
-          &times;
-        </button>
+        <div className="quotation-view-header">
+          <h3 className="quotation-view-title">View Quotation Details</h3>
 
-        <h3 className="quotation-view-title">View Quotation Details</h3>
+          {selectedInvoice.comapanyLogo && (() => {
+            const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
+            return (
+              <img
+                src={`${baseURL}/UploadedFiles/${logoFileName}`}
+                alt="Company Logo"
+                className="company-logo-corner"
+              />
+            );
+          })()}
 
-        {selectedInvoice.comapanyLogo && (() => {
-          const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
-          console.log('logoFileName', logoFileName);
-          return (
-            <img
-              src={`${baseURL}/UploadedFiles/${logoFileName}`}
-              alt="Company Logo"
-              className="company-logo-corner"
-            />
-          );
-        })()}
+          <button
+            className="quotation-view-close-btn"
+            onClick={onClose}
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className="quotation-view-body">
+
         {/* Company Information */}
         <h4 className="quotation-view-section-title">Company Information</h4>
-        {selectedInvoice.comapanyLogo && (() => {
-          const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
-          console.log('logoFileName', logoFileName);
-          return (
-            <img
-              src={`${baseURL}/UploadedFiles/${logoFileName}`}
-              alt="Company Logo"
-              className="company-logo-corner"
-            />
-          );
-        })()}
+        
 
         <div className="quotation-view-info">
           <div><span className="label">Company Name</span> : <span>{selectedInvoice.companyName}</span></div>
@@ -216,6 +211,7 @@ const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, lo
             </button>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

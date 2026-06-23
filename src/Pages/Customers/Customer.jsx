@@ -574,7 +574,6 @@ const Customer = () => {
                 {showCreateScreen && (
                     <div className="create-item-section">
                         <div className="create-item-box">
-                            <br />
                             <h3 className="role-title">Create Customer</h3>
                             <form className="create-item-form-grid" onSubmit={(e) => e.preventDefault()}>
 
@@ -838,7 +837,6 @@ const Customer = () => {
                 {showEditScreen && editItem && (
                     <div className="create-item-section">
                         <div className="create-item-box">
-                            <br />
                             <h3 className="role-title">Edit Customer</h3>
                             <form className="create-item-form-grid">
                                 {/* Hidden ID */}
