@@ -619,3 +619,25 @@ body,
     align-items: stretch;
   }
 }
+
+@media (min-width: 1200px) {
+    .css-te9t5b {
+        width: 40%;
+        padding-left: 64px;
+        padding-right: 64px;
+        margin-top: -10%;
+    }
+}
+
+@media (min-width: 600px) {
+      .css-109hkld {
+        padding-left: 28px;
+        padding-right: 28px;
+        padding-top: 28px;
+        padding-bottom: 28px;
+        margin-left: -28px;
+    }}
+
+
+
+    

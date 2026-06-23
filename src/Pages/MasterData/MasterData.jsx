@@ -498,11 +498,11 @@ const MasterData = () => {
             </div>
             <div style={{ marginLeft: "auto" }}>
               {selectedType && selectedType !== "VAT" && (
-                <button type="button"   className="btn_add" onClick={openCreateModal}>
+                <button type="button" className="btn_add" onClick={openCreateModal}>
                   + Add New
                 </button>
 
-                
+
               )}
             </div>
           </div>
@@ -573,22 +573,25 @@ const MasterData = () => {
                         <td>{formatDateDisplay(item.modifiedDate)}</td> */}
                         <td>{item.isActive}</td>
                         <td>{item.isDeleted}</td>
+
                         <td className="actions-cell">
                           <div className="action-master">
                             <FaEdit
-                              style={{ cursor: 'pointer' }}
+                              style={{ cursor: "pointer" }}
                               className="action-icon edit-icon"
                               title="Edit"
                               onClick={() => handleEdit(item)}
                             />
-                            <button
-                              className={`action-icon cancel-icon ${item.isDeleted === "Yes" ? "invisible" : ""}`}
-                              title="Delete"
-                              onClick={() => handleDelete(item)}
-                              disabled={item.isDeleted === "Yes"}
-                            >
-                              <FaTrash />
-                            </button>
+
+                            {item.isDeleted !== "Yes" && (
+                              <button
+                                className="action-icon cancel-icon"
+                                title="Delete"
+                                onClick={() => handleDelete(item)}
+                              >
+                                <FaTrash />
+                              </button>
+                            )}
                           </div>
                         </td>
 
@@ -605,11 +608,11 @@ const MasterData = () => {
 
                         <td className="actions-cell">
                           <div className="action-master">
-                            <button   className="action-icon edit-icon" onClick={() => handleEdit(item)}>
+                            <button className="action-icon edit-icon" onClick={() => handleEdit(item)}>
                               <i className="fas fa-edit"></i>
                             </button>
                             {item.isDeleted === "No" && (
-                              <button   className="action-icon cancel-icon" onClick={() => handleDelete(item)}>
+                              <button className="action-icon cancel-icon" onClick={() => handleDelete(item)}>
                                 <i className="fas fa-trash"></i>
                               </button>
                             )}
@@ -625,18 +628,21 @@ const MasterData = () => {
                         <td className="actions-cell">
                           <div className="action-master">
                             <FaEdit
-                              style={{ cursor: 'pointer' }}
+                              style={{ cursor: "pointer" }}
                               className="action-icon edit-icon"
                               title="Edit"
                               onClick={() => handleEdit(item)}
                             />
-                            <button
-                              className="action-icon cancel-icon"
-                              onClick={() => handleDelete(item)}
-                              disabled={item.isDeleted === "Yes"}
+
+                            {item.isDeleted !== "Yes" && (
+                              <button
+                                className="action-icon cancel-icon"
+                                title="Delete"
+                                onClick={() => handleDelete(item)}
                               >
-                              <i className="fas fa-trash"></i>
-                            </button>
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            )}
                           </div>
                         </td>
                       </>
