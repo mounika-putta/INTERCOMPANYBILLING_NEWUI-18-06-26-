@@ -80,7 +80,6 @@ const CreateQuotationForm = ({
 
 }) => {
 
-
   return (
     <>
       {/* FULL JSX EXACTLY AS YOU PROVIDED */}
@@ -88,9 +87,10 @@ const CreateQuotationForm = ({
         <div className="quotation-form-overlay">
           <div className="quotation-form-modal">
             
+            
              <span
               className="closequotation-btn"
-            onClick={() => closeInvoiceForm()}
+              onClick={() => closeInvoiceForm(false)}
             >
               &times;
             </span>

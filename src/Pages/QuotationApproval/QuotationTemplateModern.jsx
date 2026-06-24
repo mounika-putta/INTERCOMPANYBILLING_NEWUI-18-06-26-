@@ -8,12 +8,19 @@ import {
   fetchQuotationdetailswithRefno,
   fetchSaveQuotationApprovalorRejection,
 } from "../../redux/QuotationTemplateSlice";
-import "./QuotationTemplateModern.css";
+import "./ClassicInvoiceTemplate.css";
 import { baseURL } from "../../services/api";
 
-
 const LOCAL_LOGO = "/images/company-logo.png";
-// → Replace with "/images/company-logo.png" in production
+
+const formatDate = (value) => {
+  if (!value) return "-";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return "-";
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  return `${day}/${month}/${d.getFullYear()}`;
+};
 
 const QuotationTemplateModern = () => {
   const location = useLocation();
@@ -23,13 +30,8 @@ const QuotationTemplateModern = () => {
   const quotationId = queryParams.get("quotationId");
   const type = queryParams.get("type");
 
-  const {
-    quotationDetails,
-    loading,
-    error,
-    actionLoading,
-    message,
-  } = useSelector((state) => state.quotationApprovalTemplate) || {};
+  const { quotationDetails, loading, error, message } =
+    useSelector((state) => state.quotationApprovalTemplate) || {};
 
   const quotation = quotationDetails?.list?.[0] || null;
 
@@ -43,34 +45,19 @@ const QuotationTemplateModern = () => {
   const [rejectReason, setRejectReason] = useState("");
 
   const formatCurrency = (n) => {
-    if (n == null) return "-";
-    return Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (n == null || n === "") return "-";
+    return Number(n).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
-
-  // const totalAmount =
-  //   quotation?.details?.reduce((total, d) => {
-  //     const qty = Number(d.quotationQuantity) || 0;
-  //     const rate = Number(d.unitRate) || 0;
-  //     const tax = Number(d.tax) || 0;
-  //     const base = qty * rate;
-  //     const taxAmount = base * (tax / 100);
-  //     return total + base + taxAmount;
-  //   }, 0) || 0;
-
-  const finalLogo = quotation?.comapanyLogo
-    ? `${baseURL}/UploadedFiles/${quotation.comapanyLogo.split("\\").pop()}`
-    : LOCAL_LOGO;
 
   const logoFileName = quotation?.comapanyLogo
     ? quotation.comapanyLogo.split(/[/\\]/).pop()
     : "";
-
   const logoUrl = logoFileName
-    ? `${baseURL}/UploadedFiles/${encodeURIComponent(logoFileName)}`
+    ? `${baseURL}/UploadedFiles/${logoFileName}`
     : LOCAL_LOGO;
-
-  console.log("logoFileName:", logoFileName);
-  console.log("logoUrl:", logoUrl);
 
   const handleApprove = () => {
     alertify.confirm(
@@ -128,7 +115,6 @@ const QuotationTemplateModern = () => {
       })
     ).then((res) => {
       setRejectLoading(false);
-
       if (res.meta.requestStatus === "fulfilled") {
         alertify.alert("Success", res.payload.message, function () {
           setShowRejectModal(false);
@@ -140,234 +126,254 @@ const QuotationTemplateModern = () => {
     });
   };
 
-  // Rendering
   if (loading) {
     return (
-      <div className="qt-loading">
-        <div className="qt-spinner" />
+      <div className="cit-loading">
+        <div className="cit-spinner" />
       </div>
     );
   }
 
   return (
-    <div className="qt-wrapper">
-      <div className="qt-card">
-        {/* Banner messages */}
-        {message && <div className="qt-banner success">{message}</div>}
-        {error && <div className="qt-banner error">{error}</div>}
+    <div className="cit-page">
+      <div className="cit-sheet">
+        {message && <div className="cit-banner success">{message}</div>}
+        {error && <div className="cit-banner error">{error}</div>}
 
-        {/* Header */}
-        <header className="qt-header">
-          <div className="qt-header-left">
-
-            {/* <img src={finalLogo} alt="Company Logo" className="qt-logo" crossOrigin="anonymous" /> */}
-
-
-            <div className="company-logo">
-              {quotation?.comapanyLogo && (() => {
-                const logoFileName = quotation?.comapanyLogo.split(/[/\\]/).pop();
-                console.log('logoFileName', logoFileName);
-                return (
-                  <img
-                    src={`${baseURL}/UploadedFiles/${logoFileName}`}
-                    alt="Company Logo"
-                    className="qt-Logo"
-                    crossOrigin="anonymous"
-                    referrerPolicy="no-referrer"
-                    onLoad={() => console.log("logo loaded")}
-                    onError={(e) => console.log("logo failed", e)}
-                  />
-                );
-              })()}
-              {/* <div>{quotation?.comapanyLogo ? quotation?.comapanyLogo.split(/[/\\]/).pop() : null}</div> */}
-
+        {/* Header: logo + company block */}
+        <div className="cit-head">
+          <div className="cit-logo-box">
+            {logoFileName && (
+              <img
+                src={logoUrl}
+                alt="Company Logo"
+                className="cit-logo"
+                crossOrigin="anonymous"
+                referrerPolicy="no-referrer"
+              />
+            )}
+          </div>
+          <div className="cit-title-wrap">
+            <h1 className="cit-title">Quotation</h1>
+            {/* <div className="cit-title-sub">{quotation?.quotationStatus || ""}</div> */}
+          </div>
+          <div className="cit-company">
+            <div className="cit-company-name">{quotation?.companyName || "-"}</div>
+            <div className="cit-row-line">
+              <span>Company Reg No:</span> {quotation?.registrationNumber || "-"}
             </div>
-            {/* <div>{quotation?.comapanyLogo ? quotation.comapanyLogo.split(/[/\\]/).pop() : null}</div> */}
-          </div>
-          <div className="qt-header-center">
-            <h1 className="qt-title">Quotation</h1>
-            {/* <div className="qt-subtitle">Quotation Approval</div> */}
-          </div>
-          <div className="qt-header-right">
-            <div className="qt-company-name">{quotation?.companyName}</div>
-            <div className="qt-company-small">{quotation?.companyAddress}</div>
-            <div className="qt-company-small">{quotation?.companyPhoneNumber}</div>
-            <div className="qt-company-small">{quotation?.companyEmail}</div>
-          </div>
-        </header>
+            <div className="cit-row-line">
+              <span>VAT Reg No:</span> {quotation?.vatNumber || "-"}
+            </div>
+            <div className="cit-row-line">
+              <span>Website :</span>
+              {quotation?.companyWebsite || "-"}
+            </div>
 
-        {/* Body */}
-        <section className="qt-body">
-          {/* Company Information */}
-          <h4 className="qt-block-title">Company Information</h4>
-          <div className="qt-info">
-            <div className="qt-kv"><span>Registration No</span><span>{quotation?.registrationNumber || "-"}</span></div>
-            <div className="qt-kv"><span>VAT Number</span><span>{quotation?.vatNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Phone</span><span>{quotation?.companyPhoneNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Website</span><span>{quotation?.companyWebsite || "-"}</span></div>
-            <div className="qt-kv"><span>Address</span><span>{quotation?.companyAddress || "-"}</span></div>
+            <div className="cit-row-line">
+              <span>Tel:</span> {quotation?.companyPhoneNumber || "-"}
+            </div>
+            <div className="cit-row-line">
+              <span>Email:</span> {quotation?.companyEmail || "-"}
+            </div>
+            <div className="cit-row-line">
+              <span>Address:</span> {quotation?.companyAddress || "-"}
+            </div>
+            
+            
           </div>
+        </div>
 
-          {/* Customer Information */}
-          <h4 className="qt-block-title">Customer Information</h4>
-          <div className="qt-info">
-            <div className="qt-kv"><span>Reference No</span><span>{quotation?.customerRefno || "-"}</span></div>
-            <div className="qt-kv"><span>Company Name</span><span>{quotation?.receivingEntity || "-"}</span></div>
-            <div className="qt-kv"><span>Name</span><span>{quotation?.customerName || "-"}</span></div>
-            <div className="qt-kv"><span>Email</span><span>{quotation?.customerEmail || "-"}</span></div>
+        {/* Meta row: customer | title | doc meta */}
+        <div className="cit-meta">
+          <div className="cit-party">
+            <div className="cit-block-label">Customer</div>
+            <div className="cit-strong">{quotation?.receivingEntity || "-"}</div>
+            <div>{quotation?.customerName || "-"}</div>
+            <div className="cit-dim">{quotation?.customerEmail || "-"}</div>
           </div>
 
-          {/* Quotation Information */}
-          <h4 className="qt-block-title">Quotation Information</h4>
-          <div className="qt-info">
-            <div className="qt-kv"><span>Reference No</span><span>{quotation?.referenceNumber || "-"}</span></div>
-            <div className="qt-kv">
+          <div className="cit-title-wrap">
+            {/* <h1 className="cit-title">Quotation</h1>
+            <div className="cit-title-sub">{quotation?.quotationStatus || ""}</div> */}
+          </div>
+
+          <div className="cit-docmeta">
+            <div className="cit-mrow">
               <span>Date</span>
-              <span>
-                {quotation?.invoiceDate
-                  ? (() => {
-                    const d = new Date(quotation.invoiceDate);
-                    const day = String(d.getDate()).padStart(2, "0");
-                    const month = String(d.getMonth() + 1).padStart(2, "0");
-                    const year = d.getFullYear();
-                    return `${day}/${month}/${year}`;
-                  })()
-                  : "/"}
-              </span>
+              <span>{formatDate(quotation?.invoiceDate)}</span>
             </div>
-            <div className="qt-kv"><span>Status</span><span>{quotation?.quotationStatus || "-"}</span></div>
-            <div className="qt-kv"><span>Currency</span><span>{quotation?.currency || "-"}</span></div>
-            <div className="qt-kv"><span>Type</span><span>{quotation?.quotationType || "-"}</span></div>
-            <div className="qt-kv"><span>Total</span><span>{quotation?.totalAmount || 0}</span></div>
+            <div className="cit-mrow">
+              <span>Quotation No</span>
+              <span>{quotation?.referenceNumber || "-"}</span>
+            </div>
+            <div className="cit-mrow">
+              <span>Customer Ref No</span>
+              <span>{quotation?.customerRefno || "-"}</span>
+            </div>
+            <div className="cit-mrow">
+              <span>Currency</span>
+              <span>{quotation?.currency || "-"}</span>
+            </div>
           </div>
+        </div>
 
-          {/* Quotation Details */}
-          <h4 className="qt-block-title">Quotation Details</h4>
-          <div className="qt-table-wrap">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>ITEM CODE</th>
-                  <th>CATEGORY</th>
-                  <th>NAME</th>
-                  <th>QUANTITY</th>
-                  <th>UNIT RATE EXCL VAT</th>
-                  <th>AMOUNT</th>
-                  <th>DISCOUNT</th>
-                  <th>DISCOUNTED TOTAL</th>
-                  <th>VAT %</th>
-                  <th>NET AMOUNT</th>
-                </tr>
-              </thead>
-              <tbody>
-                {quotation?.details?.length > 0 ? (
-                  quotation.details.map((d, idx) => {
+        {/* Secondary attributes */}
+        <div className="cit-attrs">
+          <div className="cit-attr">
+            <span>VAT Number</span>
+            {quotation?.vatNumber || "-"}
+          </div>
+          <div className="cit-attr">
+            <span>Type</span>
+            {quotation?.quotationType || "-"}
+          </div>
+          <div className="cit-attr">
+            <span>Payment Terms</span>
+            {quotation?.paymentTerms || "-"}
+          </div>
+        </div>
 
-                    return (
-                      <tr key={idx}>
-                        <td>{d.itemCode}</td>
-                        <td>{d.category}</td>
-                        <td>{d.itemName}</td>
-                        <td className="black-text" >{d.quotationQuantity}</td>
-                        <td className="black-text" >{d.unitRate}</td>
-                        <td className="black-text" >{(d.quotationQuantity * d.unitRate)}</td>
-                        <td className="black-text" >{d.discount}</td>
-                        <td className="black-text" >{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                        <td className="black-text" >{d.tax}</td>
-                        <td className="black-text" >
-                          {(
-                            (d.quotationQuantity * d.unitRate - d.discount) +
-                            ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
-                          ).toFixed(2)}
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="no-data">No quotation details found.</td>
+        {/* Line items */}
+        <table className="cit-table">
+          <thead>
+            <tr>
+              <th style={{ width: "110px" }}>Item Code</th>
+              <th>Description</th>
+              <th style={{ width: "80px" }}>Qty</th>
+              <th style={{ width: "100px" }}>Unit Rate Excl VAT</th>
+              <th style={{ width: "70px" }}>Disc</th>
+              <th style={{ width: "60px" }}>VAT %</th>
+              <th style={{ width: "120px" }}>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {quotation?.details?.length > 0 ? (
+              quotation.details.map((d, idx) => {
+                const base = (Number(d.quotationQuantity) || 0) * (Number(d.unitRate) || 0);
+                const discounted = base - (Number(d.discount) || 0);
+                const net = discounted + (discounted * (Number(d.tax) || 0)) / 100;
+                return (
+                  <tr key={idx}>
+                    <td className="cit-ctr">{d.itemCode}</td>
+                    <td className="cit-desc">
+                      {d.itemName}
+                      {d.category ? (
+                        <span className="cit-dim"> — {d.category}</span>
+                      ) : null}
+                    </td>
+                    <td className="cit-ctr">{d.quotationQuantity}</td>
+                    <td className="cit-num">{formatCurrency(d.unitRate)}</td>
+                    <td className="cit-num">{formatCurrency(d.discount)}</td>
+                    <td className="cit-ctr">{d.tax}</td>
+                    <td className="cit-num">{formatCurrency(net)}</td>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                );
+              })
+            ) : (
+              <tr>
+                <td className="cit-empty" colSpan="7">
+                  No quotation details found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
 
-          {/* Bank Account + Totals */}
-          <h4 className="qt-block-title">Bank Account Information</h4>
-          <div className="qt-bottom">
-            <div className="qt-info qt-bank-info">
-              <div className="qt-kv"><span>Account Name</span><span>{quotation?.accountHolderName || "-"}</span></div>
-              <div className="qt-kv"><span>Branch Code</span><span>{quotation?.branchCode || "-"}</span></div>
-              <div className="qt-kv"><span>Account Number</span><span>{quotation?.bankAccountNumber || "-"}</span></div>
+        {/* Footer: bank + totals */}
+        <div className="cit-foot">
+          <div className="cit-bank">
+            <div className="cit-block-label">Bank Details</div>
+            <div className="cit-brow">
+              <span>Account Name</span>
+              <span>{quotation?.accountHolderName || "-"}</span>
             </div>
-
-            <div className="qt-totals-card">
-              <div className="qt-totals-row">
-                <div>Subtotal</div>
-                <div>{quotation?.subTotal || 0}</div>
-              </div>
-              <div className="qt-totals-row">
-                <div>VAT</div>
-                <div>{quotation?.taxAmount || 0}</div>
-              </div>
-              <div className="qt-totals-row grand">
-                <div>Total Amount Incl. VAT</div>
-                <div>{quotation?.totalAmount || 0}</div>
-              </div>
+            <div className="cit-brow">
+              <span>Branch Code</span>
+              <span>{quotation?.branchCode || "-"}</span>
+            </div>
+            <div className="cit-brow">
+              <span>Account Number</span>
+              <span>{quotation?.bankAccountNumber || "-"}</span>
+            </div>
+            <div className="cit-brow">
+              <span>Reference</span>
+              <span>{quotation?.referenceNumber || "-"}</span>
             </div>
           </div>
 
-          {/* Payment Terms */}
-          <h4 className="qt-block-title">Payment Terms</h4>
-          <div className="qt-terms">
-            {quotation?.paymentTerms || "Null"}
+          <div className="cit-totals">
+            <div className="cit-trow">
+              <span>Subtotal</span>
+              <span>{formatCurrency(quotation?.subTotal)}</span>
+            </div>
+            <div className="cit-trow">
+              <span>VAT</span>
+              <span>{formatCurrency(quotation?.taxAmount)}</span>
+            </div>
+            <div className="cit-trow cit-grand">
+              <span>Total Incl. VAT</span>
+              <span>{formatCurrency(quotation?.totalAmount)}</span>
+            </div>
           </div>
+        </div>
 
-          {/* Actions */}
-          <div className="qt-actions">
-            {type === "customer" &&
-              (quotation?.quotationStatus === "Created" ||
-                quotation?.quotationStatus === "Updated") && (
-                <>
-                  <button
-                    className="btn btn-approve"
-                    onClick={handleApprove}
-                    disabled={approveLoading || rejectLoading}
-                  >
-                    {approveLoading && <div className="spinner"></div>}
-                    Approve
-                  </button>
-                  <button
-                    className="btn btn-reject"
-                    onClick={handleReject}
-                    disabled={approveLoading || rejectLoading}
-                  >
+        {/* Payment terms */}
+        {/* <div className="cit-note">
+          Payment Terms: {quotation?.paymentTerms || "—"}
+        </div> */}
 
-                    Reject
-                  </button>
-                </>
-              )}
-          </div>
-        </section>
+        {/* Actions */}
+        <div className="cit-actions">
+          {type === "customer" &&
+            (quotation?.quotationStatus === "Created" ||
+              quotation?.quotationStatus === "Updated") && (
+              <>
+                <button
+                  className="cit-btn cit-btn-approve"
+                  onClick={handleApprove}
+                  disabled={approveLoading || rejectLoading}
+                >
+                  {approveLoading && <span className="cit-spinner cit-spinner-sm" />}
+                  Approve
+                </button>
+                <button
+                  className="cit-btn cit-btn-reject"
+                  onClick={handleReject}
+                  disabled={approveLoading || rejectLoading}
+                >
+                  Reject
+                </button>
+              </>
+            )}
+        </div>
       </div>
 
       {/* Reject Modal */}
       {showRejectModal && (
-        <div className="qt-modal-overlay">
-          <div className="qt-modal">
+        <div className="cit-modal-overlay">
+          <div className="cit-modal">
             <h3>Rejection Reason</h3>
             <textarea
               value={rejectReason}
               onChange={(e) => setRejectReason(e.target.value)}
               placeholder="Enter rejection reason"
             />
-            <div className="modal-buttons">
-              <button onClick={handleRejectConfirm} disabled={approveLoading || rejectLoading}
-                className="btn btn-approve">
-                {rejectLoading && <div className="spinner"></div>}
+            <div className="cit-modal-buttons">
+              <button
+                onClick={handleRejectConfirm}
+                disabled={approveLoading || rejectLoading}
+                className="cit-btn cit-btn-approve"
+              >
+                {rejectLoading && <span className="cit-spinner cit-spinner-sm" />}
                 Submit
               </button>
-              <button onClick={() => setShowRejectModal(false)} className="btn btn-reject">Cancel</button>
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="cit-btn cit-btn-reject"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
@@ -375,4 +381,5 @@ const QuotationTemplateModern = () => {
     </div>
   );
 };
+
 export default QuotationTemplateModern;

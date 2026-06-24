@@ -208,6 +208,7 @@ const Quotationapproval = () => {
             await downloadPdfFromPage({
                 url,
                 fileName: `Quotation_${referenceNumber}.pdf`,
+                elementSelector: ".cit-sheet",
             });
 
             // Keep loader visible slightly longer

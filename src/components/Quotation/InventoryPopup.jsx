@@ -108,60 +108,61 @@ const InventoryPopup = ({
               
             </tr>
           </thead>
-          <tbody>
-            {popuploading ? (
-              <tr>
-                <td colSpan="8" style={{ textAlign: "center" }}>
-                  <div className="loader"></div>
-                </td>
-              </tr>
-            ) :paginatedItems.map((item) => {
-
-              let alreadyAdded = false;
-
-              if (popupMode === "create") {
-                alreadyAdded = quotationDetails.some(
-                  (q) => q.itemCode === item.itemCode
-                );
-              } else if (popupMode === "edit") {
-                // skip the row being edited (selectedRowIndex)
-                alreadyAdded = selectedQuotation.details.some(
-                  (q, idx) =>
-                    idx !== selectedRowIndex && q.itemName === item.itemName
-                );
-              }
-
-
-
-              return (
-                <tr
-                  key={item.id}
-                  style={{
-                    cursor: alreadyAdded ? "not-allowed" : "pointer",
-                    opacity: alreadyAdded ? 0.5 : 1,
-                  }}
-                  onClick={() => !alreadyAdded && handleItemSelect(item)}
-                >
-                  <td>{item.companyName}</td>
-                  <td>{item.itemCode}</td>
-                   <td>{item.itemName}</td>
-                  <td>{item.category}</td>           
-                  <td>{item.description}</td>
-                  {/* <td style={{ textAlign: "right" }}>{item.quantity}</td> */}
-                  <td style={{ textAlign: "center" }}>{item.price}</td>
-                  <td hidden style={{ textAlign: "center" }}>{item.taxRate}</td>
-                  <td style={{ textAlign: "center" }}>
-                        {item.vatableStatus === "true" ? (
-                          <FiCheck  style={{ color: "green", marginLeft: "6px", fontSize: "20px" }} />
-                        ) : (
-                          <FiX style={{ color: "red", marginLeft: "6px", fontSize: "20px" }} />
-                        )}
-                      </td>
-                  
-                </tr>
-              );
-            })}
-          </tbody>
+           <tbody>
+                     {popuploading ? (
+                       <tr>
+                         <td colSpan="8" style={{ textAlign: "center" }}>
+                           <div className="loader"></div>
+                         </td>
+                       </tr>
+                     ) :paginatedItems.map((item) => {
+         
+                       let alreadyAdded = false;
+         
+                       if (popupMode === "create") {
+                         alreadyAdded = quotationDetails.some(
+                           (q) => q.itemCode === item.itemCode
+                         );
+                       } else if (popupMode === "edit") {
+  alreadyAdded = selectedQuotation.details.some(
+    (q, idx) =>
+      idx !== selectedRowIndex &&
+      q.itemCode === item.itemCode
+  );
+}
+         
+         
+         
+                       return (
+                         <tr
+                           key={item.id}
+                           style={{
+                             cursor: alreadyAdded ? "not-allowed" : "pointer",
+                             opacity: alreadyAdded ? 0.5 : 1,
+                           }}
+                           onClick={() => !alreadyAdded && handleItemSelect(item)}
+                         >
+                           <td>{item.companyName}</td>
+                           <td>{item.itemCode}</td>
+                            <td>{item.itemName}</td>
+                           <td>{item.category}</td>           
+                           <td>{item.description}</td>
+                           {/* <td style={{ textAlign: "right" }}>{item.quantity}</td> */}
+                           <td style={{ textAlign: "right" }}>{item.price}</td>
+                           <td hidden style={{ textAlign: "right" }}>{item.taxRate}</td>
+                           <td style={{ textAlign: "center" }}>
+                                 {item.vatableStatus === "true" ? (
+                                   <FiCheck  style={{ color: "green", marginLeft: "6px", fontSize: "20px" }} />
+                                 ) : (
+                                   <FiX style={{ color: "red", marginLeft: "6px", fontSize: "20px" }} />
+                                 )}
+                               </td>
+                           
+                         </tr>
+                       );
+                     })}
+                   </tbody>
+         
 
         </table>
 

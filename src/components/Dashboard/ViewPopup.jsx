@@ -150,7 +150,7 @@ const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, lo
                 <th>UNIT RATE EXCL VAT</th>
                 <th>AMOUNT</th>
                 <th>DISCOUNT</th>
-                <th>DISCOUNTED TOTAL</th>
+                {/* <th>DISCOUNTED TOTAL</th> */}
                 <th>VAT %</th>
                 <th>NET AMOUNT</th>
               </tr>
@@ -165,7 +165,7 @@ const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, lo
                   <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
                   <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
                   <td style={{ textAlign: 'right' }}>{d.discount || 0}</td>
-                  <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
+                  {/* <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td> */}
                   <td style={{ textAlign: 'right' }}>{d.tax}</td>
                   <td style={{ textAlign: 'right' }}>
                     {(

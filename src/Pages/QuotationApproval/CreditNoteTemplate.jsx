@@ -222,6 +222,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
             const d = new Date(date);
             return isNaN(d.getTime()) ? null : d.toISOString();
         };
+        console.log("editableInvoice",editableInvoice)
 
         const payload = {
             header: {
@@ -243,10 +244,10 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                 bankAccountNumber: editableInvoice.bankAccountNumber,
                 branchCode: editableInvoice.branchCode,
                 BrannchAddress: editableInvoice.brannchAddress,
-                Currency: "Dollar",
-                IFSCCode: "123456789",
-                PaymentTerms: "None",
-                QuotationType: "Recurring",
+                Currency: editableInvoice.currency,
+                IFSCCode: editableInvoice.ifscCode,
+                PaymentTerms: editableInvoice.paymentTerms,
+                QuotationType: editableInvoice.quotationType,
                 customerName: editableInvoice.customerName,
                 customerEmail: editableInvoice.customerEmail,
                 customerPhone: editableInvoice.customerPhone,

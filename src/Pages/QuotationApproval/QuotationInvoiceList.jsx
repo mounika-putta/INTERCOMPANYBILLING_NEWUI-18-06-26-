@@ -285,6 +285,7 @@ const QuotationInvoiceList = () => {
         invoiceReferenceNumber
     ) => {
         try {
+            debugger
             setInvoiceDownloadLoadingId(invoiceId);
 
             const url =
@@ -294,6 +295,7 @@ const QuotationInvoiceList = () => {
             await downloadPdfFromPage({
                 url,
                 fileName: `Invoice_${invoiceReferenceNumber}.pdf`,
+                 elementSelector: ".cit-sheet",
             });
 
         } catch (error) {
@@ -322,6 +324,7 @@ const QuotationInvoiceList = () => {
         await downloadPdfFromPage({
             url,
             fileName: `CreditNote_${CreditReferenceNumber}.pdf`,
+            elementSelector: ".cit-sheet",
         });
     };
     const handleCreditNoteDownloadClick = async (
