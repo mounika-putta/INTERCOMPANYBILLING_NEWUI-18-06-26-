@@ -581,14 +581,15 @@ const MasterData = () => {
                               title="Edit"
                               onClick={() => handleEdit(item)}
                             />
-                            <button
-                              className={`action-icon cancel-icon ${item.isDeleted === "Yes" ? "invisible" : ""}`}
-                              title="Delete"
-                              onClick={() => handleDelete(item)}
-                              disabled={item.isDeleted === "Yes"}
-                            >
-                              <FaTrash />
-                            </button>
+                           {item.isDeleted !== "Yes" && (
+                              <button
+                                className="action-icon cancel-icon"
+                                title="Delete"
+                                onClick={() => handleDelete(item)}
+                              >
+                                <FaTrash />
+                              </button>
+                            )}
                           </div>
                         </td>
 
@@ -630,13 +631,15 @@ const MasterData = () => {
                               title="Edit"
                               onClick={() => handleEdit(item)}
                             />
-                            <button
-                              className="action-icon cancel-icon"
-                              onClick={() => handleDelete(item)}
-                              disabled={item.isDeleted === "Yes"}
+                           {item.isDeleted !== "Yes" && (
+                              <button
+                                className="action-icon cancel-icon"
+                                title="Delete"
+                                onClick={() => handleDelete(item)}
                               >
-                              <i className="fas fa-trash"></i>
-                            </button>
+                                <FaTrash />
+                              </button>
+                            )}
                           </div>
                         </td>
                       </>
@@ -907,7 +910,7 @@ const MasterData = () => {
                     </div>
                   </div>
 
-                  <div className="typeform-row">
+                  {/* <div className="typeform-row">
                     <div className="typeform-group">
                       <label>Is Active <span className="required">*</span></label>
                       <select
@@ -949,7 +952,7 @@ const MasterData = () => {
                         <p className="error-message">{getError("isDeleted")}</p>
                       )}
                     </div>
-                  </div>
+                  </div> */}
                 </>
               )}
 

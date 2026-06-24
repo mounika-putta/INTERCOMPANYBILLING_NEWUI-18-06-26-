@@ -2,7 +2,7 @@ import React from "react";
 
 const DashboardHeader = ({ type, setType }) => (
   <div className="quotation-dashboard-header">
-    <h2>Dashboard</h2>
+    <h1>Dashboard</h1>
     <div className="header-actions">
       <select
         className="type-select"

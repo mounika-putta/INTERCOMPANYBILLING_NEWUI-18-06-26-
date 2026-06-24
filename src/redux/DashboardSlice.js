@@ -18,8 +18,9 @@ export const fetchQuotationOrInvoiceDetails = createAsyncThunk(
 );
 
 export const fetchDashboardReport = createAsyncThunk(
+  
   "reports/fetchDashboardReport",
-  async (fromDate, thunkAPI) => {
+  async (fromDate, thunkAPI) => {   
     try {
       return await getDashboardReport(fromDate);
     } catch (error) {

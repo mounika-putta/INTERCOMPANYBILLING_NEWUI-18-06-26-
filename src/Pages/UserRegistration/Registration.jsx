@@ -228,27 +228,27 @@ function Registration() {
         }}
       >
         {/* Header — mirrors the Login card header (icon circle + brand heading) */}
-        <Box sx={{ textAlign: 'center', mb: 2.5 }}>
+        <Box sx={{ textAlign: 'center', mb: 1.5 }}>
           <Box
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: 60,
-              height: 60,
+              width: 42,
+              height: 42,
               borderRadius: '50%',
               backgroundColor: colors.brandLight,
-              mb: 2,
+              mb: 0.75,
             }}
           >
-            <Icon name="user-plus" size={22} color={colors.brand} />
+            <Icon name="user-plus" size={18} color={colors.brand} />
           </Box>
           <Typography
-            variant="h4"
+            variant="h5"
             sx={{
               fontWeight: 800,
               letterSpacing: '-0.4px',
-              mb: 0.5,
+              mb: 0.25,
               color: `${colors.brand} !important`,
             }}
           >
@@ -348,12 +348,38 @@ function Registration() {
           <FormField name="address" label="Address" type="textarea" required formik={formik} />
         </Section>
 
-        <Box sx={{ display: 'flex', gap: 1.5, justifyContent: 'flex-end', mt: 1.5 }}>
-          <Button variant="outlined" onClick={handleBack}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1.5,
+            justifyContent: "flex-end",
+            mt: 1.5,
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={handleBack}
+            sx={{
+              minWidth: 160,
+              height: 42,
+              // backgroundColor: "red",
+              // color: "#fff",
+            }}
+          >
             Cancel
           </Button>
-          <Button type="submit" variant="contained" loading={formik.isSubmitting}
-            endIcon={<Icon name="forward" size={13} />} sx={{ px: 3 }}>
+
+          <Button
+            type="submit"
+            variant="contained"
+            loading={formik.isSubmitting}
+            endIcon={<Icon name="forward" size={13} />}
+            sx={{
+              minWidth: 160,
+              height: 42,
+              px: 3,
+            }}
+          >
             Create Account
           </Button>
         </Box>
