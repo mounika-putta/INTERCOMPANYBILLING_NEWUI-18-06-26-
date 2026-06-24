@@ -33,6 +33,8 @@ const InvoiceTemplate = () => {
     if (invoiceId) dispatch(fetchInvoicedetailswithRefno(invoiceId));
   }, [dispatch, invoiceId]);
 
+  console.log("Invoice Details:", invoiceDetails);
+
   const formatCurrency = (n) => {
     if (n == null || n === "") return "-";
     return Number(n).toLocaleString(undefined, {
@@ -168,7 +170,7 @@ const InvoiceTemplate = () => {
               <th style={{ width: "110px" }}>Item Code</th>
               <th>Description</th>
               <th style={{ width: "80px" }}>Qty</th>
-              <th style={{ width: "100px" }}>Unit Price</th>
+              <th style={{ width: "100px" }}>Unit Rate Excl VAT</th>
               <th style={{ width: "70px" }}>Disc</th>
               <th style={{ width: "60px" }}>VAT %</th>
               <th style={{ width: "120px" }}>Total</th>

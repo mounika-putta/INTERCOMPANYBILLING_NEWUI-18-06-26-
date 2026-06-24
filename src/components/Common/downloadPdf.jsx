@@ -1,6 +1,6 @@
 import html2pdf from "html2pdf.js";
-import alertify from 'alertifyjs';
-import 'alertifyjs/build/css/alertify.css';
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
 
 export const downloadPdfFromPage = async ({
   url,
@@ -10,32 +10,46 @@ export const downloadPdfFromPage = async ({
   const iframe = document.createElement("iframe");
 
   iframe.style.position = "fixed";
-  iframe.style.right = "0";
+  iframe.style.right = "-9999px";
   iframe.style.bottom = "0";
-  iframe.style.width = "1200px";
-  iframe.style.height = "1000px";
+  iframe.style.width = "1400px";
+  iframe.style.height = "1200px";
   iframe.style.border = "0";
   iframe.style.background = "#fff";
-
-  iframe.src = url;
 
   document.body.appendChild(iframe);
 
   iframe.onload = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
       const iframeDocument =
         iframe.contentDocument || iframe.contentWindow.document;
 
+      // Wait until content is rendered
+      let retries = 0;
+
+      while (
+        !iframeDocument.querySelector(elementSelector) &&
+        retries < 20
+      ) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        retries++;
+      }
+
       const element = iframeDocument.querySelector(elementSelector);
 
+      console.log("PDF URL:", url);
+      console.log("Selector:", elementSelector);
+      console.log("Element Found:", element);
+
       if (!element) {
-        alertify.alert("error", "Unable to load template");
+        alertify.alert("Error", "Unable to load template.");
         return;
       }
 
-      // Wait for images
+      // Additional wait for API data binding
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Wait for all images
       const images = iframeDocument.images;
 
       await Promise.all(
@@ -49,43 +63,8 @@ export const downloadPdfFromPage = async ({
         })
       );
 
-      // const options = {
-      //   margin: 0.2,
-
-      //   filename: fileName,
-
-      //   image: {
-      //     type: "jpeg",
-      //     quality: 1,
-      //   },
-
-      //   html2canvas: {
-      //     scale: 3,
-      //     useCORS: true,
-      //     allowTaint: false,
-      //     logging: true,
-      //     scrollX: 0,
-      //     scrollY: 0,
-      //     windowWidth: 1600,
-      //     imageTimeout: 15000,
-      //   },
-
-
-      //   jsPDF: {
-      //     unit: "mm",
-      //     format: "a3",
-      //     orientation: "landscape",
-      //   },
-
-      //   pagebreak: {
-      //     mode: ["avoid-all", "css", "legacy"],
-      //   },
-      // };
-
-
       const options = {
         margin: 5,
-
         filename: fileName,
 
         image: {
@@ -94,10 +73,12 @@ export const downloadPdfFromPage = async ({
         },
 
         html2canvas: {
-          scale: 1.5, // 2 or 3 valla borders thick ga vastayi
+          scale: 2,
           useCORS: true,
+          allowTaint: true,
           scrollY: 0,
           windowWidth: 1400,
+          logging: false,
         },
 
         jsPDF: {
@@ -111,12 +92,20 @@ export const downloadPdfFromPage = async ({
         },
       };
 
-      await html2pdf().set(options).from(element).save();
+      await html2pdf()
+        .set(options)
+        .from(element)
+        .save();
 
-      document.body.removeChild(iframe);
     } catch (err) {
       console.error("PDF Error:", err);
-      alertify.alert("error", "PDF download failed");
+      alertify.alert("Error", "PDF download failed");
+    } finally {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe);
+      }
     }
   };
+
+  iframe.src = url;
 };
