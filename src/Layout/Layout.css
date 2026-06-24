@@ -58,7 +58,8 @@ body,
 .app-main .create-item-section,
 .app-main .form-grid,
 .app-main .registration-form {
-  max-width: 1100px;
+  max-width: 1230px;
+  margin-right: 10px;
 }
 
 /* Neutralize each page's legacy offset/width hacks so the shell
@@ -142,10 +143,10 @@ body,
 /* ============================================================
    Headings — fix legacy white-on-white text
    ============================================================ */
-.app-main h1,
+
 .app-main h2,
 .app-main h3 {
-  color: #1f2933;
+  color: #1E7D4E;
 }
 
 .app-main .section-header h2,
@@ -196,7 +197,6 @@ body,
   border-bottom: 1px solid #eef2f6 !important;
   color: #1f2933 !important;
   background: transparent !important;
-  text-align: left;
   line-height: 1.4;
 }
 
@@ -396,7 +396,7 @@ body,
   padding: 0;
   font-size: 22px !important;
   font-weight: 700 !important;
-  color: #1f2933 !important;
+  color: #1E7D4E !important;
   text-align: left !important;
 }
 
@@ -468,7 +468,7 @@ body,
 .app-main .records-per-page {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 6px;
   flex-wrap: wrap;
   margin-bottom: 15px;
@@ -540,6 +540,12 @@ body,
 .app-main td button,
 .app-main td a.icon-btn {
   background: transparent;
+  border: none;
+  padding: 4px;
+}
+.app-main td .discount-row-btn {
+  background: #1E7D4E;
+  color: #fff;
   border: none;
   padding: 4px;
 }
@@ -619,3 +625,26 @@ body,
     align-items: stretch;
   }
 }
+
+.filter-section .clear-btn {
+    background-color: #82868a;
+    color: white;
+}
+
+@media (min-width: 1200px) {
+    .css-te9t5b {
+        width: 40%;
+        padding-left: 64px;
+        padding-right: 64px;
+        margin-top: -10%;
+    }
+}
+
+@media (min-width: 600px) {
+      .css-109hkld {
+        padding-left: 28px;
+        padding-right: 28px;
+        padding-top: 28px;
+        padding-bottom: 28px;
+        margin-left: -28px;
+    }}

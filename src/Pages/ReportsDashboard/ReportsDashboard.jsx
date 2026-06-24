@@ -20,6 +20,7 @@ const ReportsDashboard = () => {
   const [period, setPeriod] = useState("");
   const [selectedType, setSelectedType] = useState("quotation");
   const [comparisonType, setComparisonType] = useState("quotation");
+  const [pieType, setPieType] = useState("quotation");
   const [searchTerm, setSearchTerm] = useState("");
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [detailType, setDetailType] = useState("");
@@ -31,8 +32,8 @@ const ReportsDashboard = () => {
   const { reportsdashboardData, reportsloading } = useSelector((state) => state.dashboardsData);
   const [selectedCreditNote, setSelectedCreditNote] = useState(null);
   const [selectedQuotation, setSelectedQuotation] = useState(null);
-
   const [showCreditNotePopup, setShowCreditNotePopup] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -121,7 +122,10 @@ const ReportsDashboard = () => {
 
 
   const handleChartClick = async (type, status) => {
-    setDetailType(type);
+
+     const normalizedType = type.toLowerCase();
+
+    setDetailType(normalizedType);
     setDetailStatus(status);
 
     await dispatch(fetchReportDetails({
@@ -135,7 +139,6 @@ const ReportsDashboard = () => {
 
 
   const handleViewClick = async (quotation) => {
-
     const isCreditNote =
       quotation.invoiceStatus?.toLowerCase() === "credit note created" ||
       quotation.quotationStatus?.toLowerCase() === "credit note created";
@@ -143,7 +146,12 @@ const ReportsDashboard = () => {
     if (isCreditNote) {
       await handleCreditNoteViewClick(quotation);
     } else {
-      setSelectedQuotation(quotation);
+      setSelectedQuotation({
+        ...quotation,
+        invoiceReferenceNumber:
+          quotation.invoiceReferenceNumber || quotation.invoiceRefno
+      });
+      setShowModal(true);
     }
   };
 
@@ -191,22 +199,27 @@ const ReportsDashboard = () => {
     })) || [];
 
   const invoiceStatus =
-    dashboardData?.invoiceStatus?.map((x) => ({
+    dashboardData?.invoiceStatus?.map((x,) => ({
       name: normalizeInvoiceStatus(x.status),
       value: x.count,
     })) || [];
 
   const quotationTrend =
     dashboardData?.quotationTrend?.map((x) => ({
-      date: new Date(x.date).toLocaleDateString(),
+      period: new Date(x.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
       count: x.count,
     })) || [];
 
   const invoiceTrend =
     dashboardData?.invoiceTrend?.map((x) => ({
-      date: new Date(x.date).toLocaleDateString(),
+      period: new Date(x.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
       count: x.count,
-      status: normalizeInvoiceStatus(x.status), // if backend sends status
     })) || [];
 
   // Derived KPI values from the real status breakdowns
@@ -313,7 +326,9 @@ const ReportsDashboard = () => {
             >
               <option value="">Select Period</option>
               <option value="7">7 Days</option>
+              <option value="15">15 Days</option>
               <option value="30">30 Days</option>
+              <option value="45">45 Days</option>
               <option value="60">60 Days</option>
             </select>
 
@@ -417,65 +432,46 @@ const ReportsDashboard = () => {
               </div>
             )}
 
-            {/* INVOICE PIE */}
-            {hasInvoiceStatus && (
+            {/* INVOICE PIE */} {/* QUOTATION PIE */}
+
+            {(hasInvoiceStatus || hasQuotationStatus) && (
               <div className="reportdashboard-chart-card">
-                <div className="reportdashboard-chart-header">
-                  Invoice Status
+                <div className="reportdashboard-chart-header d-flex justify-content-between">
+                  <span>Status Distribution</span>
+
+                  <select
+                    value={pieType}
+                    onChange={(e) => setPieType(e.target.value)}
+                  >
+                    <option value="quotation">Quotation</option>
+                    <option value="invoice">Invoice</option>
+
+                  </select>
                 </div>
 
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={invoiceStatus}
+                      data={
+                        pieType === "invoice"
+                          ? invoiceStatus
+                          : quotationStatus
+                      }
                       dataKey="value"
+                      nameKey="name"
                       outerRadius={100}
                       label
                       onClick={(data) =>
                         handleChartClick(
-                          "Invoice",
+                          pieType,
                           data.name
                         )
                       }
                     >
-                      {invoiceStatus.map((entry, index) => (
-                        <Cell
-                          key={index}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-
-                    </Pie>
-
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-
-            {/* QUOTATION PIE */}
-            {hasQuotationStatus && (
-              <div className="reportdashboard-chart-card">
-                <div className="reportdashboard-chart-header">
-                  Quotation Status
-                </div>
-
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={quotationStatus}
-                      dataKey="value"
-                      outerRadius={100}
-                      label
-                      onClick={(data) =>
-                        handleChartClick(
-                          "Quotation",
-                          data.name
-                        )
-                      }
-                    >
-                      {quotationStatus.map((entry, index) => (
+                      {(pieType === "invoice"
+                        ? invoiceStatus
+                        : quotationStatus
+                      ).map((entry, index) => (
                         <Cell
                           key={index}
                           fill={COLORS[index % COLORS.length]}
@@ -489,10 +485,9 @@ const ReportsDashboard = () => {
                 </ResponsiveContainer>
               </div>
             )}
-
             {/* TREND LINE CHART */}
             {hasLineData && (
-              <div className="reportdashboard-chart-card">
+              <div className="reportdashboard-chart-card reportdashboard-full-width">
                 <div className="reportdashboard-chart-header d-flex justify-content-between">
                   <span>Trend Analysis</span>
 
@@ -515,16 +510,21 @@ const ReportsDashboard = () => {
 
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="period" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
 
+
                     <Line
-                      type="monotone"
+
+                      type="bump"
                       dataKey="count"
-                      stroke="#5C9DED"
-                      strokeWidth={3}
+                      stroke="#00C896"
+                      strokeWidth={4}
+                      dot={false}
+                      activeDot={{ r: 7 }}
+
                       name={
                         comparisonType === "quotation"
                           ? "Quotation Count"
@@ -558,7 +558,7 @@ const ReportsDashboard = () => {
         )}
         {!dashboardData && (
           <div className="alert alert-info text-center" style={{ marginLeft: '30px', color: '#2a2d9b' }}>
-            Please select a date and click Search to view analytics.
+            Please select a period and click Search to view analytics.
           </div>
         )}
       </div>
@@ -682,10 +682,14 @@ const ReportsDashboard = () => {
 
               {selectedQuotation && (
                 <ViewPopup
-                  data={selectedQuotation}
+                  show={showModal}
+                  onClose={() => setShowModal(false)}
+                  selectedInvoice={selectedQuotation}
                   type={detailType}
-                  onClose={() => setSelectedQuotation(null)}
-                />
+                  onGenerateInvoice={null}
+                  loadingRefNo={null} />
+                
+                
               )}
 
               {/* Credit Note Popup */}

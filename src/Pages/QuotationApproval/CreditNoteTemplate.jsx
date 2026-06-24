@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import { fetchInvoicedetailswithRefno } from '../../redux/QuotationTemplateSlice';
+import './QuotationTemplateModern.css';
 import './CreditNoteTemplate.css';
 import { baseURL } from "../../services/api";
 import { updateCreditNote } from '../../redux/CreditNoteSlice';
@@ -208,6 +209,14 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
     const handleSave = async () => {
         if (!validateForm()) return;
 
+        if (derivedTotal <= 0) {
+        alertify.alert(
+            "Error",
+            "Total Amount Incl. VAT must be greater than 0 before saving."
+        );
+        return;
+    }
+
         const formatDate = (date) => {
             if (!date) return null;
             const d = new Date(date);
@@ -327,7 +336,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                 {/* ── Header ── */}
                 <header className="cn-header">
                     <div className="cn-header-left">
-                        {/* {editableInvoice.comapanyLogo && (() => {
+                        {editableInvoice.comapanyLogo && (() => {
                             const logoFileName = editableInvoice.comapanyLogo.split(/[/\\]/).pop();
                             // console.log('logoFileName', logoFileName);
                             return (
@@ -337,9 +346,9 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                                     className="cn-logo"
                                 />
                             );
-                        })()} */}
+                        })()}
 
-                        <img
+                        {/* <img
                             src={logoUrl}
                             alt="Company Logo"
                             className="cn-logo"
@@ -351,7 +360,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                                 e.target.onerror = null;
                                 e.target.src = LOCAL_LOGO;
                             }}
-                        />
+                        /> */}
                         {/* <img src={finalLogo} alt="Company Logo" className="cn-logo" /> */}
                     </div>
 
@@ -381,7 +390,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                             <KVReadOnly label="Website" value={editableInvoice.companyWebsite} />
                             {/* <KVReadOnly label="Address" value={editableInvoice.companyAddress} /> */}
 
-                            <br />
+                            <div style={{ height: 10 }} />
                             <h4 className="cn-block-title">Bank Account Information</h4>
                             <KVReadOnly label="Account Holder" value={editableInvoice.accountHolderName} />
                             <KVReadOnly label="Branch Code" value={editableInvoice.branchCode} />
@@ -433,7 +442,7 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                                 value={formatDateDisplay(editableInvoice.dueDate)}
                             />
                             {/* <KVEdit label="Invoice Ref"   value={editableInvoice.invoiceReferenceNumber} onChange={v => handleChange('invoiceReferenceNumber', v)} /> */}
-                            <br />
+                            <div style={{ height: 10 }} />
                             <h4 className="cn-block-title">Customer Information</h4>
 
                             <div className="cn-form-grid">
@@ -646,7 +655,6 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                 </section>
 
                 {/* ── Save ── */}
-                <br />
                 <div className="cn-save-wrapper">
                     <button
                         className="cn-save-btn"

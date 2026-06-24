@@ -16,6 +16,7 @@ export const getQuotationOrInvoiceDetails = async ({ type, status }) => {
 };
 
 export const getDashboardReport = async (fromDate) => {
+  
   const response = await AxiosInstance.get(
     `/api/Reports/dashboard`,
     {

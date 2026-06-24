@@ -1,0 +1,223 @@
+/* ============================================================
+   ViewPopup — shares the look & feel of ViewQuotationModal.
+   Everything is scoped under `.quotation-view-overlay.viewpopup-modern`
+   so these rules out-specify the per-page copies of the
+   `.quotation-view-*` classes regardless of stylesheet load order.
+   ============================================================ */
+
+.quotation-view-overlay.viewpopup-modern {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Modal container — flex column, clips children to the rounded corners */
+.quotation-view-overlay.viewpopup-modern .quotation-view-modal {
+  background: #fff;
+  padding: 0;
+  border-radius: 12px;
+  width: 92%;
+  max-width: 980px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 18px 48px rgba(15, 23, 32, 0.28);
+}
+
+/* Fixed brand header — stays put while only the body scrolls */
+.quotation-view-overlay.viewpopup-modern .quotation-view-header {
+  position: relative;
+  flex-shrink: 0;
+  padding: 13px 20px;
+  background: linear-gradient(90deg, #2e6c3b 0%, #3D8C4F 100%);
+}
+
+.quotation-view-overlay.viewpopup-modern .quotation-view-title {
+  margin: 0;
+  padding-right: 40px;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Close (×) — vertically centred white button on the header */
+.quotation-view-overlay.viewpopup-modern .quotation-view-close-btn {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: none;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 5;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.08);
+}
+
+/* Logo tucked into the header, clear of the close button */
+.quotation-view-overlay.viewpopup-modern .company-logo-corner {
+  position: absolute;
+  top: 50%;
+  right: 56px;
+  transform: translateY(-50%);
+  height: 34px;
+  width: auto;
+  max-width: 130px;
+  object-fit: contain;
+  margin: 0;
+  padding: 2px;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+/* Scrollable content area */
+.quotation-view-overlay.viewpopup-modern .quotation-view-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 20px 20px;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #cdddd2 transparent;
+}
+
+/* Slim, on-brand scrollbar that stays clear of the rounded corners */
+.quotation-view-overlay.viewpopup-modern .quotation-view-body::-webkit-scrollbar {
+  width: 8px;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-body::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 6px 0;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-body::-webkit-scrollbar-thumb {
+  background: #cdddd2;
+  border-radius: 8px;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-body::-webkit-scrollbar-thumb:hover {
+  background: #aecab6;
+}
+
+/* Section titles — brand band, compact spacing */
+.quotation-view-overlay.viewpopup-modern .quotation-view-body > .quotation-view-section-title:first-child {
+  margin-top: 0;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-section-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+  padding: 6px 0 6px 10px;
+  color: #2e6c3b;
+  background: #f1f7f2;
+  border-left: 4px solid #3D8C4F;
+  border-radius: 6px;
+}
+
+/* Info — compact two-column grid */
+.quotation-view-overlay.viewpopup-modern .quotation-view-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 24px;
+  font-size: 13px;
+  padding-left: 0;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-info > div,
+.quotation-view-overlay.viewpopup-modern .quotation-view-info .info-row {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px dashed #eef2f0;
+  color: #1f2933;
+  margin-bottom: 0;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-info .label {
+  width: auto;
+  min-width: 150px;
+  max-width: 190px;
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #1f4d2b;
+  padding: 2px 0;
+  border-radius: 5px;
+  white-space: normal;
+}
+.quotation-view-overlay.viewpopup-modern .quotation-view-info span:not(.label) {
+  color: #1f2933;
+  font-weight: 500;
+}
+
+/* Details table — wrap long headers so they stay aligned with their cells */
+.quotation-view-overlay.viewpopup-modern .data-table {
+  width: 100%;
+  table-layout: fixed;
+  margin-top: 2px;
+}
+.quotation-view-overlay.viewpopup-modern .data-table th {
+  white-space: normal !important;
+  text-align: center !important;
+  vertical-align: middle;
+  font-size: 10.8px !important;
+  line-height: 1.25;
+  padding: 7px 6px !important;
+  word-break: break-word;
+}
+.quotation-view-overlay.viewpopup-modern .data-table td {
+  padding: 6px 6px !important;
+  font-size: 12.5px;
+  word-break: break-word;
+}
+
+/* Generate Invoice action button */
+.quotation-view-overlay.viewpopup-modern .generate-invoice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(90deg, #2e6c3b 0%, #3D8C4F 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.quotation-view-overlay.viewpopup-modern .generate-invoice-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+.quotation-view-overlay.viewpopup-modern .generate-invoice-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 720px) {
+  .quotation-view-overlay.viewpopup-modern .quotation-view-info {
+    grid-template-columns: 1fr;
+  }
+}

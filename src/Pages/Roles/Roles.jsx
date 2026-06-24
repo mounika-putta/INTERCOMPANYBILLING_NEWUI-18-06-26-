@@ -737,29 +737,7 @@ const Roles = () => {
                       <p className="error-message">{editErrors.RoleName}</p>
                     )}
                   </div>
-                  <div className="formlabel-group">
-                    <label>
-                      Role Description <span className="required">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={editItem.RoleDescription || ""}
-                      className={editErrors.RoleDescription ? "input-error" : ""}
-                      onChange={(e) =>
-                        setEditRole({
-                          ...editItem,
-                          RoleDescription: e.target.value,
-                        })
-                      }
-                    />
-                    {editErrors.RoleDescription && (
-                      <p className="error-message">{editErrors.RoleDescription}</p>
-                    )}
-                  </div>
-                </div>
 
-                {/* Row 2 */}
-                <div className="form-row">
                   <div className="formlabel-group">
                     <label>
                       Is Active <span className="required">*</span>
@@ -777,6 +755,30 @@ const Roles = () => {
                     </select>
                     {editErrors.IsActive && (
                       <p className="error-message">{editErrors.IsActive}</p>
+                    )}
+                  </div>
+                
+                </div>
+
+                {/* Row 2 */}
+                <div className="form-row">
+                    <div className="formlabel-group">
+                    <label>
+                      Role Description <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={editItem.RoleDescription || ""}
+                      className={editErrors.RoleDescription ? "input-error" : ""}
+                      onChange={(e) =>
+                        setEditRole({
+                          ...editItem,
+                          RoleDescription: e.target.value,
+                        })
+                      }
+                    />
+                    {editErrors.RoleDescription && (
+                      <p className="error-message">{editErrors.RoleDescription}</p>
                     )}
                   </div>
 

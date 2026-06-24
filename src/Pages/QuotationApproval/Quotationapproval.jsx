@@ -141,7 +141,11 @@ const Quotationapproval = () => {
 
     //viewbutton//
     const handleViewClick = (quotation) => {
-        setSelectedQuotation(quotation);
+        setSelectedQuotation({
+            ...quotation,
+            quotationDate: quotation.invoiceDate
+        });
+
         setShowModal(true);
     };
     //popup open//
@@ -182,59 +186,59 @@ const Quotationapproval = () => {
                 alertify.alert("Error", "Failed to generate invoice");
             });
     };
-    
+
     const [downloadingId, setDownloadingId] = useState(null);
 
     const handleDownloadQuotation = async (
-  quotationId,
-  referenceNumber
-) => {
+        quotationId,
+        referenceNumber
+    ) => {
 
-  try {
+        try {
 
-    setDownloadingId(quotationId);
+            setDownloadingId(quotationId);
 
-    // Allow UI render
-    await new Promise((resolve) => setTimeout(resolve, 300));
+            // Allow UI render
+            await new Promise((resolve) => setTimeout(resolve, 300));
 
-    const url =
-      `${window.location.origin}` +
-      `/QuotationTemplateModern?quotationId=${quotationId}&type=download`;
+            const url =
+                `${window.location.origin}` +
+                `/QuotationTemplateModern?quotationId=${quotationId}&type=download`;
 
-    await downloadPdfFromPage({
-      url,
-      fileName: `Quotation_${referenceNumber}.pdf`,
-    });
+            await downloadPdfFromPage({
+                url,
+                fileName: `Quotation_${referenceNumber}.pdf`,
+            });
 
-    // Keep loader visible slightly longer
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+            // Keep loader visible slightly longer
+            await new Promise((resolve) => setTimeout(resolve, 1500));
 
-  } catch (error) {
+        } catch (error) {
 
-    console.error(error);
+            console.error(error);
 
-    const message =
-      error?.response?.data?.message ||
-      error?.message ||
-      "Failed to download quotation.";
+            const message =
+                error?.response?.data?.message ||
+                error?.message ||
+                "Failed to download quotation.";
 
-    if (
-      message ===
-      "Quotation is older than 14 days and has expired."
-    ) {
-      alertify.error(
-        "Quotation expired. PDF download is not allowed."
-      );
-    } else {
-      alertify.error(message);
-    }
+            if (
+                message ===
+                "Quotation is older than 14 days and has expired."
+            ) {
+                alertify.error(
+                    "Quotation expired. PDF download is not allowed."
+                );
+            } else {
+                alertify.error(message);
+            }
 
-  } finally {
+        } finally {
 
-    setDownloadingId(null);
+            setDownloadingId(null);
 
-  }
-};
+        }
+    };
 
     return (
         <div className="quotation-approval-container">
@@ -385,7 +389,7 @@ const Quotationapproval = () => {
                                     </td>
                                     <td>
                                         <FaEye
-                                        style={{  cursor: 'pointer' }}
+                                            style={{ cursor: 'pointer' }}
                                             className="action-icon view-icon"
                                             onClick={() => handleViewClick(q)}
                                             title="View Quotation Details"
@@ -394,9 +398,9 @@ const Quotationapproval = () => {
 
                                     <td
                                         style={{
-                                            
+
                                             display: "flex",
-                                            
+
                                             gap: "10px"
                                         }}
                                     >
@@ -465,10 +469,10 @@ const Quotationapproval = () => {
             )}
 
 
-            <ViewPopup show={showModal} onClose={() => setShowModal(false)} selectedInvoice={selectedQuotation} type="quotationapproval" 
-            onGenerateInvoice={handleGenerateInvoice}
-            loadingRefNo={loadingRefNo} />
-           
+            <ViewPopup show={showModal} onClose={() => setShowModal(false)} selectedInvoice={selectedQuotation} type="quotationapproval"
+                onGenerateInvoice={handleGenerateInvoice}
+                loadingRefNo={loadingRefNo} />
+
             <HelpModal show={showHelp} title="Quotation Approval List - Help & Overview" screenName="QuotationApproval" onClose={() => setShowHelp(false)} />
 
 

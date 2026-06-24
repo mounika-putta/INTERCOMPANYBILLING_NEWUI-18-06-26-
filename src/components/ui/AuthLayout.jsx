@@ -47,7 +47,7 @@ const AuthLayout = ({
           display: { xs: 'none', md: 'flex' },
           flexDirection: 'column',
           justifyContent: 'center',
-          width: { md: '40%', lg: '48%' },
+          width: { md: '35%', lg: '40%' },
           px: { md: 6, lg: 8 },
           py: 6,
           position: 'relative',
@@ -99,8 +99,26 @@ const AuthLayout = ({
           justifyContent: 'center',
           position: 'relative',
           px: { xs: 2.5, sm: 5 },
-          py: { xs: 5, sm: 6 },
+          py: { xs: 3, sm: 3.5 },
           overflowY: 'auto',
+          // Neat, thin scrollbar that blends with the brand palette
+          scrollbarWidth: 'thin',
+          scrollbarColor: `${colors.line} transparent`,
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: 'transparent',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: colors.line,
+            borderRadius: '8px',
+            border: '2px solid transparent',
+            backgroundClip: 'content-box',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: colors.brand,
+          },
         }}
       >
         {topRight && (

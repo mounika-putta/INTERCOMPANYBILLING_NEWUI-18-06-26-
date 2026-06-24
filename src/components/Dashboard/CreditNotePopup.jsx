@@ -1,467 +1,321 @@
 import React from "react";
 import { baseURL } from "../../services/api";
-
+import "./ViewPopup.css";
 const CreditNotePopup = ({ selectedCreditNote, onClose }) => {
 
     return (
 
-        <div className="quotation-view-overlay">
-
+        <div className="quotation-view-overlay viewpopup-modern">
             <div className="quotation-view-modal">
+                <div className="quotation-view-header">
+                    <h3 className="quotation-view-title">View Credit Note Details</h3>
 
-                <button
-                    className="quotation-view-close-btn"
-                    onClick={onClose}
-                >
-                    &times;
-                </button>
+                    {selectedCreditNote.comapanyLogo && (() => {
+                        const logoFileName = selectedCreditNote.comapanyLogo.split(/[/\\]/).pop();
+                        return (
+                            <img
+                                src={`${baseURL}/UploadedFiles/${logoFileName}`}
+                                alt="Company Logo"
+                                className="company-logo-corner"
+                            />
+                        );
+                    })()}
 
-                <h3 className="quotation-view-title">
-                    View Credit Note Details
-                </h3>
-
-                {/* ---------- Company Information ---------- */}
-
-
-
-                <div>
-
-                        {selectedCreditNote.comapanyLogo && (() => {
-
-                            const logoFileName =
-                                selectedCreditNote.comapanyLogo
-                                    .split(/[/\\]/)
-                                    .pop();
-
-                            return (
-                                <img
-                                    src={`${baseURL}/UploadedFiles/${logoFileName}`}
-                                    alt="Company Logo"
-                                    className="company-logo-corner"
-                                />
-                            );
-
-                        })()}
-
-                    </div>
-                <h4 className="quotation-view-section-title">
-                    Company Information
-                </h4>
-
-                <div className="quotation-view-info">
-
-                    
-
-                    <div>
-                        <span className="label">Company Name</span>:
-                        {selectedCreditNote.companyName}
-                    </div>
-
-                    <div>
-                        <span className="label">Company Email</span>:
-                        {selectedCreditNote.companyEmail}
-                    </div>
-
-                    <div>
-                        <span className="label">Phone Number</span>:
-                        {selectedCreditNote.companyPhoneNumber}
-                    </div>
-
-                    <div className="info-row">
-                        <span className="label">Company Address</span>
-                        <span className="colon">:</span>
-
-                        <span
-                            className="values"
-                            style={{ marginLeft: "-8px" }}
-                        >
-                            {selectedCreditNote.companyAddress}
-                        </span>
-                    </div>
-
-                    <div>
-                        <span className="label">VAT Number</span>:
-                        {selectedCreditNote.vatNumber}
-                    </div>
-
-                    <div>
-                        <span className="label">Registration Number</span>:
-                        {selectedCreditNote.registrationNumber}
-                    </div>
-
+                    <button
+                        className="quotation-view-close-btn"
+                        onClick={onClose}
+                    >
+                        &times;
+                    </button>
                 </div>
 
-                {/* ---------- Bank Information ---------- */}
+                <div className="quotation-view-body">
 
-                <h4 className="quotation-view-section-title">
-                    Bank Information
-                </h4>
+                    {/* Company Information */}
+                    <h4 className="quotation-view-section-title">Company Information</h4>
 
-                <div className="quotation-view-info">
 
-                    <div>
-                        <span className="label">Bank Account Number</span>:
-                        {selectedCreditNote.bankAccountNumber}
+                    <div className="quotation-view-info">
+                        <div><span className="label">Company Name</span> : <span>{selectedCreditNote.companyName}</span></div>
+                        <div><span className="label">Company Vat Number</span> :<span>{selectedCreditNote.vatNumber}</span></div>
+                        <div><span className="label">Company Reg Number</span>: <span>{selectedCreditNote.registrationNumber}</span></div>
+                        <div><span className="label">Company Address</span> :<span>{selectedCreditNote.companyAddress}</span></div>
+                        {/* <div><span className="label">Company Website</span>: <span>{selectedCreditNote.companyWebsite}</span></div> */}
+                        <div><span className="label">Company Email</span>: <span>{selectedCreditNote.companyEmail}</span></div>
+                        <div><span className="label">Company Phone Number</span> :<span>{selectedCreditNote.companyPhoneNumber}</span></div>
                     </div>
 
-                    <div>
-                        <span className="label">Branch Code</span>:
-                        {selectedCreditNote.branchCode}
-                    </div>
-
-                    <div className="info-row">
-                        <span className="label">Branch Address</span>
-                        <span className="colon">:</span>
-
-                        <span
-                            className="values"
-                            style={{ marginLeft: "-8px" }}
-                        >
-                            {selectedCreditNote.brannchAddress}
-                        </span>
-                    </div>
-
-                </div>
-
-                {/* ---------- Quotation Information ---------- */}
-
-                <h4 className="quotation-view-section-title">
-                    Quotation Information
-                </h4>
-
-                <div className="quotation-view-info">
-
-                    <div>
-                        <span className="label">Quotation Id</span>:
-                        {selectedCreditNote.quotationRefno}
-                    </div>
-
-                    <div>
-                        <span className="label">Quotation Date</span>:
-
-                        {selectedCreditNote?.quotationDate
-                            ? (() => {
-
-                                const d = new Date(
-                                    selectedCreditNote.quotationDate
-                                );
-
-                                const day = String(
-                                    d.getDate()
-                                ).padStart(2, "0");
-
-                                const month = String(
-                                    d.getMonth() + 1
-                                ).padStart(2, "0");
-
-                                const year = d.getFullYear();
-
-                                return `${day}/${month}/${year}`;
-
-                            })()
-                            : "/"}
-                    </div>
-
-                    <div>
-                        <span className="label">Quotation Status</span>:
-                        {selectedCreditNote.quotationStatus}
-                    </div>
-
-                    <div>
-                        <span className="label">Currency</span>:
-                        {selectedCreditNote.currency}
-                    </div>
-
-                    <div>
-                        <span className="label">Type</span>:
-                        {selectedCreditNote.quotationType}
-                    </div>
-
-                    <div>
-                        <span className="label">Total Amount</span>:
-                        {selectedCreditNote.totalAmount?.toFixed(2)}
-                    </div>
-
-                </div>
-
-                {/* ---------- Invoice Information ---------- */}
-
-                <h4 className="quotation-view-section-title">
-                    Invoice Information
-                </h4>
-
-                <div className="quotation-view-info">
-
-                    <div>
-                        <span className="label">Invoice Id</span>:
-                        {selectedCreditNote.invoiceReferenceNumber}
-                    </div>
-
-                    <div>
-                        <span className="label">Invoice Date</span>:
-
-                        {selectedCreditNote?.invoiceDate
-                            ? (() => {
-
-                                const d = new Date(
-                                    selectedCreditNote.invoiceDate
-                                );
-
-                                const day = String(
-                                    d.getDate()
-                                ).padStart(2, "0");
-
-                                const month = String(
-                                    d.getMonth() + 1
-                                ).padStart(2, "0");
-
-                                const year = d.getFullYear();
-
-                                return `${day}/${month}/${year}`;
-
-                            })()
-                            : "/"}
-                    </div>
-
-                    <div>
-                        <span className="label">Invoice Status</span>:
-                        {selectedCreditNote.invoiceStatus}
-                    </div>
-
-                    {selectedCreditNote.invoiceStatus === "Cancelled" && (
-
-                        <div className="info-row">
-
-                            <span className="label">Reason</span>
-
-                            <span className="colon">:</span>
-
-                            <span className="values">
-                                {selectedCreditNote.reason}
+                    {/* Banking Details */}
+                    <h4 className="quotation-view-section-title">Banking Details</h4>
+                    <div className="quotation-view-info">
+                        <div><span className="label">Account Number</span> : <span>{selectedCreditNote.bankAccountNumber}</span></div>
+                        <div><span className="label">Branch Code</span> :<span>{selectedCreditNote.branchCode}</span></div>
+                        <div><span className="label">Branch Address</span>:
+                            <span>
+                                {selectedCreditNote?.branchAddress ||
+                                    selectedCreditNote?.brannchAddress ||
+                                    "-"}
                             </span>
+                        </div>
+                        {/* <div><span className="label">IFSC Code</span> :<span>{selectedCreditNote.ifscCode}</span></div> */}
+                    </div>
 
+                    {/* Quotation Information */}
+                    <h4 className="quotation-view-section-title">Quotation Information</h4>
+                    <div className="quotation-view-info">
+                        <div><span className="label">Quotation ID</span> : <span>{selectedCreditNote.referenceNumber}</span></div>
+                        <div><span className="label">Date</span> :<span>
+                            {selectedCreditNote?.invoiceDate
+                                ? (() => {
+                                    const d = new Date(selectedCreditNote.invoiceDate);
+                                    const day = String(d.getDate()).padStart(2, "0");
+                                    const month = String(d.getMonth() + 1).padStart(2, "0");
+                                    const year = d.getFullYear();
+                                    return `${day}/${month}/${year}`;
+                                })()
+                                : "/"}
+
+                        </span></div>
+
+                        <div><span className="label">Status</span>: <span>{selectedCreditNote.quotationStatus}</span></div>
+                        <div><span className="label">Currency</span>: <span>{selectedCreditNote.currency}</span></div>
+
+                        <div><span className="label">Total Amount</span> :<span>{selectedCreditNote.totalAmount?.toFixed(2)}</span></div>
+
+                        {selectedCreditNote.Status === "Rejected" && (
+                            <div className="info-row">
+                                <span className="label">Reason</span>
+                                <span className="colon">:</span>
+                                <span className="values" style={{ marginInlineStart: '-1px' }}>{selectedCreditNote.reason}</span>
+                            </div>
+
+                        )}
+                    </div>
+
+
+                    <h4 className="quotation-view-section-title">Invoice Information</h4>
+
+                    <div className="quotation-view-info">
+                        <div>
+                            <span className="label">Invoice Id</span> :
+                            <span>{selectedCreditNote.invoiceReferenceNumber}</span>
                         </div>
 
-                    )}
+                        <div>
+                            <span className="label">Invoice Date</span> :
+                            <span>
+                                {selectedCreditNote?.invoiceDate
+                                    ? (() => {
+                                        const d = new Date(selectedCreditNote.invoiceDate);
+                                        const day = String(d.getDate()).padStart(2, "0");
+                                        const month = String(d.getMonth() + 1).padStart(2, "0");
+                                        const year = d.getFullYear();
+                                        return `${day}/${month}/${year}`;
+                                    })()
+                                    : "/"}
+                            </span>
+                        </div>
 
-                </div>
+                        <div>
+                            <span className="label">Invoice Status</span> :
+                            <span>{selectedCreditNote.invoiceStatus}</span>
+                        </div>
 
-                {/* ---------- Credit Note Information ---------- */}
-
-                <h4 className="quotation-view-section-title">
-                    Credit Note Information
-                </h4>
-
-                <div className="quotation-view-info">
-
-                    <div>
-                        <span className="label">
-                            Credit Note Refno.
-                        </span>:
-                        {selectedCreditNote.referenceNumber}
+                        {selectedCreditNote.invoiceStatus === "Cancelled" && (
+                            <div className="info-row">
+                                <span className="label">Reason</span>
+                                <span className="colon">:</span>
+                                <span className="values">{selectedCreditNote.reason}</span>
+                            </div>
+                        )}
                     </div>
 
-                    <div>
-                        <span className="label">
-                            Credit Note Date
-                        </span>:
 
-                        {selectedCreditNote?.creditNoteDate
-                            ? (() => {
 
-                                const d = new Date(
-                                    selectedCreditNote.creditNoteDate
-                                );
+                    <h4 className="quotation-view-section-title">
+                        Credit Note Information
+                    </h4>
 
-                                const day = String(
-                                    d.getDate()
-                                ).padStart(2, "0");
+                    <div className="quotation-view-info">
 
-                                const month = String(
-                                    d.getMonth() + 1
-                                ).padStart(2, "0");
+                        <div>
+                            <span className="label">
+                                Credit Note Refno.
+                            </span>:
+                            {selectedCreditNote.referenceNumber}
+                        </div>
 
-                                const year = d.getFullYear();
+                        <div>
+                            <span className="label">
+                                Credit Note Date
+                            </span>:
 
-                                return `${day}/${month}/${year}`;
+                            {selectedCreditNote?.creditNoteDate
+                                ? (() => {
 
-                            })()
-                            : "/"}
+                                    const d = new Date(
+                                        selectedCreditNote.creditNoteDate
+                                    );
+
+                                    const day = String(
+                                        d.getDate()
+                                    ).padStart(2, "0");
+
+                                    const month = String(
+                                        d.getMonth() + 1
+                                    ).padStart(2, "0");
+
+                                    const year = d.getFullYear();
+
+                                    return `${day}/${month}/${year}`;
+
+                                })()
+                                : "/"}
+                        </div>
+
+                        <div>
+                            <span className="label">Due Date</span>:
+
+                            {selectedCreditNote?.dueDate
+                                ? (() => {
+
+                                    const d = new Date(
+                                        selectedCreditNote.dueDate
+                                    );
+
+                                    const day = String(
+                                        d.getDate()
+                                    ).padStart(2, "0");
+
+                                    const month = String(
+                                        d.getMonth() + 1
+                                    ).padStart(2, "0");
+
+                                    const year = d.getFullYear();
+
+                                    return `${day}/${month}/${year}`;
+
+                                })()
+                                : "/"}
+                        </div>
+
                     </div>
 
-                    <div>
-                        <span className="label">Due Date</span>:
+                    <h4 className="qt-block-title">Customer Information</h4>
+                   
 
-                        {selectedCreditNote?.dueDate
-                            ? (() => {
+                    <div className="quotation-view-info">
 
-                                const d = new Date(
-                                    selectedCreditNote.dueDate
-                                );
+                        <div>
+                            <span className="label">
+                                Credit Note Addressed To.
+                            </span>:
+                            {selectedCreditNote?.receivingEntity}
+                        </div>
+                         <div>
+                            <span className="label">
+                                Name
+                            </span>:
+                            {selectedCreditNote?.customerName}
+                        </div>
+                         <div>
+                            <span className="label">
+                                Email
+                            </span>:
+                            {selectedCreditNote?.customerEmail}
+                        </div>
+                         <div>
+                            <span className="label">
+                                Phone No.
+                            </span>:
+                            {selectedCreditNote?.customerPhone}
+                        </div>
 
-                                const day = String(
-                                    d.getDate()
-                                ).padStart(2, "0");
+                        
 
-                                const month = String(
-                                    d.getMonth() + 1
-                                ).padStart(2, "0");
-
-                                const year = d.getFullYear();
-
-                                return `${day}/${month}/${year}`;
-
-                            })()
-                            : "/"}
                     </div>
-
-                </div>
-
-                {/* ---------- Quotation Details ---------- */}
-
-                <h4 className="quotation-view-section-title">
-                    Quotation Details
-                </h4>
-
-                <table className="data-table">
-
-                    <thead>
-
-                        <tr>
-                            <th>ITEM CODE</th>
-                            <th>CATEGORY</th>
-                            <th>NAME</th>
-                            <th>QUANTITY</th>
-                            <th>UNIT RATE EXCL VAT</th>
-                            <th>AMOUNT</th>
-                            <th>DISCOUNT</th>
-                            <th>DISCOUNTED AMOUNT</th>
-                            <th>VAT %</th>
-                            <th>NET AMOUNT</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {(selectedCreditNote.details || []).map((d, idx) => (
-
-                            <tr key={idx}>
-
-                                <td className="desc">{d.itemCode}</td>
-
-                                <td className="desc">{d.category}</td>
-
-                                <td className="desc">{d.itemName}</td>
-
-                                <td style={{ textAlign: "right" }}>
-                                    {d.itemQuantity}
-                                </td>
-
-                                <td style={{ textAlign: "right" }}>
-                                    {d.unitRate}
-                                </td>
-
-                                <td style={{ textAlign: "right" }}>
-                                    {(d.itemQuantity * d.unitRate)}
-                                </td>
-
-                                <td style={{ textAlign: "right" }}>
-                                    {d.discount}
-                                </td>
-
-                                <td style={{ textAlign: "right" }}>
-                                    {(d.itemQuantity * d.unitRate) - d.discount}
-                                </td>
-
-                                <td style={{ textAlign: "right" }}>
-                                    {d.vat}
-                                </td>
-
-                                <td style={{ textAlign: "right" }}>
-
-                                    {(
-                                        (d.itemQuantity * d.unitRate - d.discount) +
-                                        (
-                                            (
-                                                d.itemQuantity * d.unitRate -
-                                                d.discount
-                                            ) * d.vat
-                                        ) / 100
-                                    ).toFixed(2)}
-
-                                </td>
-
+                    {/* Quotation Details Table */}
+                    <h4 className="quotation-view-section-title">Quotation Details</h4>
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th>ITEM CODE</th>
+                                <th>CATEGORY</th>
+                                <th>NAME</th>
+                                <th>QUANTITY</th>
+                                <th>UNIT RATE EXCL VAT</th>
+                                <th>AMOUNT</th>
+                                <th>DISCOUNT</th>
+                                <th>DISCOUNTED TOTAL</th>
+                                <th>VAT %</th>
+                                <th>NET AMOUNT</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            {(selectedCreditNote.details || []).map((d, i) => {
+                                const qty = Number(d.quotationQuantity ?? d.itemQuantity ?? 0);
+                                const vat = Number(d.tax ?? d.vat ?? 0);
+                                const unitRate = Number(d.unitRate ?? 0);
+                                const discount = Number(d.discount ?? 0);
 
-                        ))}
+                                const amount = qty * unitRate;
+                                const discountedTotal = amount - discount;
+                                const netAmount = discountedTotal + (discountedTotal * vat) / 100;
 
-                    </tbody>
+                                return (
+                                    <tr key={i}>
+                                        <td>{d.itemCode}</td>
+                                        <td>{d.category}</td>
+                                        <td>{d.itemName}</td>
 
-                </table>
+                                        <td style={{ textAlign: "right" }}>
+                                            {qty}
+                                        </td>
 
-                {/* ---------- Customer Information ---------- */}
+                                        <td style={{ textAlign: "right" }}>
+                                            {unitRate.toFixed(2)}
+                                        </td>
 
-                <h4 className="quotation-view-section-title">
-                    Customer Information
-                </h4>
+                                        <td style={{ textAlign: "right" }}>
+                                            {amount.toFixed(2)}
+                                        </td>
 
-                <div className="quotation-view-info">
-                    <div>
-                        <span className="label">Credit Note Addressed To.</span>:
-                        {selectedCreditNote.receivingEntity}
+                                        <td style={{ textAlign: "right" }}>
+                                            {discount.toFixed(2)}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {discountedTotal.toFixed(2)}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {vat}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {netAmount.toFixed(2)}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+
+                    {/* Customer Information */}
+                    <h4 className="quotation-view-section-title">Customer Information</h4>
+                    <div className="quotation-view-info">
+                        <div><span className="label">Company Name</span> : <span>{selectedCreditNote.receivingEntity}</span></div>
+                        <div><span className="label">Name</span> : <span>{selectedCreditNote.customerName}</span></div>
+                        <div><span className="label">Phone</span> :<span>{selectedCreditNote.customerPhone}</span></div>
+                        <div><span className="label">Email</span>: <span>{selectedCreditNote.customerEmail}</span></div>
+                        <div><span className="label">Address</span> :<span>{selectedCreditNote.customerAddress}</span></div>
+                        <div><span className="label">Payment Terms</span> :<span>{selectedCreditNote.paymentTerms}</span></div>
+
                     </div>
-                    <div>
-                        <span className="label">Name</span>:
-                        {selectedCreditNote.customerName}
-                    </div>
 
-                    <div>
-                        <span className="label">Email</span>:
-                        {selectedCreditNote.customerEmail}
-                    </div>
-
-                    <div>
-                        <span className="label">Mobile Number</span>:
-                        {selectedCreditNote.customerPhone}
-                    </div>
-
-                    <div className="info-row">
-
-                        <span className="label">Address</span>
-
-                        <span className="colon">:</span>
-
-                        <span
-                            className="values"
-                            style={{ marginLeft: "-8px" }}
-                        >
-                            {selectedCreditNote.customerAddress}
-                        </span>
-
-                    </div>
-
-                    <div className="info-row">
-
-                        <span className="label">Payment Terms</span>
-
-                        <span className="colon">:</span>
-
-                        <span
-                            className="values"
-                            style={{ marginInlineStart: "-8px" }}
-                        >
-                            {selectedCreditNote.paymentTerms}
-                        </span>
-
-                    </div>
 
                 </div>
-
-                <br />
-
             </div>
-
         </div>
     );
 };

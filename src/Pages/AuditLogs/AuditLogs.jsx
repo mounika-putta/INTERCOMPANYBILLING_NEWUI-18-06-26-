@@ -359,7 +359,7 @@ const handleFilterChange = (eOrDate, fieldName) => {
       {selectedItem && (
         <div className="auditlog-modal-overlay">
           <div className="auditlog-modal">
-            <button className="close-btn" onClick={handleCloseModal}>
+            <button className="modalclose-btn" onClick={handleCloseModal}>
               &times;
             </button>
 
@@ -631,7 +631,9 @@ const handleFilterChange = (eOrDate, fieldName) => {
                 )}
 
                 <h4 className="auditlog-view-section-title">Quotation Details</h4>
-                <table className="data-table">
+               <div className="auditlog-table-wrapper">
+
+                <table className="auditlog-view-table">
                   <thead>
                     <tr>
                       <th>ITEM CODE</th>
@@ -669,6 +671,7 @@ const handleFilterChange = (eOrDate, fieldName) => {
                   </tbody>
                 </table>
 
+                </div>
                 <h4 className="auditlog-view-section-title">Customer Information</h4>
                 <div className="auditlog-view-info">
                   {selectedItem.customerName && (

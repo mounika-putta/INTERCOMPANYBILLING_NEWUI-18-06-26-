@@ -1028,8 +1028,8 @@ const InventoryItem = () => {
 
                  {/* Bulk Upload Button */}
               <button
-                className="btn btn-primary"
-                style={{ color: "white", backgroundColor: "green", cursor: "pointer" }}
+                className="btn_add"
+                style={{ color: "white", backgroundColor: "#fd7e14", cursor: "pointer" }}
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isBulkUploading}
               >
@@ -1057,8 +1057,8 @@ const InventoryItem = () => {
                 <>
                   {/* XL Template — opens in Excel, spinner only while downloading */}
                   <button
-                    className="btn btn-primary"
-                    style={{ color: "white", backgroundColor: "#006fff", cursor: "pointer" }}
+                    className="btn_add"
+                    style={{ color: "white", backgroundColor: "#0d6efd", cursor: "pointer" }}
                     onClick={downloadTemplate}
                     disabled={isDownloadingTemplate}
                   >
@@ -1074,8 +1074,8 @@ const InventoryItem = () => {
 
                   {/* CSV Template — opens in Word (.doc), spinner only while downloading */}
                   <button
-                    className="btn btn-secondary"
-                    style={{ color: "white", backgroundColor: "#444", cursor: "pointer" }}
+                    className="btn_add"
+                    style={{ color: "white", backgroundColor: "gray", cursor: "pointer" }}
                     onClick={downloadCsvTemplate}
                     disabled={isDownloadingCsvTemplate}
                   >
@@ -1146,10 +1146,10 @@ const InventoryItem = () => {
                       <td>{invoice.itemName}</td>
                       <td>{invoice.category}</td>
                       <td>{invoice.description}</td>
-                      <td style={{ textAlign: "right" }}>{invoice.price}</td>
-                      <td style={{ textAlign: "center" }}>
+                      <td style={{ textAlign: "center" }}>{invoice.price}</td>
+                      <td >
                         {invoice.vatableStatus === "true" ? (
-                          <FiCheck style={{ color: "green", marginLeft: "6px", fontSize: "20px" }} />
+                          <FiCheck style={{ color: "#1E7D4E", marginLeft: "6px", fontSize: "20px" }} />
                         ) : (
                           <FiX style={{ color: "red", marginLeft: "6px", fontSize: "20px" }} />
                         )}
@@ -1220,7 +1220,6 @@ const InventoryItem = () => {
         {showCreateScreen && (
           <div className="create-item-section">
             <div className="create-item-box">
-              <br />
               <h3 className="role-title">Create New Item</h3>
               <form onSubmit={onSubmit} noValidate className="create-item-form-row">
 
@@ -1374,7 +1373,7 @@ const InventoryItem = () => {
                         TaxRate: isChecked ? taxes.id : 0,
                       });
                     }}
-                    style={{ marginBottom: "-15px" }}
+                   style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
                   />
                 </div>
 
@@ -1412,7 +1411,6 @@ const InventoryItem = () => {
         {showEditScreen && selectedInvoice && (
           <div className="create-item-section">
             <div className="create-item-box">
-              <br />
               <h3 className="role-title">Edit Item</h3>
               <form onSubmit={handleEditItem} className="create-item-form-row">
 
@@ -1570,7 +1568,7 @@ const InventoryItem = () => {
                         TaxRate: isChecked ? taxes.id : 0,
                       });
                     }}
-                    style={{ marginBottom: "-15px" }}
+                   style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
                   />
                 </div>
 
