@@ -5,8 +5,8 @@ import alertify from 'alertifyjs';
 
 // console.log("API URL =", process.env.REACT_APP_API_URL);
 //export const baseURL = process.env.REACT_APP_API_URL;
-//export const baseURL = "https://localhost:7034";
-export const baseURL = "http://154.66.198.237:3001";
+export const baseURL = "https://localhost:7034";
+//export const baseURL = "http://154.66.198.237:3001";
 //export const baseURL = "https://testing.iotsa.tech:3001";
 // export const baseURL = "https://asset.iotsa.tech:8000";
 

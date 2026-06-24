@@ -1,329 +1,257 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import alertify from 'alertifyjs';
-import 'alertifyjs/build/css/alertify.css';
-import { fetchCreditnotedetailswithRefno } from '../../redux/QuotationTemplateSlice';
-import './QuotationTemplateModern.css';
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import "alertifyjs/build/css/alertify.css";
+import { fetchCreditnotedetailswithRefno } from "../../redux/QuotationTemplateSlice";
+import "./ClassicInvoiceTemplate.css";
 import { baseURL } from "../../services/api";
 
+const LOCAL_LOGO = "/images/company-logo.png";
 
+const formatDate = (value) => {
+  if (!value) return "-";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return "-";
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  return `${day}/${month}/${d.getFullYear()}`;
+};
 
-const QuotationTemplate = () => {
+const CreditNoteViewTemplate = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const LOCAL_LOGO = "/mnt/data/bc2c1b92-1579-4906-8ac1-ef8ace38394b.png";
   const queryParams = new URLSearchParams(location.search);
-  const creditNoteId = queryParams.get('creditNoteId');
-  const quotationState = useSelector((state) => state.quotationapprovalTemplate) || {};
+  const creditNoteId = queryParams.get("creditNoteId");
 
-
-
-  const {
-    creditNoteDetails,
-    creditNoteloading,
-    error,
-    actionLoading,
-    message
-  } = useSelector((state) => state.quotationApprovalTemplate) || {};
-
+  const { creditNoteDetails, creditNoteloading, error, message } =
+    useSelector((state) => state.quotationApprovalTemplate) || {};
 
   const invoice = creditNoteDetails?.list || null;
 
-
   useEffect(() => {
-    if (creditNoteDetails) {
-      console.log(" invoice:", creditNoteDetails);
-      console.log(" invoice list:", creditNoteDetails.list);
-    } else {
-      console.log("⚠️ creditNoteDetails is null or undefined");
-    }
-  }, [creditNoteDetails]);
-
-  useEffect(() => {
-    if (creditNoteId) {
-      dispatch(fetchCreditnotedetailswithRefno(creditNoteId));
-    }
+    if (creditNoteId) dispatch(fetchCreditnotedetailswithRefno(creditNoteId));
   }, [dispatch, creditNoteId]);
 
   const formatCurrency = (n) => {
-    if (n == null) return "-";
-    return Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (n == null || n === "") return "-";
+    return Number(n).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
-
-  const finalLogo = invoice?.comapanyLogo
-    ? `${baseURL}/UploadedFiles/${invoice.comapanyLogo.split("\\").pop()}`
-    : LOCAL_LOGO;
-
   const logoFileName = invoice?.comapanyLogo
-    ? invoice.comapanyLogo
-      .replace(/\\/g, "/")
-      .split("/")
-      .pop()
-      ?.trim()
+    ? invoice.comapanyLogo.split(/[/\\]/).pop()?.trim()
     : "";
-
   const logoUrl = logoFileName
     ? `${baseURL}/UploadedFiles/${logoFileName}`
     : LOCAL_LOGO;
 
   if (creditNoteloading) {
     return (
-      <div className="spinner-container">
-        <div className="spinner"></div>
+      <div className="cit-loading">
+        <div className="cit-spinner" />
       </div>
     );
   }
 
   if (error) {
-    return (
-      <div className="error-message">
-        {error}
-      </div>
-    );
+    return <div className="cit-error">{error}</div>;
   }
 
-
-
-  // 👇 Only block when no data AND no error
-  if (!invoice && !error) {
-    return <div className="error-message">No data available</div>;
+  if (!invoice) {
+    return <div className="cit-error">No data available</div>;
   }
-
-
-  // Get only the file name from full path
-  // const logoFileName = invoice.comapanyLogo
-  //   ? invoice.comapanyLogo.split("\\").pop()  // Windows path (backslash)
-  //   : null;
-
-  const totalAmount = (invoice?.details || []).reduce((sum, d) => {
-
-    const quantity = Number(d.itemQuantity) || 0;
-    const rate = Number(d.unitRate) || 0;
-    const discount = Number(d.discount) || 0;
-    const tax = Number(d.vat) || 0;
-
-    const baseAmount = quantity * rate;
-    const discountedAmount = baseAmount - discount;
-    const netAmount = discountedAmount + (discountedAmount * tax) / 100;
-
-    return sum + netAmount;
-  }, 0);
-
-
-
 
   return (
-    <div className="qt-wrapper">
-      <div className="qt-card">
-        {/* Banner messages */}
-        {message && <div className="qt-banner success">{message}</div>}
-        {error && <div className="qt-banner error">{error}</div>}
+    <div className="cit-page">
+      <div className="cit-sheet">
+        {message && <div className="cit-banner success">{message}</div>}
 
-        {/* Header */}
-        <header className="qt-header">
-          <div className="qt-header-left">
-
-            {invoice?.comapanyLogo && (() => {
-              const logoFileName = invoice?.comapanyLogo.split(/[/\\]/).pop();
-              console.log('logoFileName', logoFileName);
-              return (
-                <img
-                  src={`${baseURL}/UploadedFiles/${logoFileName}`}
-                  alt="Company Logo"
-                  className="qt-Logo"
-                  crossOrigin="anonymous"
-                  referrerPolicy="no-referrer"
-                  onLoad={() => console.log("logo loaded")}
-                  onError={(e) => console.log("logo failed", e)}
-                />
-              );
-            })()}
+        {/* Header: logo + company block */}
+        <div className="cit-head">
+          <div className="cit-logo-box">
+            {logoFileName && (
+              <img
+                src={logoUrl}
+                alt="Company Logo"
+                className="cit-logo"
+                crossOrigin="anonymous"
+                referrerPolicy="no-referrer"
+              />
+            )}
           </div>
-          <div className="qt-header-center">
-            <h1 className="qt-title">Credit Note</h1>
-            {/* <div className="qt-subtitle">Quotation Approval</div> */}
+           <div className="cit-title-wrap">
+            <h1 className="cit-title">Credit Note</h1>
+            
           </div>
-          <div className="qt-header-right">
-            <div className="qt-company-name">{invoice?.companyName}</div>
-            <div className="qt-company-small">{invoice?.companyAddress}</div>
-            <div className="qt-company-small">{invoice?.companyPhoneNumber}</div>
-            <div className="qt-company-small">{invoice?.companyEmail}</div>
-          </div>
-        </header>
+          <div className="cit-company">
+            <div className="cit-company-name">{invoice?.companyName || "-"}</div>
+            <div className="cit-row-line">
+              <span>Company Reg No:</span> {invoice?.registrationNumber || "-"}
+            </div>
+            <div className="cit-row-line">
+              <span>VAT Reg No:</span> {invoice?.vatNumber || "-"}
+            </div>
+            <div className="cit-row-line">
+              <span>Website:</span>
+              {invoice?.companyWebsite || "-"}
+            </div>
 
-        {/* Body */}
-        <section className="qt-body">
-          {/* Company Information */}
-          <h4 className="qt-block-title">Company Information</h4>
-          <div className="qt-info">
-            <div className="qt-kv"><span>Registration No</span><span>{invoice?.registrationNumber || "-"}</span></div>
-            <div className="qt-kv"><span>VAT Number</span><span>{invoice?.vatNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Phone</span><span>{invoice?.companyPhoneNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Website</span><span>{invoice?.companyWebsite || "-"}</span></div>
-            <div className="qt-kv"><span>Address</span><span>{invoice?.companyAddress || "-"}</span></div>
-          </div>
-
-
-
-          {/* Invoice Information */}
-          <h4 className="qt-block-title">Invoice Information</h4>
-          <div className="qt-info">
-            <div className="qt-kv"><span>Quotation Ref No</span><span>{invoice?.referenceNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Invoice Ref No</span><span>{invoice?.invoiceReferenceNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Date</span><span>
-              {invoice?.invoiceDate
-                ? (() => {
-                  const d = new Date(invoice.invoiceDate);
-                  const day = String(d.getDate()).padStart(2, "0");
-                  const month = String(d.getMonth() + 1).padStart(2, "0");
-                  const year = d.getFullYear();
-                  return `${day}/${month}/${year}`;
-                })()
-                : "/"}
-            </span></div>
-            <div className="qt-kv"><span>Quotation Status</span><span>{invoice?.quotationStatus || "-"}</span></div>
-            <div className="qt-kv"><span>Invoice Status</span><span>{invoice?.invoiceStatus || "-"}</span></div>
-            <div className="qt-kv"><span>Currency</span><span>{invoice?.currency || "-"}</span></div>
-            <div className="qt-kv"><span>Type</span><span>{invoice?.quotationType || "-"}</span></div>
-            <div className="qt-kv"><span>Total</span><span>{invoice?.totalAmount || 0}</span></div>
-          </div>
-
-          <h4 className="qt-block-title">Credit Note Information</h4>
-          <div className="qt-info">
-
-
-            <div className="qt-kv"><span>Invoice Ref No</span><span>{invoice?.invoiceReferenceNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Credit Note Ref No</span><span>{invoice?.referenceNumber || "-"}</span></div>
-            <div className="qt-kv"><span>Credit Note Date</span><span>
-              {invoice?.creditNoteDate
-                ? (() => {
-                  const d = new Date(invoice.creditNoteDate);
-                  const day = String(d.getDate()).padStart(2, "0");
-                  const month = String(d.getMonth() + 1).padStart(2, "0");
-                  const year = d.getFullYear();
-                  return `${day}/${month}/${year}`;
-                })()
-                : "/"}
-            </span></div>
-            <div className="qt-kv"><span>Due Date</span><span>
-              {invoice?.dueDate
-                ? (() => {
-                  const d = new Date(invoice.dueDate);
-                  const day = String(d.getDate()).padStart(2, "0");
-                  const month = String(d.getMonth() + 1).padStart(2, "0");
-                  const year = d.getFullYear();
-                  return `${day}/${month}/${year}`;
-                })()
-                : "/"}
-            </span>
+            <div className="cit-row-line">
+              <span>Tel:</span> {invoice?.companyPhoneNumber || "-"}
+            </div>
+            <div className="cit-row-line">
+              <span>Email:</span> {invoice?.companyEmail || "-"}
+            </div>
+            <div className="cit-row-line">
+              <span>Address:</span> {invoice?.companyAddress || "-"}
             </div>
           </div>
+        </div>
 
-          <h4 className="qt-block-title">Customer Information</h4>
-          <div className="qt-info">
-   {/* <div className="qt-kv"><span>Reference No</span><span>{invoice?.customerRefno || "-"}</span></div> */}
-          <div className="qt-kv"><span>Credit Note Addressed To.</span><span>{invoice?.receivingEntity || "-"}</span></div>
-          <div className="qt-kv"><span>Name</span><span>{invoice?.customerName || "-"}</span></div>
-          <div className="qt-kv"><span>Email</span><span>{invoice?.customerEmail || "-"}</span></div>
-          <div className="qt-kv"><span>Mobile</span><span>{invoice?.customerPhone || "-"}</span></div>
-
+        {/* Meta row: customer | title | doc meta */}
+        <div className="cit-meta">
+          <div className="cit-party">
+            <div className="cit-block-label">Credit Note Addressed To</div>
+            <div className="cit-strong">{invoice?.receivingEntity || "-"}</div>
+            <div>{invoice?.customerName || "-"}</div>
+            <div className="cit-dim">{invoice?.customerEmail || "-"}</div>
+            <div className="cit-dim">{invoice?.customerPhone || "-"}</div>
           </div>
-       
 
+          <div className="cit-title-wrap">
+            {/* <h1 className="cit-title">Credit Note</h1>
+            <div className="cit-title-sub">{invoice?.invoiceStatus || ""}</div> */}
+          </div>
 
-          {/* Invoice Details */}
-          <h4 className="qt-block-title">Invoice Details</h4>
-          <div className="qt-table-wrap">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>ITEM CODE</th>
-                  <th>CATEGORY</th>
-                  <th>NAME</th>
-                  <th>QUANTITY</th>
-                  <th>UNIT RATE EXCL VAT</th>
-                  <th>AMOUNT</th>
-                  <th>DISCOUNT</th>
-                  <th>DISCOUNTED TOTAL</th>
-                  <th>VAT %</th>
-                  <th>NET AMOUNT</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoice?.details?.length > 0 ? (
-                  invoice.details.map((d, idx) => {
-                    return (
-                      <tr key={idx}>
-                        <td >{d.itemCode}</td>
-                        <td >{d.category}</td>
-                        <td >{d.itemName}</td>
-                        <td className="black-text">{d.itemQuantity}</td>
-                        <td className="black-text">{d.unitRate}</td>
-                        <td className="black-text">{(d.itemQuantity * d.unitRate)}</td>
-                        <td className="black-text">{d.discount}</td>
-                        <td className="black-text">{(d.itemQuantity * d.unitRate) - (d.discount)}</td>
-                        <td className="black-text">{d.vat}</td>
-                        <td className="black-text">
-                          {(
-                            (d.itemQuantity * d.unitRate - d.discount) +
-                            ((d.itemQuantity * d.unitRate - d.discount) * d.vat) / 100
-                          ).toFixed(2)}
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="no-data">No details found.</td>
+          <div className="cit-docmeta">
+            <div className="cit-mrow">
+              <span>Credit Note No</span>
+              <span>{invoice?.referenceNumber || "-"}</span>
+            </div>
+            <div className="cit-mrow">
+              <span>Credit Note Date</span>
+              <span>{formatDate(invoice?.creditNoteDate)}</span>
+            </div>
+            <div className="cit-mrow">
+              <span>Invoice Ref No</span>
+              <span>{invoice?.invoiceReferenceNumber || "-"}</span>
+            </div>
+            <div className="cit-mrow">
+              <span>Due Date</span>
+              <span>{formatDate(invoice?.dueDate)}</span>
+            </div>
+            <div className="cit-mrow">
+              <span>Currency</span>
+              <span>{invoice?.currency || "-"}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Secondary attributes */}
+        <div className="cit-attrs">
+          <div className="cit-attr">
+            <span>VAT Number</span>
+            {invoice?.vatNumber || "-"}
+          </div>
+          <div className="cit-attr">
+            <span>Invoice Date</span>
+            {formatDate(invoice?.invoiceDate)}
+          </div>
+          <div className="cit-attr">
+            <span>payment Terms</span>
+            {invoice?.paymentTerms || "-"}
+          </div>
+        </div>
+
+        {/* Line items */}
+        <table className="cit-table">
+          <thead>
+            <tr>
+              <th style={{ width: "110px" }}>Item Code</th>
+              <th>Description</th>
+              <th style={{ width: "80px" }}>Qty</th>
+              <th style={{ width: "100px" }}>Unit Price</th>
+              <th style={{ width: "70px" }}>Disc</th>
+              <th style={{ width: "60px" }}>VAT %</th>
+              <th style={{ width: "120px" }}>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoice?.details?.length > 0 ? (
+              invoice.details.map((d, idx) => {
+                const base = (Number(d.itemQuantity) || 0) * (Number(d.unitRate) || 0);
+                const discounted = base - (Number(d.discount) || 0);
+                const net = discounted + (discounted * (Number(d.vat) || 0)) / 100;
+                return (
+                  <tr key={idx}>
+                    <td className="cit-ctr">{d.itemCode}</td>
+                    <td className="cit-desc">
+                      {d.itemName}
+                      {d.category ? (
+                        <span className="cit-dim"> — {d.category}</span>
+                      ) : null}
+                    </td>
+                    <td className="cit-ctr">{d.itemQuantity}</td>
+                    <td className="cit-num">{formatCurrency(d.unitRate)}</td>
+                    <td className="cit-num">{formatCurrency(d.discount)}</td>
+                    <td className="cit-ctr">{d.vat}</td>
+                    <td className="cit-num">{formatCurrency(net)}</td>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                );
+              })
+            ) : (
+              <tr>
+                <td className="cit-empty" colSpan="7">
+                  No details found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+
+        {/* Footer: bank + totals */}
+        <div className="cit-foot">
+          <div className="cit-bank">
+            <div className="cit-block-label">Bank Details</div>
+            <div className="cit-brow">
+              <span>Account Name</span>
+              <span>{invoice?.accountHolderName || "-"}</span>
+            </div>
+            <div className="cit-brow">
+              <span>Branch Code</span>
+              <span>{invoice?.branchCode || "-"}</span>
+            </div>
+            <div className="cit-brow">
+              <span>Account Number</span>
+              <span>{invoice?.bankAccountNumber || "-"}</span>
+            </div>
+            <div className="cit-brow">
+              <span>Reference</span>
+              <span>{invoice?.referenceNumber || "-"}</span>
+            </div>
           </div>
 
-          {/* Bank Account + Totals */}
-          <h4 className="qt-block-title">Bank Account Information</h4>
-          <div className="qt-bottom">
-            <div className="qt-info qt-bank-info">
-              <div className="qt-kv"><span>Account Holder Name</span><span>{invoice?.accountHolderName || "-"}</span></div>
-              <div className="qt-kv"><span>Branch Code</span><span>{invoice?.branchCode || "-"}</span></div>
-              <div className="qt-kv"><span>Account Number</span><span>{invoice?.bankAccountNumber || "-"}</span></div>
+          <div className="cit-totals">
+            <div className="cit-trow">
+              <span>Subtotal</span>
+              <span>{formatCurrency(invoice?.subTotal)}</span>
             </div>
-
-            <div className="qt-totals-card">
-              <div className="qt-totals-row">
-                <div>Subtotal</div>
-                <div>{invoice?.subTotal || 0}</div>
-              </div>
-              <div className="qt-totals-row">
-                <div>VAT</div>
-                <div>{invoice?.taxAmount || 0}</div>
-              </div>
-              <div className="qt-totals-row grand">
-                <div>Total Amount Incl. VAT</div>
-                <div>{invoice?.totalAmount || 0}</div>
-              </div>
+            <div className="cit-trow">
+              <span>VAT</span>
+              <span>{formatCurrency(invoice?.taxAmount)}</span>
+            </div>
+            <div className="cit-trow cit-grand">
+              <span>Total Incl. VAT</span>
+              <span>{formatCurrency(invoice?.totalAmount)}</span>
             </div>
           </div>
-
-          {/* Payment Terms */}
-          {/* <h4 className="qt-block-title">Payment Terms</h4>
-          <div className="qt-terms">
-            {invoice?.paymentTerms || "Null"}
-          </div> */}
-        </section>
+        </div>
       </div>
-
     </div>
   );
-
 };
 
-export default QuotationTemplate;
-
-
-
-
+export default CreditNoteViewTemplate;
