@@ -1246,7 +1246,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemName"
-                    placeholder="Item Name"
+                    // placeholder="Item Name"
                     value={newItem.ItemName}
                     onChange={handleInputChange}
                     className={`inventoryitem-input ${errors.ItemName ? "error-border" : ""}`}
@@ -1279,7 +1279,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemCode"
-                    placeholder="Item Code"
+                    // placeholder="Item Code"
                     value={newItem.ItemCode}
                     onChange={handleInputChange}
                     className={`inventoryitem-input ${errors.ItemCode ? "error-border" : ""}`}
@@ -1292,7 +1292,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Description"
-                    placeholder="Description"
+                    // placeholder="Description"
                     value={newItem.Description}
                     onChange={handleInputChange}
                     className={`inventoryitem-input ${errors.Description ? "error-border" : ""}`}
@@ -1323,7 +1323,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Price"
-                    placeholder="Price"
+                    // placeholder="Price"
                     value={newItem.PriceDisplay}
                     onChange={(e) => {
                       let input = e.target.value;
@@ -1437,7 +1437,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemName"
-                    placeholder="Item Name"
+                    // placeholder="Item Name"
                     value={editItem.ItemName || ""}
                     onChange={handleEditChange}
                     className={`inventoryitem-input ${editErrors.ItemName ? "error-border" : ""}`}
@@ -1470,7 +1470,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemCode"
-                    placeholder="Item Code"
+                    // placeholder="Item Code"
                     value={editItem.ItemCode}
                     onChange={handleEditChange}
                     className={`inventoryitem-input ${editErrors.ItemCode ? "error-border" : ""}`}
@@ -1483,7 +1483,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Description"
-                    placeholder="Description"
+                    // placeholder="Description"
                     value={editItem.Description}
                     onChange={handleEditChange}
                     className={`inventoryitem-input ${editErrors.Description ? "error-border" : ""}`}
@@ -1514,7 +1514,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Price"
-                    placeholder="Price"
+                    // placeholder="Price"
                     value={editItem.PriceDisplay}
                     onChange={(e) => {
                       let input = e.target.value;
