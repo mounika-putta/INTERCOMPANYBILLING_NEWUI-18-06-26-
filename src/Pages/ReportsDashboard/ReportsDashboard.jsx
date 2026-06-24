@@ -32,8 +32,8 @@ const ReportsDashboard = () => {
   const { reportsdashboardData, reportsloading } = useSelector((state) => state.dashboardsData);
   const [selectedCreditNote, setSelectedCreditNote] = useState(null);
   const [selectedQuotation, setSelectedQuotation] = useState(null);
-
   const [showCreditNotePopup, setShowCreditNotePopup] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -122,7 +122,10 @@ const ReportsDashboard = () => {
 
 
   const handleChartClick = async (type, status) => {
-    setDetailType(type);
+
+     const normalizedType = type.toLowerCase();
+
+    setDetailType(normalizedType);
     setDetailStatus(status);
 
     await dispatch(fetchReportDetails({
@@ -136,7 +139,6 @@ const ReportsDashboard = () => {
 
 
   const handleViewClick = async (quotation) => {
-
     const isCreditNote =
       quotation.invoiceStatus?.toLowerCase() === "credit note created" ||
       quotation.quotationStatus?.toLowerCase() === "credit note created";
@@ -144,7 +146,12 @@ const ReportsDashboard = () => {
     if (isCreditNote) {
       await handleCreditNoteViewClick(quotation);
     } else {
-      setSelectedQuotation(quotation);
+      setSelectedQuotation({
+        ...quotation,
+        invoiceReferenceNumber:
+          quotation.invoiceReferenceNumber || quotation.invoiceRefno
+      });
+      setShowModal(true);
     }
   };
 
@@ -319,7 +326,9 @@ const ReportsDashboard = () => {
             >
               <option value="">Select Period</option>
               <option value="7">7 Days</option>
+              <option value="15">15 Days</option>
               <option value="30">30 Days</option>
+              <option value="45">45 Days</option>
               <option value="60">60 Days</option>
             </select>
 
@@ -434,8 +443,9 @@ const ReportsDashboard = () => {
                     value={pieType}
                     onChange={(e) => setPieType(e.target.value)}
                   >
-                    <option value="invoice">Invoice</option>
                     <option value="quotation">Quotation</option>
+                    <option value="invoice">Invoice</option>
+
                   </select>
                 </div>
 
@@ -453,7 +463,7 @@ const ReportsDashboard = () => {
                       label
                       onClick={(data) =>
                         handleChartClick(
-                          pieType === "invoice" ? "Invoice" : "Quotation",
+                          pieType,
                           data.name
                         )
                       }
@@ -548,7 +558,7 @@ const ReportsDashboard = () => {
         )}
         {!dashboardData && (
           <div className="alert alert-info text-center" style={{ marginLeft: '30px', color: '#2a2d9b' }}>
-            Please select a date and click Search to view analytics.
+            Please select a period and click Search to view analytics.
           </div>
         )}
       </div>
@@ -672,10 +682,14 @@ const ReportsDashboard = () => {
 
               {selectedQuotation && (
                 <ViewPopup
-                  data={selectedQuotation}
+                  show={showModal}
+                  onClose={() => setShowModal(false)}
+                  selectedInvoice={selectedQuotation}
                   type={detailType}
-                  onClose={() => setSelectedQuotation(null)}
-                />
+                  onGenerateInvoice={null}
+                  loadingRefNo={null} />
+                
+                
               )}
 
               {/* Credit Note Popup */}

@@ -200,6 +200,40 @@ const CreditNotePopup = ({ selectedCreditNote, onClose }) => {
                         </div>
 
                     </div>
+
+                    <h4 className="qt-block-title">Customer Information</h4>
+                   
+
+                    <div className="quotation-view-info">
+
+                        <div>
+                            <span className="label">
+                                Credit Note Addressed To.
+                            </span>:
+                            {selectedCreditNote?.receivingEntity}
+                        </div>
+                         <div>
+                            <span className="label">
+                                Name
+                            </span>:
+                            {selectedCreditNote?.customerName}
+                        </div>
+                         <div>
+                            <span className="label">
+                                Email
+                            </span>:
+                            {selectedCreditNote?.customerEmail}
+                        </div>
+                         <div>
+                            <span className="label">
+                                Phone No.
+                            </span>:
+                            {selectedCreditNote?.customerPhone}
+                        </div>
+
+                        
+
+                    </div>
                     {/* Quotation Details Table */}
                     <h4 className="quotation-view-section-title">Quotation Details</h4>
                     <table className="data-table">
@@ -218,27 +252,52 @@ const CreditNotePopup = ({ selectedCreditNote, onClose }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {(selectedCreditNote.details || []).map((d, i) => (
-                                <tr key={i}>
-                                    <td>{d.itemCode}</td>
-                                    <td>{d.category}</td>
-                                    <td>{d.itemName}</td>
-                                    <td style={{ textAlign: 'right' }}>{d.quotationQuantity}</td>
-                                    <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
-                                    <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
-                                    <td style={{ textAlign: 'right' }}>{d.discount || 0}</td>
-                                    <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                                    <td style={{ textAlign: 'right' }}>{d.tax}</td>
-                                    <td style={{ textAlign: 'right' }}>
-                                        {(
-                                            (d.quotationQuantity * d.unitRate - d.discount) +
-                                            ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
-                                        ).toFixed(2)}
-                                    </td>
+                            {(selectedCreditNote.details || []).map((d, i) => {
+                                const qty = Number(d.quotationQuantity ?? d.itemQuantity ?? 0);
+                                const vat = Number(d.tax ?? d.vat ?? 0);
+                                const unitRate = Number(d.unitRate ?? 0);
+                                const discount = Number(d.discount ?? 0);
 
+                                const amount = qty * unitRate;
+                                const discountedTotal = amount - discount;
+                                const netAmount = discountedTotal + (discountedTotal * vat) / 100;
 
-                                </tr>
-                            ))}
+                                return (
+                                    <tr key={i}>
+                                        <td>{d.itemCode}</td>
+                                        <td>{d.category}</td>
+                                        <td>{d.itemName}</td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {qty}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {unitRate.toFixed(2)}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {amount.toFixed(2)}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {discount.toFixed(2)}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {discountedTotal.toFixed(2)}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {vat}
+                                        </td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                            {netAmount.toFixed(2)}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
 

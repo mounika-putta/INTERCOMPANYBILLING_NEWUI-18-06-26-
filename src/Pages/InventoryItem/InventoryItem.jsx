@@ -1075,7 +1075,7 @@ const InventoryItem = () => {
                   {/* CSV Template — opens in Word (.doc), spinner only while downloading */}
                   <button
                     className="btn_add"
-                    style={{ color: "white", backgroundColor: "#6f42c1", cursor: "pointer" }}
+                    style={{ color: "white", backgroundColor: "gray", cursor: "pointer" }}
                     onClick={downloadCsvTemplate}
                     disabled={isDownloadingCsvTemplate}
                   >
@@ -1146,10 +1146,10 @@ const InventoryItem = () => {
                       <td>{invoice.itemName}</td>
                       <td>{invoice.category}</td>
                       <td>{invoice.description}</td>
-                      <td style={{ textAlign: "right" }}>{invoice.price}</td>
-                      <td style={{ textAlign: "center" }}>
+                      <td style={{ textAlign: "center" }}>{invoice.price}</td>
+                      <td >
                         {invoice.vatableStatus === "true" ? (
-                          <FiCheck style={{ color: "green", marginLeft: "6px", fontSize: "20px" }} />
+                          <FiCheck style={{ color: "#1E7D4E", marginLeft: "6px", fontSize: "20px" }} />
                         ) : (
                           <FiX style={{ color: "red", marginLeft: "6px", fontSize: "20px" }} />
                         )}
@@ -1373,7 +1373,7 @@ const InventoryItem = () => {
                         TaxRate: isChecked ? taxes.id : 0,
                       });
                     }}
-                    style={{ marginBottom: "-15px" }}
+                   style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
                   />
                 </div>
 
@@ -1568,7 +1568,7 @@ const InventoryItem = () => {
                         TaxRate: isChecked ? taxes.id : 0,
                       });
                     }}
-                    style={{ marginBottom: "-15px" }}
+                   style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
                   />
                 </div>
 

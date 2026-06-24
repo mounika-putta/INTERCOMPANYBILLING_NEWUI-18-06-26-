@@ -645,13 +645,6 @@
 }
 
 /* Table cells: left align content except Action column */
-.data-table td { text-align: left !important; vertical-align: middle !important; }
-.data-table td.actions-cell {
-  text-align: center;
-  vertical-align: middle;
-  width: 120px;   /* IMPORTANT FIX */
-  white-space: nowrap;
-}
 
 /* Force action icons to match Roles layout */
 .data-table td.actions-cell .action-master,

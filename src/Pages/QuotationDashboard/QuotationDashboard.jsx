@@ -67,7 +67,11 @@ const QuotationDashboard = () => {
     } else {
 
       // Normal Popup
-      setSelectedQuotation(quotation);
+      setSelectedQuotation({
+        ...quotation,
+        invoiceReferenceNumber:
+          quotation.invoiceReferenceNumber || quotation.invoiceRefno
+      });
       setShowModal(true);
     }
   };
@@ -301,7 +305,7 @@ const QuotationDashboard = () => {
             setSelectedQuotation(null);
           }}
           selectedInvoice={selectedQuotation}
-           type={type}
+          type={type}
         />
       )}
 

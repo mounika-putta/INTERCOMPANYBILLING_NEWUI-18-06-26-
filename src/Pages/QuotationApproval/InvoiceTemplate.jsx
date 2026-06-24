@@ -221,13 +221,13 @@ const QuotationTemplate = () => {
                         <td >{d.itemCode}</td>
                         <td >{d.category}</td>
                         <td >{d.itemName}</td>
-                        <td className="black-text" >{d.quotationQuantity}</td>
-                        <td className="black-text" >{d.unitRate}</td>
-                        <td className="black-text" >{(d.quotationQuantity * d.unitRate)}</td>
-                        <td className="black-text" >{d.discount}</td>
-                        <td className="black-text" >{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                        <td className="black-text" >{d.tax}</td>
-                        <td className="black-text" >
+                        <td style={{ textAlign: "center" }}  >{d.quotationQuantity}</td>
+                        <td style={{ textAlign: "center" }} >{d.unitRate}</td>
+                        <td style={{ textAlign: "center" }} >{(d.quotationQuantity * d.unitRate)}</td>
+                        <td style={{ textAlign: "center" }} >{d.discount}</td>
+                        <td style={{ textAlign: "center" }} >{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
+                        <td style={{ textAlign: "center" }} >{d.tax}</td>
+                        <td style={{ textAlign: "center" }} >
                           {(
                             (d.quotationQuantity * d.unitRate - d.discount) +
                             ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
