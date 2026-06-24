@@ -103,7 +103,8 @@ color: white;
 }
 
 .Inventory-actions .btn {
-  min-width: 120px;  /* Keep button width consistent */
+  min-width: 65px; 
+  height: 37px; 
 }
 
 .btn-Inventory {

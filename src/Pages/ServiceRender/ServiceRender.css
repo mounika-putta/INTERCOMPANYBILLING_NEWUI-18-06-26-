@@ -165,8 +165,9 @@
 }
 
 .service-actions .btn {
-  min-width: 120px;  /* Keep button width consistent */
+  min-width: 65px;  /* Keep button width consistent */
   margin-top: 20px;
+  height: 38px;
 }
 
 
