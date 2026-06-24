@@ -80,7 +80,6 @@ const CreateQuotationForm = ({
 
 }) => {
 
-
   return (
     <>
       {/* FULL JSX EXACTLY AS YOU PROVIDED */}
@@ -88,9 +87,10 @@ const CreateQuotationForm = ({
         <div className="quotation-form-overlay">
           <div className="quotation-form-modal">
             
+            
              <span
               className="closequotation-btn"
-            onClick={() => closeInvoiceForm()}
+              onClick={() => closeInvoiceForm(false)}
             >
               &times;
             </span>
@@ -696,9 +696,9 @@ const CreateQuotationForm = ({
 
                         {/* Icon based on tax value */}
                         {Number(row.tax) !== 0 ? (
-                          <FiCheck style={{ color: "green", marginLeft: "6px", fontSize: "20px", textAlign: "center" }} />
+                          <FiCheck style={{ color: "green", marginLeft: "46px", fontSize: "20px", textAlign: "center" }} />
                         ) : (
-                          <FiX style={{ color: "red", marginLeft: "6px", fontSize: "20px", textAlign: "center" }} />
+                          <FiX style={{ color: "red", marginLeft: "46px", fontSize: "20px", textAlign: "center" }} />
                         )}
 
 

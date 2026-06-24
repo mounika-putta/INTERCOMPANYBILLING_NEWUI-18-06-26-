@@ -210,18 +210,32 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
         if (!validateForm()) return;
 
         if (derivedTotal <= 0) {
-        alertify.alert(
-            "Error",
-            "Total Amount Incl. VAT must be greater than 0 before saving."
-        );
-        return;
-    }
+            alertify.alert(
+                "Warning",
+                "Total Amount Incl. VAT must be greater than 0 before saving."
+            );
+            return;
+        }
+        for (const d of editableInvoice.details) {
+            const amount =
+                (Number(d.quotationQuantity) || 0) *
+                (Number(d.unitRate) || 0);
+
+            if (Number(d.discount) > amount) {
+                alertify.alert(
+                    'Warning',
+                    `${d.itemCode}: Discount cannot exceed Amount (${amount})`
+                );
+                return;
+            }
+        }
 
         const formatDate = (date) => {
             if (!date) return null;
             const d = new Date(date);
             return isNaN(d.getTime()) ? null : d.toISOString();
         };
+        console.log("editableInvoice", editableInvoice)
 
         const payload = {
             header: {
@@ -243,10 +257,10 @@ const CreditNoteTemplate = ({ invoiceId, closeModal, onSaved }) => {
                 bankAccountNumber: editableInvoice.bankAccountNumber,
                 branchCode: editableInvoice.branchCode,
                 BrannchAddress: editableInvoice.brannchAddress,
-                Currency: "Dollar",
-                IFSCCode: "123456789",
-                PaymentTerms: "None",
-                QuotationType: "Recurring",
+                Currency: editableInvoice.currency,
+                IFSCCode: editableInvoice.ifscCode,
+                PaymentTerms: editableInvoice.paymentTerms,
+                QuotationType: editableInvoice.quotationType,
                 customerName: editableInvoice.customerName,
                 customerEmail: editableInvoice.customerEmail,
                 customerPhone: editableInvoice.customerPhone,

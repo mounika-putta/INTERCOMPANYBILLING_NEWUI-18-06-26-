@@ -229,7 +229,7 @@ function Registration() {
       >
         {/* Header — mirrors the Login card header (icon circle + brand heading) */}
         <Box sx={{ textAlign: 'center', mb: 1.5 }}>
-          <Box
+          {/* <Box
             sx={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -242,7 +242,7 @@ function Registration() {
             }}
           >
             <Icon name="user-plus" size={18} color={colors.brand} />
-          </Box>
+          </Box> */}
           <Typography
             variant="h5"
             sx={{
