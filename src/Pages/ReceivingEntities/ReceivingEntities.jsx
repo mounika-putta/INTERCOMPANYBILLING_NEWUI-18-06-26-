@@ -1879,10 +1879,11 @@ const ReceivingEntities = () => {
                         setShowImagePopup(true);
                       }}
 
-                      style={{
+                     style={{
                         background: "none",
                         border: "none",
-                        marginLeft: "-35px",
+                        marginLeft: "196px",
+                        marginTop:"-30px",
                         cursor: "pointer",
                       }}
                     >

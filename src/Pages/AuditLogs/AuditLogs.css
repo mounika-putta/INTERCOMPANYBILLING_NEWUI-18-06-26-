@@ -61,7 +61,7 @@
 
 .filter-section input::placeholder {
   font-size: 14px;
-  color: #888;
+  color: black;
 }
 
 /* Filter Button */

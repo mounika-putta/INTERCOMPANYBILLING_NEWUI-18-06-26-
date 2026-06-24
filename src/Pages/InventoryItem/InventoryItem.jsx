@@ -1075,7 +1075,7 @@ const InventoryItem = () => {
                   {/* CSV Template — opens in Word (.doc), spinner only while downloading */}
                   <button
                     className="btn_add"
-                    style={{ color: "white", backgroundColor: "#6f42c1", cursor: "pointer" }}
+                    style={{ color: "white", backgroundColor: "gray", cursor: "pointer" }}
                     onClick={downloadCsvTemplate}
                     disabled={isDownloadingCsvTemplate}
                   >
@@ -1146,10 +1146,10 @@ const InventoryItem = () => {
                       <td>{invoice.itemName}</td>
                       <td>{invoice.category}</td>
                       <td>{invoice.description}</td>
-                      <td style={{ textAlign: "right" }}>{invoice.price}</td>
-                      <td style={{ textAlign: "center" }}>
+                      <td style={{ textAlign: "center" }}>{invoice.price}</td>
+                      <td >
                         {invoice.vatableStatus === "true" ? (
-                          <FiCheck style={{ color: "green", marginLeft: "6px", fontSize: "20px" }} />
+                          <FiCheck style={{ color: "#1E7D4E", marginLeft: "6px", fontSize: "20px" }} />
                         ) : (
                           <FiX style={{ color: "red", marginLeft: "6px", fontSize: "20px" }} />
                         )}
@@ -1246,7 +1246,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemName"
-                    placeholder="Item Name"
+                    // placeholder="Item Name"
                     value={newItem.ItemName}
                     onChange={handleInputChange}
                     className={`inventoryitem-input ${errors.ItemName ? "error-border" : ""}`}
@@ -1279,7 +1279,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemCode"
-                    placeholder="Item Code"
+                    // placeholder="Item Code"
                     value={newItem.ItemCode}
                     onChange={handleInputChange}
                     className={`inventoryitem-input ${errors.ItemCode ? "error-border" : ""}`}
@@ -1292,7 +1292,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Description"
-                    placeholder="Description"
+                    // placeholder="Description"
                     value={newItem.Description}
                     onChange={handleInputChange}
                     className={`inventoryitem-input ${errors.Description ? "error-border" : ""}`}
@@ -1323,7 +1323,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Price"
-                    placeholder="Price"
+                    // placeholder="Price"
                     value={newItem.PriceDisplay}
                     onChange={(e) => {
                       let input = e.target.value;
@@ -1373,7 +1373,7 @@ const InventoryItem = () => {
                         TaxRate: isChecked ? taxes.id : 0,
                       });
                     }}
-                    style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
+                   style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
                   />
                 </div>
 
@@ -1437,7 +1437,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemName"
-                    placeholder="Item Name"
+                    // placeholder="Item Name"
                     value={editItem.ItemName || ""}
                     onChange={handleEditChange}
                     className={`inventoryitem-input ${editErrors.ItemName ? "error-border" : ""}`}
@@ -1470,7 +1470,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="ItemCode"
-                    placeholder="Item Code"
+                    // placeholder="Item Code"
                     value={editItem.ItemCode}
                     onChange={handleEditChange}
                     className={`inventoryitem-input ${editErrors.ItemCode ? "error-border" : ""}`}
@@ -1483,7 +1483,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Description"
-                    placeholder="Description"
+                    // placeholder="Description"
                     value={editItem.Description}
                     onChange={handleEditChange}
                     className={`inventoryitem-input ${editErrors.Description ? "error-border" : ""}`}
@@ -1514,7 +1514,7 @@ const InventoryItem = () => {
                   <input
                     type="text"
                     name="Price"
-                    placeholder="Price"
+                    // placeholder="Price"
                     value={editItem.PriceDisplay}
                     onChange={(e) => {
                       let input = e.target.value;
@@ -1568,7 +1568,7 @@ const InventoryItem = () => {
                         TaxRate: isChecked ? taxes.id : 0,
                       });
                     }}
-                    style={{ marginBottom: "-15px" }}
+                   style={{ marginBottom: "-15px" ,marginLeft: '40%', width: '15px',height: '15px'}}
                   />
                 </div>
 

@@ -5,12 +5,12 @@ import "./ViewPopup.css";
 const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, loadingRefNo }) => {
   
   if (!show || !selectedInvoice) return null;
-
+  debugger
   return (
     <div className="quotation-view-overlay viewpopup-modern">
       <div className="quotation-view-modal">
         <div className="quotation-view-header">
-          <h3 className="quotation-view-title">View Quotation Details</h3>
+          <h3 className="quotation-view-title">View Details</h3>
 
           {selectedInvoice.comapanyLogo && (() => {
             const logoFileName = selectedInvoice.comapanyLogo.split(/[/\\]/).pop();
@@ -33,184 +33,188 @@ const ViewPopup = ({ show, onClose, selectedInvoice, type, onGenerateInvoice, lo
 
         <div className="quotation-view-body">
 
-        {/* Company Information */}
-        <h4 className="quotation-view-section-title">Company Information</h4>
-        
+          {/* Company Information */}
+          <h4 className="quotation-view-section-title">Company Information</h4>
 
-        <div className="quotation-view-info">
-          <div><span className="label">Company Name</span> : <span>{selectedInvoice.companyName}</span></div>
-          <div><span className="label">Company Vat Number</span> :<span>{selectedInvoice.vatNumber}</span></div>
-          <div><span className="label">Company Reg Number</span>: <span>{selectedInvoice.registrationNumber}</span></div>
-          <div><span className="label">Company Address</span> :<span>{selectedInvoice.companyAddress}</span></div>
-          {/* <div><span className="label">Company Website</span>: <span>{selectedInvoice.companyWebsite}</span></div> */}
-          <div><span className="label">Company Email</span>: <span>{selectedInvoice.companyEmail}</span></div>
-          <div><span className="label">Company Phone Number</span> :<span>{selectedInvoice.companyPhoneNumber}</span></div>
-        </div>
 
-        {/* Banking Details */}
-        <h4 className="quotation-view-section-title">Banking Details</h4>
-        <div className="quotation-view-info">
-          <div><span className="label">Account Number</span> : <span>{selectedInvoice.bankAccountNumber}</span></div>
-          <div><span className="label">Branch Code</span> :<span>{selectedInvoice.branchCode}</span></div>
-          <div><span className="label">Branch Address</span>:
-            <span>
-              {selectedInvoice?.branchAddress ||
-                selectedInvoice?.brannchAddress ||
-                "-"}
-            </span>
+          <div className="quotation-view-info">
+            <div><span className="label">Company Name</span> : <span>{selectedInvoice.companyName}</span></div>
+            <div><span className="label">Company Vat Number</span> :<span>{selectedInvoice.vatNumber}</span></div>
+            <div><span className="label">Company Reg Number</span>: <span>{selectedInvoice.registrationNumber}</span></div>
+            <div><span className="label">Company Address</span> :<span>{selectedInvoice.companyAddress}</span></div>
+            {/* <div><span className="label">Company Website</span>: <span>{selectedInvoice.companyWebsite}</span></div> */}
+            <div><span className="label">Company Email</span>: <span>{selectedInvoice.companyEmail}</span></div>
+            <div><span className="label">Company Phone Number</span> :<span>{selectedInvoice.companyPhoneNumber}</span></div>
           </div>
-          {/* <div><span className="label">IFSC Code</span> :<span>{selectedInvoice.ifscCode}</span></div> */}
-        </div>
 
-        {/* Quotation Information */}
-        <h4 className="quotation-view-section-title">Quotation Information</h4>
-        <div className="quotation-view-info">
-          <div><span className="label">Quotation ID</span> : <span>{selectedInvoice.referenceNumber}</span></div>
-          <div><span className="label">Date</span> :<span>
-            {selectedInvoice?.invoiceDate
-              ? (() => {
-                const d = new Date(selectedInvoice.invoiceDate);
-                const day = String(d.getDate()).padStart(2, "0");
-                const month = String(d.getMonth() + 1).padStart(2, "0");
-                const year = d.getFullYear();
-                return `${day}/${month}/${year}`;
-              })()
-              : "/"}
-
-          </span></div>
-
-          <div><span className="label">Status</span>: <span>{selectedInvoice.quotationStatus}</span></div>
-          <div><span className="label">Currency</span>: <span>{selectedInvoice.currency}</span></div>
-
-          <div><span className="label">Total Amount</span> :<span>{selectedInvoice.totalAmount?.toFixed(2)}</span></div>
-
-          {selectedInvoice.Status === "Rejected" && (
-            <div className="info-row">
-              <span className="label">Reason</span>
-              <span className="colon">:</span>
-              <span className="values" style={{ marginInlineStart: '-1px' }}>{selectedInvoice.reason}</span>
+          {/* Banking Details */}
+          <h4 className="quotation-view-section-title">Banking Details</h4>
+          <div className="quotation-view-info">
+            <div><span className="label">Account Number</span> : <span>{selectedInvoice.bankAccountNumber}</span></div>
+            <div><span className="label">Branch Code</span> :<span>{selectedInvoice.branchCode}</span></div>
+            <div><span className="label">Branch Address</span>:
+              <span>
+                {selectedInvoice?.branchAddress ||
+                  selectedInvoice?.brannchAddress ||
+                  "-"}
+              </span>
             </div>
+            {/* <div><span className="label">IFSC Code</span> :<span>{selectedInvoice.ifscCode}</span></div> */}
+          </div>
 
-          )}
-        </div>
+          {/* Quotation Information */}
+          <h4 className="quotation-view-section-title">Quotation Information</h4>
+          <div className="quotation-view-info">
+            <div><span className="label">Quotation ID</span> : <span>{selectedInvoice.referenceNumber}</span></div>
+            <div><span className="label">Date</span> :<span>
+              {selectedInvoice?.quotationDate
+                ? (() => {
+                  const d = new Date(selectedInvoice.quotationDate);
+                  const day = String(d.getDate()).padStart(2, "0");
+                  const month = String(d.getMonth() + 1).padStart(2, "0");
+                  const year = d.getFullYear();
+                  return `${day}/${month}/${year}`;
+                })()
+                : "/"}
 
-        {(type === "invoiceapproval" || type === "Invoice") && (
-          <>
-            <h4 className="quotation-view-section-title">Invoice Information</h4>
+            </span></div>
 
-            <div className="quotation-view-info">
-              <div>
-                <span className="label">Invoice Id</span> :
-                <span>{selectedInvoice.invoiceReferenceNumber}</span>
+            <div><span className="label">Status</span>: <span>{selectedInvoice.quotationStatus}</span></div>
+            <div><span className="label">Currency</span>: <span>{selectedInvoice.currency}</span></div>
+
+            <div><span className="label">Total Amount</span> :<span>{selectedInvoice.totalAmount?.toFixed(2)}</span></div>
+
+            {selectedInvoice.Status === "Rejected" && (
+              <div className="info-row">
+                <span className="label">Reason</span>
+                <span className="colon">:</span>
+                <span className="values" style={{ marginInlineStart: '-1px' }}>{selectedInvoice.reason}</span>
               </div>
 
-              <div>
-                <span className="label">Invoice Date</span> :
-                <span>
-                  {selectedInvoice?.invoiceDate
-                    ? (() => {
-                      const d = new Date(selectedInvoice.invoiceDate);
-                      const day = String(d.getDate()).padStart(2, "0");
-                      const month = String(d.getMonth() + 1).padStart(2, "0");
-                      const year = d.getFullYear();
-                      return `${day}/${month}/${year}`;
-                    })()
-                    : "/"}
-                </span>
-              </div>
+            )}
+          </div>
 
-              <div>
-                <span className="label">Invoice Status</span> :
-                <span>{selectedInvoice.invoiceStatus}</span>
-              </div>
+          {(type === "invoiceapproval" || type === "invoice"|| type === "Invoice") && (
+            <>
+              <h4 className="quotation-view-section-title">Invoice Information</h4>
 
-              {selectedInvoice.invoiceStatus === "Cancelled" && (
-                <div className="info-row">
-                  <span className="label">Reason</span>
-                  <span className="colon">:</span>
-                  <span className="values">{selectedInvoice.reason}</span>
+              <div className="quotation-view-info">
+                <div>
+                  <span className="label">Invoice Id</span> :
+                  <span>
+                    {selectedInvoice.invoiceReferenceNumber ??
+                      selectedInvoice.invoiceRefNo ??
+                      "-"}
+                  </span>
                 </div>
-              )}
-            </div>
-          </>
-        )}
-        {/* Quotation Details Table */}
-        <h4 className="quotation-view-section-title">Quotation Details</h4>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>ITEM CODE</th>
-              <th>CATEGORY</th>
-              <th>NAME</th>
-              <th>QUANTITY</th>
-              <th>UNIT RATE EXCL VAT</th>
-              <th>AMOUNT</th>
-              <th>DISCOUNT</th>
-              <th>DISCOUNTED TOTAL</th>
-              <th>VAT %</th>
-              <th>NET AMOUNT</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(selectedInvoice.details || []).map((d, i) => (
-              <tr key={i}>
-                <td>{d.itemCode}</td>
-                <td>{d.category}</td>
-                <td>{d.itemName}</td>
-                <td style={{ textAlign: 'right' }}>{d.quotationQuantity}</td>
-                <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
-                <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
-                <td style={{ textAlign: 'right' }}>{d.discount || 0}</td>
-                <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
-                <td style={{ textAlign: 'right' }}>{d.tax}</td>
-                <td style={{ textAlign: 'right' }}>
-                  {(
-                    (d.quotationQuantity * d.unitRate - d.discount) +
-                    ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
-                  ).toFixed(2)}
-                </td>
 
+                <div>
+                  <span className="label">Invoice Date</span> :
+                  <span>
+                    {selectedInvoice?.invoiceDate
+                      ? (() => {
+                        const d = new Date(selectedInvoice.invoiceDate);
+                        const day = String(d.getDate()).padStart(2, "0");
+                        const month = String(d.getMonth() + 1).padStart(2, "0");
+                        const year = d.getFullYear();
+                        return `${day}/${month}/${year}`;
+                      })()
+                      : "/"}
+                  </span>
+                </div>
 
+                <div>
+                  <span className="label">Invoice Status</span> :
+                  <span>{selectedInvoice.invoiceStatus}</span>
+                </div>
+
+                {selectedInvoice.invoiceStatus === "Cancelled" && (
+                  <div className="info-row">
+                    <span className="label">Reason</span>
+                    <span className="colon">:</span>
+                    <span className="values">{selectedInvoice.reason}</span>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+          {/* Quotation Details Table */}
+          <h4 className="quotation-view-section-title">Quotation Details</h4>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>ITEM CODE</th>
+                <th>CATEGORY</th>
+                <th>NAME</th>
+                <th>QUANTITY</th>
+                <th>UNIT RATE EXCL VAT</th>
+                <th>AMOUNT</th>
+                <th>DISCOUNT</th>
+                <th>DISCOUNTED TOTAL</th>
+                <th>VAT %</th>
+                <th>NET AMOUNT</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {(selectedInvoice.details || []).map((d, i) => (
+                <tr key={i}>
+                  <td>{d.itemCode}</td>
+                  <td>{d.category}</td>
+                  <td>{d.itemName}</td>
+                  <td style={{ textAlign: 'right' }}>{d.quotationQuantity}</td>
+                  <td style={{ textAlign: 'right' }}>{d.unitRate}</td>
+                  <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate)}</td>
+                  <td style={{ textAlign: 'right' }}>{d.discount || 0}</td>
+                  <td style={{ textAlign: 'right' }}>{(d.quotationQuantity * d.unitRate) - (d.discount)}</td>
+                  <td style={{ textAlign: 'right' }}>{d.tax}</td>
+                  <td style={{ textAlign: 'right' }}>
+                    {(
+                      (d.quotationQuantity * d.unitRate - d.discount) +
+                      ((d.quotationQuantity * d.unitRate - d.discount) * d.tax) / 100
+                    ).toFixed(2)}
+                  </td>
 
-        {/* Customer Information */}
-        <h4 className="quotation-view-section-title">Customer Information</h4>
-        <div className="quotation-view-info">
-          <div><span className="label">Company Name</span> : <span>{selectedInvoice.receivingEntity}</span></div>
-          <div><span className="label">Name</span> : <span>{selectedInvoice.customerName}</span></div>
-          <div><span className="label">Phone</span> :<span>{selectedInvoice.customerPhone}</span></div>
-          <div><span className="label">Email</span>: <span>{selectedInvoice.customerEmail}</span></div>
-          <div><span className="label">Address</span> :<span>{selectedInvoice.customerAddress}</span></div>
-          <div><span className="label">Payment Terms</span> :<span>{selectedInvoice.paymentTerms}</span></div>
 
-        </div>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        {type === "quotationapproval" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "20px",
-            }}
-          >
-            <button
-              className="generate-invoice-btn"
-              onClick={() =>
-                onGenerateInvoice &&
-                onGenerateInvoice(selectedInvoice.referenceNumber)
-              }
-              disabled={loadingRefNo === selectedInvoice.referenceNumber}
-            >
-              {loadingRefNo === selectedInvoice.referenceNumber && (
-                <span className="spinner"></span>
-              )}
-              Generate Invoice
-            </button>
+          {/* Customer Information */}
+          <h4 className="quotation-view-section-title">Customer Information</h4>
+          <div className="quotation-view-info">
+            <div><span className="label">Company Name</span> : <span>{selectedInvoice.receivingEntity}</span></div>
+            <div><span className="label">Name</span> : <span>{selectedInvoice.customerName}</span></div>
+            <div><span className="label">Phone</span> :<span>{selectedInvoice.customerPhone}</span></div>
+            <div><span className="label">Email</span>: <span>{selectedInvoice.customerEmail}</span></div>
+            <div><span className="label">Address</span> :<span>{selectedInvoice.customerAddress}</span></div>
+            <div><span className="label">Payment Terms</span> :<span>{selectedInvoice.paymentTerms}</span></div>
+
           </div>
-        )}
+
+          {type === "quotationapproval" && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              <button
+                className="generate-invoice-btn"
+                onClick={() =>
+                  onGenerateInvoice &&
+                  onGenerateInvoice(selectedInvoice.referenceNumber)
+                }
+                disabled={loadingRefNo === selectedInvoice.referenceNumber}
+              >
+                {loadingRefNo === selectedInvoice.referenceNumber && (
+                  <span className="spinner"></span>
+                )}
+                Generate Invoice
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

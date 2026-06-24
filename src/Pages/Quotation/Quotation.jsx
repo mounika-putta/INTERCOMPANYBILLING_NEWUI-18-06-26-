@@ -244,7 +244,7 @@ const Quotation = () => {
     fetchItems();
   };
   const closeInvoiceForm = (index) => {
-
+    debugger
     setShowInvoiceForm(false);
     setCreateErrors("");
     resetForm();
@@ -1282,7 +1282,7 @@ if (Number(row.price) <= 0 || isNaN(Number(row.price))) {
         itemCode: item.itemCode,
         description: item.description,
         price: item.price,
-        tax: item.taxRate,
+        tax: item.vatableStatus === "true" ? tax : 0,
         quantity: item.quantity,
         category: item.category,
         amount: parseInt(item.price),
@@ -1304,7 +1304,7 @@ if (Number(row.price) <= 0 || isNaN(Number(row.price))) {
           category: item.category,
           description: item.description,
           unitRate: item.price,
-          tax: item.taxRate,
+           tax: item.vatableStatus === "true" ? tax : 0,
           quantity: item.quantity,
           discount: item.discount,
           discountType: item.discountType,

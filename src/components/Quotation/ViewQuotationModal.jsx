@@ -8,7 +8,7 @@ const ViewQuotationModal = ({ show, onClose, selectedInvoice }) => {
     <div className="quotation-view-overlay">
       <div className="quotation-view-modal">
         <div className="quotation-view-header">
-          <h3 className="quotation-view-title">View Quotation Details</h3>
+          <h3 className="quotation-view-title" style={{color: "#fff"}}>View Quotation Details</h3>
           <button
             className="quotation-view-close-btn"
             onClick={onClose}

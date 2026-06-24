@@ -57,6 +57,7 @@
 .field-filters input {
   margin: 5px;
   padding: 5px;
+  color: black;
 }
 
 .quotation-filter-btn{
@@ -663,6 +664,33 @@
 
 .quotation-view-overlay .quotation-view-close-btn:hover {
   background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.quotation-view-overlay .quotation-view-creditclose-btn {
+  position: absolute;
+  top: 5%;
+  right: 14px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: red;
+  border: none;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 5;
+}
+.quotation-view-overlay .quotation-view-creditclose-btn:hover {
+  background: red;
   transform: translateY(-50%) scale(1.08);
 }
 

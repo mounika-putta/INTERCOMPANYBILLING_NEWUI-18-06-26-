@@ -806,21 +806,24 @@ const QuotationInvoiceList = () => {
                     <div className="quotation-view-modal"
                         style={{
                             maxWidth: '75vw',
-                            width: '1200px'
+                            width: '1200px',
+                            maxHeight: '90vh'
                         }}>
                         <button
-                            className="quotation-view-close-btn"
+                            className="quotation-view-creditclose-btn"
                             onClick={() => setShowCreditModal(false)}
                         >
                             &times;
                         </button>
-                        <CreditNoteTemplate
-                            invoiceId={selectedInvoiceId}
-                            closeModal={() => setShowCreditModal(false)}
-                            onSaved={() => {
-                                dispatch(fetchInvoicelist()); // 🔥 refresh list
-                            }}
-                        />
+                        <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+                            <CreditNoteTemplate
+                                invoiceId={selectedInvoiceId}
+                                closeModal={() => setShowCreditModal(false)}
+                                onSaved={() => {
+                                    dispatch(fetchInvoicelist());
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

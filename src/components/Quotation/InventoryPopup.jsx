@@ -148,8 +148,8 @@ const InventoryPopup = ({
                   <td>{item.category}</td>           
                   <td>{item.description}</td>
                   {/* <td style={{ textAlign: "right" }}>{item.quantity}</td> */}
-                  <td style={{ textAlign: "right" }}>{item.price}</td>
-                  <td hidden style={{ textAlign: "right" }}>{item.taxRate}</td>
+                  <td style={{ textAlign: "center" }}>{item.price}</td>
+                  <td hidden style={{ textAlign: "center" }}>{item.taxRate}</td>
                   <td style={{ textAlign: "center" }}>
                         {item.vatableStatus === "true" ? (
                           <FiCheck  style={{ color: "green", marginLeft: "6px", fontSize: "20px" }} />
