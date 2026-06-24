@@ -32,9 +32,7 @@ const MasterData = () => {
 
   // Pagination
 
-
   const totalRecords = sortedData.length;
-
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(5);
 
@@ -156,17 +154,24 @@ const MasterData = () => {
       }
     }
 
-    if (selectedType === "Category") {
-      if (!formData.categoryName?.trim()) {
-        newErrors[errorKey("categoryName")] = "Category Name is required.";
-      }
-      if (!formData.isActive) {
-        newErrors[errorKey("isActive")] = "Is Active is required.";
-      }
-      if (!formData.isDeleted) {
-        newErrors[errorKey("isDeleted")] = "Is Deleted is required.";
-      }
+  if (selectedType === "Category") {
+  if (!formData.categoryName?.trim()) {
+    newErrors[errorKey("categoryName")] =
+      "Category Name is required.";
+  }
+
+  if (modalMode === "edit") {
+    if (!formData.isActive) {
+      newErrors[errorKey("isActive")] =
+        "Is Active is required.";
     }
+
+    if (!formData.isDeleted) {
+      newErrors[errorKey("isDeleted")] =
+        "Is Deleted is required.";
+    }
+  }
+}
 
     setErrors((prev) => ({ ...prev, ...newErrors }));
     return Object.keys(newErrors).length === 0;
@@ -259,16 +264,26 @@ const MasterData = () => {
 
     dispatch(createmaster(payload))
       .unwrap()
-      .then((res) => {
-        alertify.alert("Success", `${selectedType} saved successfully!`);
-        dispatch(getMasterList(selectedType));
-        setFormData({});
-        setErrors({});
-      })
-      .catch((err) => {
-        console.error("Error saving record:", err);
-        alertify.alert("Error", `Failed to save ${selectedType} record.`);
-      })
+     .then((res) => {
+  alertify.alert(
+    "Success",
+    `${selectedType} saved successfully!`,
+    () => {
+      dispatch(getMasterList(selectedType));
+
+      setFormData({});
+      setErrors({});
+      setEditingItem(null);
+
+      setShowModal(false); // Popup close
+      setModalMode(null);  // Reset mode
+    }
+  );
+})
+     .catch((err) => {
+  console.error("Error saving record:", err);
+  alertify.alert("Error", err || `Failed to save ${selectedType} record.`);
+})
       .finally(() => {
         setCreateLoading(false);
       });
@@ -904,58 +919,75 @@ const MasterData = () => {
                           setFormData({ ...formData, categoryName: value });
                           setErrors((prev) => ({
                             ...prev,
-                            [errorKey("categoryName")]: value.trim() ? "" : "Category Name is required",
+                            [errorKey("categoryName")]: value.trim()
+                              ? ""
+                              : "Category Name is required",
                           }));
                         }}
                         className={getError("categoryName") ? "error-input" : ""}
                       />
-                      {getError("categoryName") && <p className="error-message">{getError("categoryName")}</p>}
-                    </div>
-                  </div>
-
-                  <div className="typeform-row">
-                    <div className="typeform-group">
-                      <label>Is Active <span className="required">*</span></label>
-                      <select
-                        name="isActive"
-                        value={formData.isActive || ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setFormData({ ...formData, isActive: value });
-                          setFieldError("isActive", value ? "" : "Is Active is required");
-                        }}
-                        className={getError("isActive") ? "input-error" : ""}
-                      >
-                        <option value="">Select Is Active</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                      </select>
-                      {getError("isActive") && (
-                        <p className="error-message">{getError("isActive")}</p>
-                      )}
-                    </div>
-
-                    <div className="typeform-group">
-                      <label>Is Deleted <span className="required">*</span></label>
-                      <select
-                        name="isDeleted"
-                        value={formData.isDeleted || ""}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          setFormData({ ...formData, isDeleted: value });
-                          setFieldError("isDeleted", value ? "" : "Is Deleted is required");
-                        }}
-                        className={getError("isDeleted") ? "input-error" : ""}
-                      >
-                        <option value="">Select Is Deleted</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                      </select>
-                      {getError("isDeleted") && (
-                        <p className="error-message">{getError("isDeleted")}</p>
+                      {getError("categoryName") && (
+                        <p className="error-message">{getError("categoryName")}</p>
                       )}
                     </div>
                   </div>
+
+                  {/* Show only in Edit Mode */}
+                  {modalMode === "edit" && (
+                    <div className="typeform-row">
+                      <div className="typeform-group">
+                        <label>
+                          Is Active <span className="required">*</span>
+                        </label>
+                        <select
+                          name="isActive"
+                          value={formData.isActive || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData({ ...formData, isActive: value });
+                            setFieldError(
+                              "isActive",
+                              value ? "" : "Is Active is required"
+                            );
+                          }}
+                          className={getError("isActive") ? "input-error" : ""}
+                        >
+                          <option value="">Select Is Active</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        {getError("isActive") && (
+                          <p className="error-message">{getError("isActive")}</p>
+                        )}
+                      </div>
+
+                      <div className="typeform-group">
+                        <label>
+                          Is Deleted <span className="required">*</span>
+                        </label>
+                        <select
+                          name="isDeleted"
+                          value={formData.isDeleted || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setFormData({ ...formData, isDeleted: value });
+                            setFieldError(
+                              "isDeleted",
+                              value ? "" : "Is Deleted is required"
+                            );
+                          }}
+                          className={getError("isDeleted") ? "input-error" : ""}
+                        >
+                          <option value="">Select Is Deleted</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        {getError("isDeleted") && (
+                          <p className="error-message">{getError("isDeleted")}</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
 

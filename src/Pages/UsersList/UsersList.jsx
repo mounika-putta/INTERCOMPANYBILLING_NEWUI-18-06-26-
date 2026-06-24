@@ -507,13 +507,13 @@ const UsersList = () => {
                             handleEditClick(user)
                           }
                         />
-
-                        <FaTrash
-                          className="action-icon cancel-icon"
-                          onClick={() =>
-                            handleDelete(user.id)
-                          }
-                        />
+                        
+                        {user.isDeleted !== "Yes" && (
+                          <FaTrash
+                            className="action-icon cancel-icon"
+                            onClick={() => handleDelete(user.id)}
+                          />
+                        )}
 
                       </div>
                     </td>

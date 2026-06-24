@@ -22,6 +22,8 @@ const Login = () => {
   const [showForgotPopup, setShowForgotPopup] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
 
+  const [emailError, setEmailError] = useState("");
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -39,20 +41,54 @@ const Login = () => {
     }
   }, [user, navigate]);
 
+  // const handleForgotSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!forgotEmail) {
+  //     alertify.alert('Warning', 'Please enter your registered email.');
+  //     return;
+  //   }
+  //   try {
+  //     const result = await dispatch(forgotPassword(forgotEmail)).unwrap();
+  //     alertify.alert('Success', result.message || 'Password reset code sent to your email.');
+  //     setShowForgotPopup(false);
+  //     setForgotEmail('');
+  //   } catch (error) {
+  //     alertify.alert('error', error?.message || 'Failed to send password reset email.');
+  //   }
+  // };
+
+
   const handleForgotSubmit = async (e) => {
     e.preventDefault();
 
-    if (!forgotEmail) {
-      alertify.alert('Warning', 'Please enter your registered email.');
+    // Required Validation
+    if (!forgotEmail.trim()) {
+      setEmailError("Email is required");
       return;
     }
+    // Email Format Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(forgotEmail)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+    setEmailError("");
     try {
       const result = await dispatch(forgotPassword(forgotEmail)).unwrap();
-      alertify.alert('Success', result.message || 'Password reset code sent to your email.');
+      alertify.alert(
+        "Success",
+        result.message || "Password reset code sent to your email."
+      );
       setShowForgotPopup(false);
-      setForgotEmail('');
+      setForgotEmail("");
+      setEmailError("");
     } catch (error) {
-      alertify.alert('error', error?.message || 'Failed to send password reset email.');
+      alertify.alert(
+        "Error",
+        error?.message || "Failed to send password reset email."
+      );
     }
   };
 
@@ -178,7 +214,11 @@ const Login = () => {
 
       <Modal
         open={showForgotPopup}
-        onClose={() => setShowForgotPopup(false)}
+        onClose={() => {
+          setShowForgotPopup(false);
+          setForgotEmail("");
+          setEmailError("");
+        }}
         title="Reset Password"
         actions={
           <Button type="submit" form="forgot-form" variant="contained" sx={{ px: 4 }}>
@@ -189,12 +229,16 @@ const Login = () => {
         <Box component="form" id="forgot-form" onSubmit={handleForgotSubmit}>
           <TextField
             fullWidth
-            type="email"
+            type="text"
             value={forgotEmail}
-            onChange={(e) => setForgotEmail(e.target.value)}
-            placeholder="Enter your email address"
-            required
-            label="Email address"
+            onChange={(e) => {
+              setForgotEmail(e.target.value);
+              setEmailError("");
+            }}
+            label="Email Address"
+            error={!!emailError}
+            helperText={emailError}
+            className="forgot-email-input"
           />
         </Box>
       </Modal>
