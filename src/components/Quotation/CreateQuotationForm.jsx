@@ -80,7 +80,6 @@ const CreateQuotationForm = ({
 
 }) => {
 
-
   return (
     <>
       {/* FULL JSX EXACTLY AS YOU PROVIDED */}
@@ -92,7 +91,7 @@ const CreateQuotationForm = ({
               className="closequotation-btn"
             onClick={() => closeInvoiceForm()}
             >
-              &times;
+              {/* &times; */}
             </span>
 
             <div style={{ position: "relative" }}>

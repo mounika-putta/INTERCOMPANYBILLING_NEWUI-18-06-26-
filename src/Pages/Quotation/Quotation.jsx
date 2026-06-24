@@ -103,7 +103,7 @@ const Quotation = () => {
     referenceNumber
   ) => {
 
-    debugger
+    
     try {
 
       setDownloadingId(quotationId);
@@ -118,6 +118,7 @@ const Quotation = () => {
       await downloadPdfFromPage({
         url,
         fileName: `Quotation_${referenceNumber}.pdf`,
+        elementSelector: ".cit-sheet",
       });
 
       // Keep loader visible slightly longer
@@ -199,7 +200,6 @@ const Quotation = () => {
         "/api/InventoryItems/GetCurrencies"
       );
       console.log("Currency data", response.data);
-      debugger
 
       if (response.data.success) {
         setCurrencies(response.data.data);
@@ -217,13 +217,11 @@ const Quotation = () => {
       const response = await AxiosInstance.get(
         "/api/InventoryItems/GetTax"
       );
-      debugger
       if (response.data.success) {
         settax(response.data.tax);
       }
       console.log("Tax data", tax);
 
-      debugger;
 
     } catch (error) {
       console.error("Error fetching ", error);
@@ -497,7 +495,6 @@ const Quotation = () => {
 
 
   const recalculateRow = (row, type) => {
-    debugger
     let price = 0;
     if (type === 'create') {
       price = Number(row.price) || 0;
@@ -635,7 +632,6 @@ const Quotation = () => {
 
 
   const handleEditDetailsChange = (index, field, value) => {
-    debugger
     const newDetails = [...selectedQuotation.details];
     newDetails[index][field] = value;
 
@@ -681,7 +677,6 @@ const Quotation = () => {
   };
 
   const calculateTotals = (details) => {
-    debugger
     let subtotal = 0;
     let totalVat = 0;
 
@@ -717,7 +712,6 @@ const Quotation = () => {
       setIsSaving(true);
       console.log("update quotation data:", quotation);
 
-      debugger;
 
       if (!quotation.details || quotation.details.length === 0) {
         alertify.alert("Warning", "Add at least one quotation item.");
