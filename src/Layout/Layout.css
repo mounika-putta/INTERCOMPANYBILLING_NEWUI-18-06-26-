@@ -450,13 +450,15 @@ body,
 .app-main .search-section input,
 .app-main .search-section select,
 .app-main .search-section textarea,
-.app-main .search-section button {
+.app-main .search-section button 
+{
   min-width: 0;
 }
 
 .app-main .filter-section>*,
 .app-main .search-section>* {
   min-width: 0;
+  
 }
 
 /* ============================================================
@@ -626,6 +628,7 @@ body,
   }
 }
 
+
 .filter-section .clear-btn {
     background-color: #82868a;
     color: white;
@@ -648,3 +651,4 @@ body,
         padding-bottom: 28px;
         margin-left: -28px;
     }}
+
