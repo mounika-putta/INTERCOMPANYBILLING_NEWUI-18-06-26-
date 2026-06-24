@@ -1122,7 +1122,7 @@ const Customer = () => {
                                     {editErrors.isDeleted && <p className="error-message">{editErrors.isDeleted}</p>}
                                 </div>
                                 {/* Actions */}
-                                <div className="service-actions">
+                                <div className="Role-actions">
                                     <button
                                         type="button"
                                         className="btn btn-success btn-lg d-flex align-items-center justify-content-center"
