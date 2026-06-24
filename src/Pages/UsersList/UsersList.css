@@ -282,6 +282,7 @@ new */
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  margin-top: 25px;
 }
 
 .useredit-modal {
@@ -290,7 +291,7 @@ new */
   border-radius: 8px;
   width: 45%;      /* decreased width */
   max-width: 90%;
-  max-height: 80%;   /* decreased max height */
+  max-height: 85%;   /* decreased max height */
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   position: relative;
   

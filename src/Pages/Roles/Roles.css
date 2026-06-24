@@ -75,6 +75,7 @@
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 6px;
+      color: #1f2933
 }
 .required {
   color: red;
@@ -338,12 +339,7 @@
   width: 100%;
 }
 
-.formlabel-group label {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #444;
-}
+
 
 .formlabel-group input,
 .formlabel-group select {
@@ -398,19 +394,12 @@
 .form-row .formlabel-group {
   flex: 1;
 }
-
-.formlabel-group label {
-  display: block;
-  margin-bottom: 8px; /* label and input madhya gap */
-  font-weight: 600;
-  color: #333;
-}
-
 .formlabel-group input,
 .formlabel-group select {
   width: 100%;
   height: 42px;
   padding: 0 12px;
-  border: 1px solid #d0d7de;
+  border: 1px solid #28a745;
   border-radius: 8px;
 }
+

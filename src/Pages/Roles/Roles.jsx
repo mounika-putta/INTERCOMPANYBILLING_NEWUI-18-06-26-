@@ -72,6 +72,22 @@ const Roles = () => {
     IsActive: "",
     IsDeleted: "",
   });
+  const resetCreateForm = () => {
+    setNewItem({
+      RoleName: "",
+      RoleDescription: "",
+      IsActive: "",
+      IsDeleted: "",
+    });
+
+    setErrors({
+      RoleName: "",
+      RoleDescription: "",
+      IsActive: "",
+      IsDeleted: "",
+      duplicate: "",
+    });
+  };
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -542,7 +558,15 @@ const Roles = () => {
             <div className="role-modal">
               <div className="modal-header">
                 <h3>Create Role</h3>
-                <button onClick={() => setShowCreateModal(false)}>✕</button>
+                {/* <button onClick={() => setShowCreateModal(false)}>✕</button> */}
+                <button
+                  onClick={() => {
+                    resetCreateForm();
+                    setShowCreateModal(false);
+                  }}
+                >
+                  ✕
+                </button>
               </div>
 
               <form onSubmit={handleCreateItem}>
@@ -584,10 +608,34 @@ const Roles = () => {
                     Save
                   </button>
 
-                  <button
+                  {/* <button
                     type="button"
                     className="btn btn-danger"
                     onClick={() => setShowCreateModal(false)}
+                  >
+                    Cancel
+                  </button> */}
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => {
+                      setNewItem({
+                        RoleName: "",
+                        RoleDescription: "",
+                        IsActive: "",
+                        IsDeleted: "",
+                      });
+
+                      setErrors({
+                        RoleName: "",
+                        RoleDescription: "",
+                        IsActive: "",
+                        IsDeleted: "",
+                        duplicate: "",
+                      });
+
+                      setShowCreateModal(false);
+                    }}
                   >
                     Cancel
                   </button>
@@ -722,15 +770,32 @@ const Roles = () => {
                     <label>
                       Role Name <span className="required">*</span>
                     </label>
+
                     <input
                       type="text"
                       value={editItem.RoleName || ""}
                       className={editErrors.RoleName ? "input-error" : ""}
                       onChange={(e) => {
                         const value = e.target.value;
+
                         if (/^[a-zA-Z0-9\s]*$/.test(value)) {
                           setEditRole({ ...editItem, RoleName: value });
+
+                          setEditErrors((prev) => ({
+                            ...prev,
+                            RoleName: value.trim()
+                              ? ""
+                              : "Role Name is required",
+                          }));
                         }
+                      }}
+                      onBlur={() => {
+                        setEditErrors((prev) => ({
+                          ...prev,
+                          RoleName: editItem.RoleName?.trim()
+                            ? ""
+                            : "Role Name is required",
+                        }));
                       }}
                     />
                     {editErrors.RoleName && (
@@ -745,9 +810,19 @@ const Roles = () => {
                     <select
                       className={editErrors.IsActive ? "input-error" : ""}
                       value={editItem.IsActive ?? ""}
-                      onChange={(e) =>
-                        setEditRole({ ...editItem, IsActive: e.target.value })
-                      }
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        setEditRole({
+                          ...editItem,
+                          IsActive: value,
+                        });
+
+                        setEditErrors((prev) => ({
+                          ...prev,
+                          IsActive: value ? "" : "Is Active is required",
+                        }));
+                      }}
                     >
                       <option value="">Select Is Active</option>
                       <option value="Yes">Yes</option>
@@ -757,12 +832,12 @@ const Roles = () => {
                       <p className="error-message">{editErrors.IsActive}</p>
                     )}
                   </div>
-                
+
                 </div>
 
                 {/* Row 2 */}
                 <div className="form-row">
-                    <div className="formlabel-group">
+                  <div className="formlabel-group">
                     <label>
                       Role Description <span className="required">*</span>
                     </label>
@@ -770,13 +845,31 @@ const Roles = () => {
                       type="text"
                       value={editItem.RoleDescription || ""}
                       className={editErrors.RoleDescription ? "input-error" : ""}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const value = e.target.value;
+
                         setEditRole({
                           ...editItem,
-                          RoleDescription: e.target.value,
-                        })
-                      }
+                          RoleDescription: value,
+                        });
+
+                        setEditErrors((prev) => ({
+                          ...prev,
+                          RoleDescription: value.trim()
+                            ? ""
+                            : "Role Description is required",
+                        }));
+                      }}
+                      onBlur={() => {
+                        setEditErrors((prev) => ({
+                          ...prev,
+                          RoleDescription: editItem.RoleDescription?.trim()
+                            ? ""
+                            : "Role Description is required",
+                        }));
+                      }}
                     />
+
                     {editErrors.RoleDescription && (
                       <p className="error-message">{editErrors.RoleDescription}</p>
                     )}
@@ -789,9 +882,19 @@ const Roles = () => {
                     <select
                       className={editErrors.IsDeleted ? "input-error" : ""}
                       value={editItem.IsDeleted ?? ""}
-                      onChange={(e) =>
-                        setEditRole({ ...editItem, IsDeleted: e.target.value })
-                      }
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        setEditRole({
+                          ...editItem,
+                          IsDeleted: value,
+                        });
+
+                        setEditErrors((prev) => ({
+                          ...prev,
+                          IsDeleted: value ? "" : "Is Deleted is required",
+                        }));
+                      }}
                     >
                       <option value="">Select Is Deleted</option>
                       <option value="Yes">Yes</option>
