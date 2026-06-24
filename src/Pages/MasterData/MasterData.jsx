@@ -614,7 +614,7 @@ const MasterData = () => {
                     )}
                     {selectedType === "VAT" && (
                       <>
-                        <td style={{ width: "8%", textAlign: "right" }}>{item.taxPercentage}</td>
+                        <td style={{ width: "6%", textAlign: "right" }}>{item.taxPercentage}</td>
                         <td>{item.description}</td>
                         {/* <td>{formatDateDisplay(item.satrtDate)}</td>
                         <td>{formatDateDisplay(item.endDate)}</td> */}
