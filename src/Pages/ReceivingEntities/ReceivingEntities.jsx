@@ -1908,7 +1908,7 @@ const ReceivingEntities = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger btn-lg"
+                    className="btn btn-danger"
                      onClick={() => {
                                             // setNewItem(initialCustomerState);
                                             setErrors({});
