@@ -141,8 +141,9 @@ textarea.input-error {
   margin-top: -20px;
 }
 .receiving-actions .btn {
-  min-width: 120px;  /* Keep button width consistent */
-  margin-top: 30px;
+  min-width: 65px;
+    margin-top: 30px;
+    height: 38px;
 }
  .button {
   min-width: 120px;  /* Keep button width consistent */
