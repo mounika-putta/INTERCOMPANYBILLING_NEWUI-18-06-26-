@@ -87,11 +87,12 @@ const CreateQuotationForm = ({
         <div className="quotation-form-overlay">
           <div className="quotation-form-modal">
             
+            
              <span
               className="closequotation-btn"
-            onClick={() => closeInvoiceForm()}
+              onClick={() => closeInvoiceForm(false)}
             >
-              {/* &times; */}
+              &times;
             </span>
 
             <div style={{ position: "relative" }}>
