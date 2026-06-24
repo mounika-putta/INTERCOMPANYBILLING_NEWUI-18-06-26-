@@ -266,13 +266,13 @@ const UpdateQuotationForm = ({
             <h4 className="quotationsub-title" style={{ color: "green" }}>Quotation information</h4>
             <div style={{ display: "flex", marginBottom: "10px" }}>
               <label style={{ width: "120px", fontWeight: "500" }}>Quotation Id   &nbsp;&nbsp;&nbsp;&nbsp;  : </label>
-              <span style={{ fontWeight: "bold" }}>{selectedQuotation.id}</span>
+              <span style={{ fontWeight: "bold", fontSize: "13px" }}>{selectedQuotation.id}</span>
             </div>
 
             {/* Invoice Date */}
             <div style={{ display: "flex", marginBottom: "10px" }}>
               <label style={{ width: "120px", fontWeight: "100" }}>Quotation Date :</label>
-              <span style={{ fontWeight: "bold" }}>{selectedQuotation.date ? selectedQuotation.date.split('T')[0] : "-"}</span>
+              <span style={{ fontWeight: "bold", fontSize: "13px" }}>{selectedQuotation.date ? selectedQuotation.date.split('T')[0] : "-"}</span>
             </div>
             <br />
             <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
@@ -389,12 +389,10 @@ const UpdateQuotationForm = ({
 
                         <FiSearch
                           style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            // setSelectedRowIndex(index);
+                          onClick={() => {               
                             openEditPopup(index)
                             setSelectedRowIndex(index);
                             setPopupMode("edit");
-                            // setShowInventoryPopup(true);
                           }}
                         />
 
@@ -403,11 +401,18 @@ const UpdateQuotationForm = ({
                           value={row.itemName || ""}
                           onChange={(e) => handleEditDetailsChange(index, "itemName", e.target.value)}
                           readOnly
+                          // style={{
+                          //   borderColor: createErrors?.[`itemName${index}`] ? "red" : "#ccc",
+                          //   minWidth: "110px", minHeight: "0px",
+                          //   backgroundColor: "#e9ecef",
+                          // }}
+
                           style={{
-                            borderColor: createErrors?.[`itemName${index}`] ? "red" : "#ccc",
-                            minWidth: "110px", minHeight: "0px",
-                            backgroundColor: "#e9ecef",
-                          }}
+                              borderColor: createErrors?.[`itemName${index}`] ? "red" : "#28a745", textAlign: "Left", 
+                              width: "100%",           
+                              minWidth: "110px", minHeight: "0px",
+                              backgroundColor: "#e9ecef",
+                            }}
                         />
 
                         {createErrors?.[`itemName${index}`] && (
@@ -439,13 +444,15 @@ const UpdateQuotationForm = ({
                         min="0"
                         
                         onChange={(e) => handleEditDetailsChange(index, "quantity", e.target.value)}
+                        
                         style={{
-                          borderColor: "#28a745",
-                          textAlign: "right",
-                          minWidth: "110px",
-                          backgroundColor:"white",
-
-                        }}
+                            borderColor: createErrors?.[`quantity_${index}`] ? "red" : "#28a745",
+                            textAlign: "right",
+                            width: "100%",
+                            minWidth: "110px",
+                            // backgroundColor: row.category === "Service Rendered" ? "#e9ecef" : "white", 
+                            backgroundColor: "white",
+                          }}
                       />
                       {createErrors?.[`quantity_${index}`] && (
                         <span className="error-text">{createErrors[`quantity_${index}`]}</span>
@@ -527,16 +534,16 @@ const UpdateQuotationForm = ({
                     <td>
                       <input
                         type="hidden"
-                        style={{ textAlign: "right", backgroundColor: "#e9ecef", minWidth: "110px", }}
+                        style={{ textAlign: "center", backgroundColor: "#e9ecef", minWidth: "110px",width: "100%" }}
                         value={row.tax}
                         onChange={(e) => handleEditDetailsChange(index, "tax", e.target.value)}
                         readOnly
                       />
                       
                       {Number(row.tax) !== 0 ? (
-                        <FiCheck style={{ color: "green", marginLeft: "6px", fontSize: "20px", textAlign: "center" }} />
+                        <FiCheck style={{ color: "green", marginLeft: "46px", fontSize: "20px", textAlign: "center" }} />
                       ) : (
-                        <FiX style={{ color: "red", marginLeft: "6px", fontSize: "20px", textAlign: "center" }} />
+                        <FiX style={{ color: "red", marginLeft: "46px", fontSize: "20px", textAlign: "center" }} />
                       )}
                     </td>
 
