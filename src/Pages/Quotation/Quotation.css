@@ -469,12 +469,19 @@
 }
 
 /* Column proportions (1st cell is the hidden ID column) */
-.quotation-form-modal .data-table th:nth-child(2),
+/* .quotation-form-modal .data-table th:nth-child(2), */
 .quotation-form-modal .data-table td:nth-child(2) { width: 18%; }   /* NAME */
+.quotation-form-modal .data-table th:nth-child(3),
+.quotation-form-modal .data-table td:nth-child(3) { width: 11%; }    /* QUANTITY */
 /* .quotation-form-modal .data-table th:nth-child(8), */
 .quotation-form-modal .data-table td:nth-child(8) { width: 5%; }    /* VAT */
 .quotation-form-modal .data-table th:last-child,
 .quotation-form-modal .data-table td:last-child { width: 8%; }      /* actions */
+
+.quotation-form-modal .data-table td:nth-child(3) input {
+  width: 100% !important;
+  min-width: 110px !important;
+}
 
 /* Alertify dialogs/notifications must sit above the modal (z-index 9999) */
 .alertify,

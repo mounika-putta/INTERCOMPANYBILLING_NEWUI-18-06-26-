@@ -247,10 +247,7 @@ const InvoiceTemplate = () => {
           </div>
         </div>
 
-        {/* Payment terms */}
-        <div className="cit-note">
-          Payment Terms: {invoice?.paymentTerms || "—"}
-        </div>
+       
       </div>
     </div>
   );

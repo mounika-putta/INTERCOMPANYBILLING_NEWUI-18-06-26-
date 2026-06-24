@@ -51,12 +51,11 @@ const UpdateQuotationForm = ({
               &times;
             </span>
 
-            <h2 style={{ color: "green", textAlign: "center" }}>Update Quotation</h2>
+            <h2 style={{ color: "green" }}>Update Quotation</h2>
 
             <h4 className="quotationsub-title" style={{ color: "green" }}>Company Information</h4>
 
-            {/* Example fields */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "4px" }}>
               <div style={{ flex: "1 1 22%" }}>
                 <label>Company Name <FiSearch
                   style={{ cursor: "pointer", marginRight: "5px", backgroundColor: "#e9ecef" }}
@@ -115,14 +114,14 @@ const UpdateQuotationForm = ({
                   type="text"
                   style={{
                     width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: "12px",
+                    padding: "6px 9px",
+                    borderRadius: "8px",
                     border: "1px solid #28a745",
-                    fontSize: "1rem",
+                    fontSize: "13px",
                     fontFamily: "'Open Sans', sans-serif",
                     boxSizing: "border-box",
                     resize: "none",
-                    maxHeight :"40px",
+                    maxHeight: "40px",
                     lineHeight: "1.4",
                     backgroundColor: "#e9ecef"
                   }}
@@ -186,7 +185,7 @@ const UpdateQuotationForm = ({
               </div>
             </div>
             <h4 className="quotationsub-title" style={{ color: "green" }}>Banking Details</h4>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "4px" }}>
               <div style={{ flex: "1 1 22%" }}>
                 <label>Account Number</label>
                 <input
@@ -221,16 +220,16 @@ const UpdateQuotationForm = ({
                 <label>Branch Address</label>
                 <textarea
                   type="text"
-                 style={{
+                  style={{
                     width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: "12px",
+                    padding: "6px 9px",
+                    borderRadius: "8px",
                     border: "1px solid #28a745",
-                    fontSize: "1rem",
+                    fontSize: "13px",
                     fontFamily: "'Open Sans', sans-serif",
                     boxSizing: "border-box",
                     resize: "none",
-                    maxHeight :"40px",
+                    maxHeight: "40px",
                     lineHeight: "1.4",
                     backgroundColor: "#e9ecef"
                   }}
@@ -263,19 +262,17 @@ const UpdateQuotationForm = ({
 
 
             </div>
-            <h4 className="quotationsub-title" style={{ color: "green" }}>Quotation information</h4>
+            <h4 className="quotationsub-title" style={{ color: "green" }}>Quotation Information</h4>
             <div style={{ display: "flex", marginBottom: "10px" }}>
               <label style={{ width: "120px", fontWeight: "500" }}>Quotation Id   &nbsp;&nbsp;&nbsp;&nbsp;  : </label>
               <span style={{ fontWeight: "bold", fontSize: "13px" }}>{selectedQuotation.id}</span>
             </div>
 
-            {/* Invoice Date */}
             <div style={{ display: "flex", marginBottom: "10px" }}>
               <label style={{ width: "120px", fontWeight: "100" }}>Quotation Date :</label>
               <span style={{ fontWeight: "bold", fontSize: "13px" }}>{selectedQuotation.date ? selectedQuotation.date.split('T')[0] : "-"}</span>
             </div>
-            <br />
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "4px" }}>
               {/* quotation ID */}
 
               <div style={{ flex: "1 1 22%" }}>
@@ -360,7 +357,7 @@ const UpdateQuotationForm = ({
             </div>
 
             {/* Quotation Details Example */}
-            <h4 style={{ color: "green" }}>Quotation Details</h4>
+            <h4 className="quotationsub-title" style={{ color: "green" }}>Quotation Details</h4>
             <div className="table-responsive">
             <table className="data-table">
               <thead>
@@ -462,14 +459,14 @@ const UpdateQuotationForm = ({
                     <td>
                       <input
                         type="number"
-                            min={0}
-
+                        min={0}
                         value={row.unitRate || ""}
                         onChange={(e) => handleEditDetailsChange(index, "unitRate", e.target.value)}
-                        // readOnly
                         style={{
-                          borderColor: createErrors?.[`unitRate_${index}`] ? "red" : "#ccc", textAlign: "right",
-                          // backgroundColor: "#e9ecef", minWidth: "110px",
+                          borderColor: createErrors?.[`unitRate_${index}`] ? "red" : "#28a745",
+                          textAlign: "right",
+                          width: "100%",
+                          minWidth: "110px",
                         }}
                       />
                       {createErrors?.[`unitRate_${index}`] && (
@@ -604,7 +601,7 @@ const UpdateQuotationForm = ({
                   width: "250px",       // reduced width
                   display: "flex",      // make sure children stack vertically
                   flexDirection: "column",
-                  gap: "10px"           // space between rows
+                  gap: "2px"           // space between rows
                 }}
               >
                 <div>
@@ -662,7 +659,7 @@ const UpdateQuotationForm = ({
               </div>
             </div>
             <h4 className="quotationsub-title" style={{ color: "green" }}>Customer Information</h4>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginBottom: "4px" }}>
               <div style={{ flex: "1 1 22%" }}>
                 <label>Customer Name</label>
                 <input
@@ -712,14 +709,14 @@ const UpdateQuotationForm = ({
                   type="text"
                   style={{
                     width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: "12px",
+                    padding: "6px 9px",
+                    borderRadius: "8px",
                     border: "1px solid #28a745",
-                    fontSize: "1rem",
+                    fontSize: "13px",
                     fontFamily: "'Open Sans', sans-serif",
                     boxSizing: "border-box",
                     resize: "none",
-                    maxHeight :"40px",
+                    maxHeight: "40px",
                     lineHeight: "1.4",
                     backgroundColor: "#e9ecef"
                   }}
@@ -738,7 +735,7 @@ const UpdateQuotationForm = ({
             <h4 className="quotationsub-title" style={{ color: "green" }}>Payment Terms</h4>
             <div style={{ width: "100%" }}>
               <label>Payment Terms</label>
-              <textarea style={{ width: "100%", minHeight: "70px" }}
+              <textarea style={{ width: "100%", minHeight: "54px" }}
                 value={selectedQuotation.paymentTerms || ""}
                 onChange={(e) =>
                   setSelectedQuotation({
