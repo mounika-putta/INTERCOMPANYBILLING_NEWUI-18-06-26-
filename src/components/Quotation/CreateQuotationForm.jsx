@@ -86,14 +86,20 @@ const CreateQuotationForm = ({
       {(
         <div className="quotation-form-overlay">
           <div className="quotation-form-modal">
-            
-            
-             <span
-              className="closequotation-btn"
-              onClick={() => closeInvoiceForm(false)}
-            >
-              &times;
-            </span>
+
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <span
+                style={{
+                  color: "red",
+                  cursor: "pointer",
+                  fontSize: "30px",
+                  fontWeight: "bold"
+                }}
+                onClick={() => closeInvoiceForm(false)}
+              >
+                &times;
+              </span>
+            </div>
 
             <div style={{ position: "relative" }}>
               <h2 style={{ color: "green" }}>Generate Quotation</h2>
