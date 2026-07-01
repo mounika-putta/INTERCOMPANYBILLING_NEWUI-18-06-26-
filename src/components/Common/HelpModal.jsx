@@ -22,7 +22,7 @@ const HelpModal = ({ show, title, screenName, onClose }) => {
         <button className="help-close-btn" onClick={onClose}>
           &times;
         </button>
-        <h3 className="help-title">{title}</h3>
+        <h4 className="help-title">{title}</h4>
 
         <div className="help-content">
           {helpinfo ? (

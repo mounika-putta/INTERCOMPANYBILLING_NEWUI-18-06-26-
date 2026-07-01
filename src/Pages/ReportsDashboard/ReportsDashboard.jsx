@@ -222,6 +222,34 @@ const ReportsDashboard = () => {
       count: x.count,
     })) || [];
 
+  // Merge quotation & invoice trends by date so both lines align on one X axis
+  const combinedTrend = (() => {
+    const map = new Map();
+    const addPoint = (date, key, count) => {
+      const label = new Date(date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      const existing = map.get(label) || {
+        period: label,
+        quotationCount: 0,
+        invoiceCount: 0,
+        sortKey: new Date(date).getTime(),
+      };
+      existing[key] = count;
+      map.set(label, existing);
+    };
+
+    (dashboardData?.quotationTrend || []).forEach((x) =>
+      addPoint(x.date, "quotationCount", x.count)
+    );
+    (dashboardData?.invoiceTrend || []).forEach((x) =>
+      addPoint(x.date, "invoiceCount", x.count)
+    );
+
+    return Array.from(map.values()).sort((a, b) => a.sortKey - b.sortKey);
+  })();
+
   // Derived KPI values from the real status breakdowns
   const approvedQuotations =
     quotationStatus.find((s) => /approv|accept/i.test(s.name))?.value || 0;
@@ -238,10 +266,7 @@ const ReportsDashboard = () => {
       ? quotationBarData.length > 0
       : invoiceBarData.length > 0;
 
-  const hasLineData =
-    comparisonType === "quotation"
-      ? quotationTrend.length > 0
-      : invoiceTrend.length > 0;
+  const hasLineData = combinedTrend.length > 0;
 
 
   const filteredData =
@@ -489,47 +514,35 @@ const ReportsDashboard = () => {
             {hasLineData && (
               <div className="reportdashboard-chart-card reportdashboard-full-width">
                 <div className="reportdashboard-chart-header d-flex justify-content-between">
-                  <span>Trend Analysis</span>
-
-                  <select
-                    value={comparisonType}
-                    onChange={(e) => setComparisonType(e.target.value)}
-                  >
-                    <option value="quotation">Quotation</option>
-                    <option value="invoice">Invoice</option>
-                  </select>
+                  <span>Trend Analysis - Quotation vs Invoice</span>
                 </div>
 
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart
-                    data={
-                      comparisonType === "quotation"
-                        ? quotationTrend
-                        : invoiceTrend
-                    }
-
-                  >
+                  <LineChart data={combinedTrend}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="period" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
 
+                    <Line
+                      type="bump"
+                      dataKey="quotationCount"
+                      stroke="#5C9DED"
+                      strokeWidth={4}
+                      dot={false}
+                      activeDot={{ r: 7 }}
+                      name="Quotation Count"
+                    />
 
                     <Line
-
                       type="bump"
-                      dataKey="count"
+                      dataKey="invoiceCount"
                       stroke="#00C896"
                       strokeWidth={4}
                       dot={false}
                       activeDot={{ r: 7 }}
-
-                      name={
-                        comparisonType === "quotation"
-                          ? "Quotation Count"
-                          : "Invoice Count"
-                      }
+                      name="Invoice Count"
                     />
                   </LineChart>
                 </ResponsiveContainer>
