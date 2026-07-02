@@ -358,12 +358,15 @@ function Registration() {
         >
           <Button
             variant="contained"
+            color="error"
             onClick={handleBack}
             sx={{
               minWidth: 160,
               height: 42,
-              // backgroundColor: "red",
-              // color: "#fff",
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: colors.error,
+              },
             }}
           >
             Cancel

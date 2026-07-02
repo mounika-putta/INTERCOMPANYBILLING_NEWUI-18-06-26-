@@ -408,11 +408,13 @@ const Quotationapproval = () => {
                                         <button
                                             onClick={() => handleGenerateInvoice(q.referenceNumber)}
                                             style={{
-                                                backgroundColor: "orange",
+                                                backgroundColor: "#1E7D4E",
                                                 minWidth: "110px",
                                                 display: "flex",
                                                 alignItems: "center",
                                                 justifyContent: "center",
+                                                borderRadius :"4px",
+                                                color:"#fff",
                                                 gap: "6px"
                                             }}
                                             disabled={loadingRefNo === q.referenceNumber}

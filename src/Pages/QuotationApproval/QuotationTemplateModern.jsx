@@ -207,10 +207,10 @@ const QuotationTemplateModern = () => {
               <span>Quotation No</span>
               <span>{quotation?.referenceNumber || "-"}</span>
             </div>
-            <div className="cit-mrow">
+            {/* <div className="cit-mrow">
               <span>Customer Ref No</span>
               <span>{quotation?.customerRefno || "-"}</span>
-            </div>
+            </div> */}
             <div className="cit-mrow">
               <span>Currency</span>
               <span>{quotation?.currency || "-"}</span>

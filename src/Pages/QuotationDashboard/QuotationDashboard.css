@@ -1,4 +1,3 @@
-
 .quotation-dashboard {
   padding: 0;
   font-family: 'Open Sans', Arial, sans-serif;
@@ -73,12 +72,35 @@
 }
 
 /* Per-status accent tints for the icon chip */
-.stat-total .stat-card-icon    { background: #e8f3eb; color: #2e6c3b; }
-.stat-created .stat-card-icon   { background: #e3f0fb; color: #1769aa; }
-.stat-approved .stat-card-icon  { background: #fff3e0; color: #c66a00; }
-.stat-rejected .stat-card-icon  { background: #fdeaea; color: #c62828; }
-.stat-expired .stat-card-icon   { background: #eef0f2; color: #5f6b76; }
-.stat-creditnote .stat-card-icon{ background: #fce4f3; color: #ad1a82; }
+.stat-total .stat-card-icon {
+  background: #e8f3eb;
+  color: #2e6c3b;
+}
+
+.stat-created .stat-card-icon {
+  background: #e3f0fb;
+  color: #1769aa;
+}
+
+.stat-approved .stat-card-icon {
+  background: #fff3e0;
+  color: #c66a00;
+}
+
+.stat-rejected .stat-card-icon {
+  background: #fdeaea;
+  color: #c62828;
+}
+
+.stat-expired .stat-card-icon {
+  background: #eef0f2;
+  color: #5f6b76;
+}
+
+.stat-creditnote .stat-card-icon {
+  background: #fce4f3;
+  color: #ad1a82;
+}
 
 /* ============================================================
    Reference-style table card + inline green search bar
@@ -180,6 +202,7 @@
   gap: 15px;
   margin-bottom: 15px;
 }
+
 .quotationinvoice-dashboard-summary-cards {
   display: flex;
   gap: 15px;
@@ -194,52 +217,66 @@
   text-align: center;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  border-top: 5px solid transparent; /* default top border */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-top: 5px solid transparent;
+  /* default top border */
 }
 
 /* Specific colored borders */
 .border-total {
-  border-top-color: #4caf50; /* green */
+  border-top-color: #4caf50;
+  /* green */
 }
 
 .border-created {
-  border-top-color: #2196f3; /* blue */
+  border-top-color: #2196f3;
+  /* blue */
 }
 
 .border-approved {
-  border-top-color: #ff9800; /* orange */
+  border-top-color: #ff9800;
+  /* orange */
 }
 
 .border-rejected {
-  border-top-color: #f44336; /* red */
+  border-top-color: #f44336;
+  /* red */
 }
+
 .border-expired {
   border-top-color: gray;
-  
+
 }
-.border-creditnote  {
+
+.border-creditnote {
   border-top-color: rgb(240 12 194);
-  
+
 }
+
 /* Invoice summary cards border */
 .border-total-invoice {
-  border-top: 5px solid #4caf50; /* green */
+  border-top: 5px solid #4caf50;
+  /* green */
 }
 
 .border-unpaid-invoice {
-  border-top: 5px solid #ff9800; /* orange */
+  border-top: 5px solid #ff9800;
+  /* orange */
 }
 
 .border-paid-invoice {
-  border-top: 5px solid #2196f3; /* blue */
+  border-top: 5px solid #2196f3;
+  /* blue */
 }
 
 .border-cancelled-invoice {
-  border-top: 5px solid #f44336; /* red */
+  border-top: 5px solid #f44336;
+  /* red */
 }
+
 .border-creditnote-invoice {
-  border-top: 5px solid #ff00d2; /* red */
+  border-top: 5px solid #ff00d2;
+  /* red */
 }
 
 
@@ -275,29 +312,32 @@
 
 /* Status specific colors */
 .status-total {
-  background-color: #4caf50;  
+  background-color: #4caf50;
 }
 
 .status-created {
-  background-color: #2196f3; 
+  background-color: #2196f3;
 }
 
 .status-approved {
-  background-color: #ff9800; 
+  background-color: #ff9800;
 }
 
 .status-rejected {
-  background-color: #f44336; 
+  background-color: #f44336;
 }
+
 .status-CreditNote Created {
-  background-color: #f44336; 
+  background-color: #f44336;
 }
 
 
 .quotation-dashboard-table-container {
-  max-height: 400px; /* adjust the height as needed */
+  max-height: 400px;
+  /* adjust the height as needed */
   overflow-y: auto;
-  border: 1px solid #ddd; /* optional border around table scroll */
+  border: 1px solid #ddd;
+  /* optional border around table scroll */
 }
 
 /* Keep table full width inside scrollable container */
@@ -310,10 +350,13 @@
 .quotation-dashboard-table thead th {
   position: sticky;
   top: 0;
-  background-color: rgba(108, 109, 111, 0.9); /* keep your existing header bg */
+  background-color: rgba(108, 109, 111, 0.9);
+  /* keep your existing header bg */
   color: white;
-  z-index: 2; /* ensure header stays above rows */
+  z-index: 2;
+  /* ensure header stays above rows */
 }
+
 .type-select {
   padding: 8px 12px;
   border-radius: 6px;
@@ -327,14 +370,20 @@
 .type-select:hover {
   border-color: #888;
 }
+
 .table-spinner {
   text-align: center;
   padding: 20px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .no-results {
@@ -343,18 +392,23 @@
   padding: 20px;
 
 }
+
 .searchbar-row {
   display: flex;
-  gap: 10px; /* space between inputs */
-  justify-content: flex-start; /* align to left */
+  gap: 10px;
+  /* space between inputs */
+  justify-content: flex-start;
+  /* align to left */
   align-items: center;
   margin-bottom: 15px;
 }
 
 .searchbar-row input {
-  flex: 1; /* makes all inputs equal width */
+  flex: 1;
+  /* makes all inputs equal width */
   min-width: 200px;
 }
+
 /* addresscss */
 .quotation-view-info .info-row {
   display: flex;
@@ -363,7 +417,8 @@
 }
 
 .quotation-view-info .label {
-  min-width: 310px;     /* same width as others */
+  min-width: 310px;
+  /* same width as others */
   font-weight: 600;
   white-space: nowrap;
 }
@@ -378,40 +433,42 @@
   line-height: 1.6;
   margin-inline-start: -8px;
 }
+
 .status-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .status-label {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: #374151;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
 }
 
 .status-badge {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    color: white;
-    min-width: 110px;
-    text-align: center;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  min-width: 110px;
+  text-align: center;
 }
+
 .action-icon {
   box-sizing: border-box !important;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  width: 32px !important;
-  height: 32px !important;
+  width: 28px !important;
+  height: 28px !important;
   padding: 7px !important;
   margin: 0 3px !important;
   border: none !important;
-  border-radius: 8px !important;
+  border-radius: 4px !important;
   color: #ffffff !important;
   fill: #ffffff !important;
   /* background: #1f84e0; */
@@ -423,96 +480,52 @@
 }
 
 .action-icon.download-icon {
-  box-sizing: border-box !important;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  width: 32px !important;
-  height: 32px !important;
-  padding: 7px !important;
-  margin: 0 3px !important;
-  border: none !important;
-  border-radius: 8px !important;
-  color: #ffffff !important;
-  fill: #ffffff !important;
+  width: 28px !important;
+  height: 28px !important;
   background: #1f84e0 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  vertical-align: middle;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.14);
-  transition: transform 0.12s ease,
-              box-shadow 0.12s ease,
-              filter 0.12s ease,
-              background-color 0.12s ease;
 }
 
- .action-icon.creditdownload-icon{
-  box-sizing: border-box !important;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  width: 32px !important;
-  height: 32px !important;
-  padding: 7px !important;
-  margin: 0 3px !important;
-  border: none !important;
-  border-radius: 8px !important;
-  color: #ffffff !important;
-  fill: #ffffff !important;
+.action-icon.creditdownload-icon {
+  width: 28px !important;
+  height: 28px !important;
   background: orange !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  vertical-align: middle;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.14);
-  transition: transform 0.12s ease,
-              box-shadow 0.12s ease,
-              filter 0.12s ease,
-              background-color 0.12s ease;
 }
 
 
- .action-icon.creditview-icon{
-  box-sizing: border-box !important;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  width: 32px !important;
-  height: 32px !important;
-  padding: 7px !important;
-  margin: 0 3px !important;
-  border: none !important;
-  border-radius: 8px !important;
-  color: #ffffff !important;
-  fill: #ffffff !important;
+.action-icon.creditview-icon {
+  width: 28px !important;
+  height: 28px !important;
   background: gray !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  vertical-align: middle;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.14);
-  transition: transform 0.12s ease,
-              box-shadow 0.12s ease,
-              filter 0.12s ease,
-              background-color 0.12s ease;
 }
 
- .action-icon.credit-icon{
-  box-sizing: border-box !important;
+.action-icon.credit-icon {
+  width: 28px !important;
+  height: 28px !important;
+  background: #1E7D4E !important;
+  color: #fff !important;
+  border-radius: 4px !important;
   display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  width: 32px !important;
-  height: 32px !important;
-  padding: 7px !important;
-  margin: 0 3px !important;
-  border: none !important;
-  border-radius: 8px !important;
-  color: #ffffff !important;
-  fill: #ffffff !important;
-  background: #1E7D4E  !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  vertical-align: middle;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.14);
-  transition: transform 0.12s ease,
-              box-shadow 0.12s ease,
-              filter 0.12s ease,
-              background-color 0.12s ease;
 }
 
 .action-icon.download-icon:hover {
@@ -521,7 +534,7 @@
   filter: brightness(1.05);
 }
 
-.action-icon > svg,
+.action-icon>svg,
 .action-icon svg {
   width: 100%;
   height: 100%;
@@ -562,8 +575,7 @@
   cursor: pointer;
 }
 
-.action-icon.invoicecancel-icon
-{
+.action-icon.invoicecancel-icon {
   width: 28px !important;
   height: 28px !important;
   background: rgb(219, 19, 19) !important;
