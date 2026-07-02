@@ -302,9 +302,6 @@ const ReportsDashboard = () => {
 
   const { sortedData, sortConfig, requestSort } = useSort([...filteredData]);
 
-
-
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
