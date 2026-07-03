@@ -41,6 +41,7 @@ const ReceivingEntities = () => {
     BranchAddress: "",
     IFSCCode: "",
     AccountHolderName: "",
+    BankName: "",
   });
 
 
@@ -80,6 +81,7 @@ const ReceivingEntities = () => {
       brannchAddress: "",
       ifscCode: "",
       accountHolderName: "",
+      bankName: "",
     });
     setErrors({});
   };
@@ -111,6 +113,7 @@ const ReceivingEntities = () => {
     if (!(newItem.BankAccountNumber?.trim())) validationErrors.BankAccountNumber = "Account Number is required";
     if (!(newItem.BranchCode?.trim())) validationErrors.BranchCode = "Branch Code is required";
     if (!(newItem.BranchAddress?.trim())) validationErrors.BranchAddress = "Branch Address is required";
+    if (!(newItem.BankName?.trim())) validationErrors.BankName = "Bank Name is required";
     //if (!(newItem.IFSCCode?.trim())) validationErrors.IFSCCode = "IFSC Code is required";
 
 
@@ -225,7 +228,8 @@ const ReceivingEntities = () => {
         ifscCode: editItem.ifscCode ?? "",
         accountHolderName: editItem.accountHolderName ?? "",
         isActive: editItem.isActive ?? "",
-        isDeleted: editItem.isDeleted ?? ""
+        isDeleted: editItem.isDeleted ?? "",
+        bankName: editItem.bankName ?? ""
       });
     }
   }, [editItem]);
@@ -248,6 +252,7 @@ const ReceivingEntities = () => {
     if (!editItem.companyAddress?.trim()) validationEditerrors.companyAddress = "Company Address is required";
     // if (!editItem.companyWebsite?.trim()) validationEditerrors.companyWebsite = "Company Website is required";
     if (!editItem.accountHolderName?.trim()) validationEditerrors.accountHolderName = "Account holder name is required";
+    if (!editItem.bankName?.trim()) validationEditerrors.bankName = "Bank Name is required";
     if (editItem.isActive !== "Yes" && editItem.isActive !== "No") {
       validationEditerrors.isActive = "Please select status";
     }
@@ -308,6 +313,7 @@ const ReceivingEntities = () => {
       brannchAddress: editItem.brannchAddress,
       ifscCode: editItem.ifscCode,
       accountHolderName: editItem.accountHolderName,
+      bankName: editItem.bankName,
       isActive: editItem.isActive,
       isDeleted: editItem.isDeleted
     };
@@ -710,10 +716,13 @@ const ReceivingEntities = () => {
             <div className="create-item-box">
               <br />
               <h3 className="role-title">Create New Company</h3>
+              <h4 className="quotation-view-section-title">Company Information</h4>
+               
               <form
                 onSubmit={handleCreateItem}
                 className="create-item-form-row"
               >
+                
                 <div className="formlabel-group">
                   <label>
                     Company Name <span className="required">*</span>
@@ -825,49 +834,7 @@ const ReceivingEntities = () => {
                     <p className="error-message">{errors.RegistrationNumber}</p>
                   )}
                 </div>
-                <div className="formlabel-group">
-                  <label>
-                    Account Number <span className="required">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder=""
-                    value={newItem.BankAccountNumber || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-
-                      // Allow only digits and max 10 characters
-                      if (/^\d{0,10}$/.test(value)) {
-                        handleFieldChange("BankAccountNumber", value);
-
-                        // Validation conditions
-                        if (value.length === 0) {
-                          setErrors((prev) => ({
-                            ...prev,
-                            BankAccountNumber: "Bank Account Number is required"
-                          }));
-                        } else if (value.length < 10) {
-                          setErrors((prev) => ({
-                            ...prev,
-                            BankAccountNumber: "Bank Account Number must be 10 digits"
-                          }));
-                        } else {
-                          setErrors((prev) => ({
-                            ...prev,
-                            BankAccountNumber: ""
-                          }));
-                        }
-                      }
-                    }}
-                    className={errors.BankAccountNumber ? "input-error" : ""}
-                  />
-
-                  {errors.BankAccountNumber && (
-                    <p className="error-message">{errors.BankAccountNumber}</p>
-                  )}
-
-
-                </div>
+                
                 <div className="formlabel-group">
                   <label>
                     Company Website
@@ -974,6 +941,146 @@ const ReceivingEntities = () => {
                 </div>
                 <div className="formlabel-group">
                   <label>
+                    Company Address <span className="required">*</span>
+                  </label>
+
+                  <textarea
+                    placeholder=""
+                    value={newItem.CompanyAddress}
+                    onChange={(e) => handleFieldChange("CompanyAddress", e.target.value)}
+                    className={errors.CompanyAddress ? "input-error" : ""}
+
+                  />
+
+                  {errors.CompanyAddress && (
+                    <p className="error-message">{errors.CompanyAddress}</p>
+                  )}
+                </div>
+                 <div className="formlabel-group"
+                >
+                  <label>Company Logo
+                    {/* <span className="required">*</span> */}
+                  </label>
+                  <input
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (!file) return;
+
+                      const allowedTypes = ["image/jpeg", "image/png"];
+
+                      if (!allowedTypes.includes(file.type)) {
+                        setErrors((prev) => ({
+                          ...prev,
+                          CompanyLogo: "Only JPG, JPEG, and PNG images are allowed",
+                        }));
+                        setNewItem((prev) => ({ ...prev, CompanyLogo: null }));
+                        return;
+                      }
+
+                      // File is valid → clear error
+                      setErrors((prev) => ({ ...prev, CompanyLogo: "" }));
+
+                      setNewItem((prev) => ({
+                        ...prev,
+                        CompanyLogo: file,
+                      }));
+                    }}
+                    className={errors.CompanyLogo ? "input-error" : ""}
+                  />
+
+                  {errors.CompanyLogo && (
+                    <p className="error-message">{errors.CompanyLogo}</p>
+                  )}
+
+
+                </div>
+               <div className="bank-info-section">
+  <h4 className="quotation-view-section-title">Bank Information</h4>
+
+  <div className="bank-info-grid">
+                {/* <div style={{ width: "100%" }}></div>
+
+<h4
+  className="Companysub-title"
+  style={{
+    color: "#1E7D4E",
+    width: "100%",
+    marginTop: "20px",
+    marginBottom: "10px",
+    marginRight:"200px",
+  }}
+>
+  Bank Information
+</h4> */}
+                {/* <h4 className="quotationsub-title" style={{ color: "green" }}>Bank Information</h4> */}
+                <div className="formlabel-group">
+                  <label>
+                    Account Number <span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={newItem.BankAccountNumber || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      // Allow only digits and max 10 characters
+                      if (/^\d{0,10}$/.test(value)) {
+                        handleFieldChange("BankAccountNumber", value);
+
+                        // Validation conditions
+                        if (value.length === 0) {
+                          setErrors((prev) => ({
+                            ...prev,
+                            BankAccountNumber: "Bank Account Number is required"
+                          }));
+                        } else if (value.length < 10) {
+                          setErrors((prev) => ({
+                            ...prev,
+                            BankAccountNumber: "Bank Account Number must be 10 digits"
+                          }));
+                        } else {
+                          setErrors((prev) => ({
+                            ...prev,
+                            BankAccountNumber: ""
+                          }));
+                        }
+                      }
+                    }}
+                    className={errors.BankAccountNumber ? "input-error" : ""}
+                  />
+
+                  {errors.BankAccountNumber && (
+                    <p className="error-message">{errors.BankAccountNumber}</p>
+                  )}
+
+
+                </div>
+                <div className="formlabel-group">
+                  <label>
+                    Bank Name <span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder=""
+                    value={newItem.BankName}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Allow only letters, numbers, and spaces
+                      if (/^[a-zA-Z0-9\s]*$/.test(value)) {
+                        handleFieldChange("BankName", value);
+                      }
+                    }}
+                    className={errors.BankName ? "input-error" : ""}
+                  />
+                  {errors.BankName && (
+                    <p className="error-message">{errors.BankName}</p>
+                  )}
+                </div>
+                <div className="formlabel-group">
+                  <label>
                     Account Holder Name <span className="required">*</span>
                   </label>
                   <input
@@ -1023,23 +1130,7 @@ const ReceivingEntities = () => {
                     <p className="error-message">{errors.IFSCCode}</p>
                   )}
                 </div>
-                <div className="formlabel-group">
-                  <label>
-                    Company Address <span className="required">*</span>
-                  </label>
-
-                  <textarea
-                    placeholder=""
-                    value={newItem.CompanyAddress}
-                    onChange={(e) => handleFieldChange("CompanyAddress", e.target.value)}
-                    className={errors.CompanyAddress ? "input-error" : ""}
-
-                  />
-
-                  {errors.CompanyAddress && (
-                    <p className="error-message">{errors.CompanyAddress}</p>
-                  )}
-                </div>
+                
 
                 <div className="formlabel-group">
                   <label>
@@ -1056,47 +1147,9 @@ const ReceivingEntities = () => {
                     <p className="error-message">{errors.BranchAddress}</p>
                   )}
                 </div>
-
-                <div className="formlabel-group"
-                >
-                  <label>Company Logo
-                    {/* <span className="required">*</span> */}
-                  </label>
-                  <input
-                    type="file"
-                    accept=".jpg,.jpeg,.png"
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      if (!file) return;
-
-                      const allowedTypes = ["image/jpeg", "image/png"];
-
-                      if (!allowedTypes.includes(file.type)) {
-                        setErrors((prev) => ({
-                          ...prev,
-                          CompanyLogo: "Only JPG, JPEG, and PNG images are allowed",
-                        }));
-                        setNewItem((prev) => ({ ...prev, CompanyLogo: null }));
-                        return;
-                      }
-
-                      // File is valid → clear error
-                      setErrors((prev) => ({ ...prev, CompanyLogo: "" }));
-
-                      setNewItem((prev) => ({
-                        ...prev,
-                        CompanyLogo: file,
-                      }));
-                    }}
-                    className={errors.CompanyLogo ? "input-error" : ""}
-                  />
-
-                  {errors.CompanyLogo && (
-                    <p className="error-message">{errors.CompanyLogo}</p>
-                  )}
-
-
-                </div>
+</div>
+               </div>
+              
 
                 {errors.duplicate && (
                   <p className="error-message">{errors.duplicate}</p>
@@ -1157,6 +1210,7 @@ const ReceivingEntities = () => {
             <div className="create-item-box">
               <br />
               <h3 className="role-title">Edit Company</h3>
+               <h4 className="quotation-view-section-title">Company Information</h4>
               <form onSubmit={handleEditItem} className="create-item-form-row">
                 <div className="formlabel-group">
                   <label>
@@ -1324,60 +1378,7 @@ const ReceivingEntities = () => {
                   )}
 
                 </div>
-                <div className="formlabel-group">
-                  <label>
-                    Account Number <span className="required">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={editItem.bankAccountNumber || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-
-                      // Allow digits only and limit to 10
-                      if (/^\d{0,10}$/.test(value)) {
-                        setEditItem((prev) => ({ ...prev, bankAccountNumber: value }));
-
-                        // Live validation
-                        setErrors((prev) => ({
-                          ...prev,
-                          bankAccountNumber:
-                            value.length === 0
-                              ? "Bank Account Number is required"
-                              : value.length < 10
-                                ? "Bank Account Number must be 10 digits"
-                                : ""
-                        }));
-                      }
-                    }}
-                    onBlur={() => {
-                      const value = editItem?.bankAccountNumber || "";
-
-                      setErrors((prev) => ({
-                        ...prev,
-                        bankAccountNumber:
-                          value.length === 0
-                            ? "Bank Account Number is required"
-                            : value.length < 10
-                              ? "Bank Account Number must be 10 digits"
-                              : ""
-                      }));
-                    }}
-                    className={
-                      errors.bankAccountNumber
-                        ? "input-error"
-                        : editItem.bankAccountNumber?.length === 10
-                          ? "input-valid"
-                          : ""
-                    }
-                  />
-
-                  {errors.bankAccountNumber && (
-                    <p className="error-message">{errors.bankAccountNumber}</p>
-                  )}
-
-
-                </div>
+               
                 <div className="formlabel-group">
                   <label>
                     Company Website
@@ -1552,6 +1553,199 @@ const ReceivingEntities = () => {
 
 
                 </div>
+                <div className="formlabel-group">
+                  <label>
+                    Company Address <span className="required">*</span>
+                  </label>
+                  <textarea
+                    value={editItem.companyAddress || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      // Always update state
+                      setEditItem(prev => ({ ...prev, companyAddress: value }));
+
+                      // If empty -> set error, else clear error
+                      setErrors(prev => ({
+                        ...prev,
+                        companyAddress: value.trim() ? "" : "Company Address is required"
+                      }));
+                    }}
+                    onBlur={() => {
+                      // ensure error shows on blur too
+                      setErrors(prev => ({
+                        ...prev,
+                        companyAddress: (editItem?.companyAddress || "").trim()
+                          ? ""
+                          : "Company Address is required"
+                      }));
+                    }}
+                    className={
+                      errors.companyAddress
+                        ? "input-error"
+                        : editItem?.companyAddress?.trim()
+                          ? "input-valid"
+                          : ""
+                    }
+                  />
+
+                  {errors.companyAddress && (
+                    <p className="error-message">{errors.companyAddress}</p>
+                  )}
+
+
+                </div>
+                 <div className="formlabel-group">
+
+                  <label>Company Logo</label>
+
+                  <input
+                    type="file"
+                    name="companyLogo"
+                    style={{ width: "250px" }}
+                    // onChange={(e) => {
+                    //   const file = e.target.files?.[0];
+                    //   console.log("selected file:", file);
+                    //   setEditItem(prev => ({ ...prev, companyLogo: file }));
+                    // }}
+                    accept="image/*"
+
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      setEditItem({ ...editItem, companyLogo: file });
+                    }}
+
+                  />
+                  {editItem.companyLogo && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const imagePath = `${baseURL}/UploadedFiles/${editItem.companyLogo?.split("\\").pop()}`;
+                        console.log("🖼️ Image URL:", imagePath);
+                        setSelectedImage(imagePath);
+                        setShowImagePopup(true);
+                      }}
+
+                     style={{
+                        background: "none",
+                        border: "none",
+                        marginLeft: "196px",
+                        marginTop:"-30px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <i className="fas fa-eye" style={{ color: "darkblue", fontSize: "18px" }}></i>
+                    </button>
+                  )}
+                </div>
+                <div className="bank-info-section">
+  <h4 className="quotation-view-section-title">Bank Information</h4>
+
+  <div className="bank-info-grid">
+                 <div className="formlabel-group">
+                  <label>
+                    Account Number <span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={editItem.bankAccountNumber || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      // Allow digits only and limit to 10
+                      if (/^\d{0,10}$/.test(value)) {
+                        setEditItem((prev) => ({ ...prev, bankAccountNumber: value }));
+
+                        // Live validation
+                        setErrors((prev) => ({
+                          ...prev,
+                          bankAccountNumber:
+                            value.length === 0
+                              ? "Bank Account Number is required"
+                              : value.length < 10
+                                ? "Bank Account Number must be 10 digits"
+                                : ""
+                        }));
+                      }
+                    }}
+                    onBlur={() => {
+                      const value = editItem?.bankAccountNumber || "";
+
+                      setErrors((prev) => ({
+                        ...prev,
+                        bankAccountNumber:
+                          value.length === 0
+                            ? "Bank Account Number is required"
+                            : value.length < 10
+                              ? "Bank Account Number must be 10 digits"
+                              : ""
+                      }));
+                    }}
+                    className={
+                      errors.bankAccountNumber
+                        ? "input-error"
+                        : editItem.bankAccountNumber?.length === 10
+                          ? "input-valid"
+                          : ""
+                    }
+                  />
+
+                  {errors.bankAccountNumber && (
+                    <p className="error-message">{errors.bankAccountNumber}</p>
+                  )}
+
+
+                </div>
+                <div className="formlabel-group">
+                  <label>
+                    Bank Name <span className="required">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={editItem.bankName || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      // Allow only alphabets, numbers and spaces (max 50 chars)
+                      if (/^[A-Za-z0-9\s]{0,50}$/.test(value)) {
+                        setEditItem(prev => ({ ...prev, bankName: value }));
+                      }
+
+                      // Validation for errors
+                      setErrors(prev => ({
+                        ...prev,
+                        bankName:
+                          value.trim() === ""
+                            ? "Bank Name is required"
+                            : !/^[A-Za-z0-9\s]+$/.test(value)
+                              ? "Only letters and numbers are allowed"
+                              : ""
+                      }));
+                    }}
+                    onBlur={() => {
+                      const value = editItem?.bankName || "";
+
+                      setErrors(prev => ({
+                        ...prev,
+                        bankName:
+                          value.trim() === ""
+                            ? "Bank Name is required"
+                            : !/^[A-Za-z0-9\s]+$/.test(value)
+                              ? "Only letters and numbers are allowed"
+                              : ""
+                      }));
+                    }}
+                    className={
+                      errors.bankName
+                        ? "input-error"
+                        : editItem?.bankName?.trim()
+                          ? "input-valid"
+                          : ""
+                    }
+                  />
+                  {errors.bankName && <p className="error-message">{errors.bankName}</p>}
+
+                </div>
 
                 <div className="formlabel-group">
                   <label>
@@ -1701,48 +1895,7 @@ const ReceivingEntities = () => {
                   {errors.ifscCode && <p className="error-message">{errors.ifscCode}</p>}
 
                 </div>
-                <div className="formlabel-group">
-                  <label>
-                    Company Address <span className="required">*</span>
-                  </label>
-                  <textarea
-                    value={editItem.companyAddress || ""}
-                    onChange={(e) => {
-                      const value = e.target.value;
-
-                      // Always update state
-                      setEditItem(prev => ({ ...prev, companyAddress: value }));
-
-                      // If empty -> set error, else clear error
-                      setErrors(prev => ({
-                        ...prev,
-                        companyAddress: value.trim() ? "" : "Company Address is required"
-                      }));
-                    }}
-                    onBlur={() => {
-                      // ensure error shows on blur too
-                      setErrors(prev => ({
-                        ...prev,
-                        companyAddress: (editItem?.companyAddress || "").trim()
-                          ? ""
-                          : "Company Address is required"
-                      }));
-                    }}
-                    className={
-                      errors.companyAddress
-                        ? "input-error"
-                        : editItem?.companyAddress?.trim()
-                          ? "input-valid"
-                          : ""
-                    }
-                  />
-
-                  {errors.companyAddress && (
-                    <p className="error-message">{errors.companyAddress}</p>
-                  )}
-
-
-                </div>
+                
                 <div className="formlabel-group">
                   <label>
                     Branch Address <span className="required">*</span>
@@ -1848,49 +2001,8 @@ const ReceivingEntities = () => {
                   )}
                 </div>
 
-                <div className="formlabel-group">
-
-                  <label>Company Logo</label>
-
-                  <input
-                    type="file"
-                    name="companyLogo"
-                    style={{ width: "250px" }}
-                    // onChange={(e) => {
-                    //   const file = e.target.files?.[0];
-                    //   console.log("selected file:", file);
-                    //   setEditItem(prev => ({ ...prev, companyLogo: file }));
-                    // }}
-                    accept="image/*"
-
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      setEditItem({ ...editItem, companyLogo: file });
-                    }}
-
-                  />
-                  {editItem.companyLogo && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const imagePath = `${baseURL}/UploadedFiles/${editItem.companyLogo?.split("\\").pop()}`;
-                        console.log("🖼️ Image URL:", imagePath);
-                        setSelectedImage(imagePath);
-                        setShowImagePopup(true);
-                      }}
-
-                     style={{
-                        background: "none",
-                        border: "none",
-                        marginLeft: "196px",
-                        marginTop:"-30px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <i className="fas fa-eye" style={{ color: "darkblue", fontSize: "18px" }}></i>
-                    </button>
-                  )}
-                </div>
+               </div>
+               </div>
 
                 {errors.duplicate && (
                   <p className="error-message">{errors.duplicate}</p>

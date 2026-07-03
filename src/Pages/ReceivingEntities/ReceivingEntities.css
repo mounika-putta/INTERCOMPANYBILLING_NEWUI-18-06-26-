@@ -17,10 +17,9 @@
 }
 
 .create-item-form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
 }
 
 
@@ -176,4 +175,24 @@ textarea.input-error {
     font-size: 11.8px;
     color: white;
     font-weight: bold;
+}
+
+/* Bank Information section only */
+.bank-info-section {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+}
+
+.bank-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.bank-info-grid .formlabel-group {
+  width: 100%;
+}
+
+.bank-info-grid .formlabel-group:last-child {
+  grid-column: span 1;
 }

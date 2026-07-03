@@ -23,6 +23,7 @@ export const saveReceivingEntity = async (entityData) => {
   formData.append("BranchAddress", entityData.BranchAddress);  
   formData.append("IFSCCode", entityData.IFSCCode);
   formData.append("AccountHolderName", entityData.AccountHolderName);
+  formData.append("BankName", entityData.BankName);
 
   // Append file if selected
   if (entityData.CompanyLogo) {
@@ -65,6 +66,7 @@ export const updateReceivingEntity = async (id, payload) => {
 
   formData.append("IFSCCode", payload.ifscCode ?? "");
   formData.append("AccountHolderName", payload.accountHolderName ?? "");
+  formData.append("BankName", payload.bankName ?? "");
   formData.append("IsActive", payload.isActive ?? "");
   formData.append("IsDeleted", payload.isDeleted ?? "");
 
